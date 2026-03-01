@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback, createContext, useContext } from "react";
+import React from "react";
 
 // ─── THEME PALETTES ───────────────────────────────────────────────────────────
 const THEMES = {
@@ -114,7 +115,6 @@ const THEMES = {
 
 // ─── THEME CONTEXT ────────────────────────────────────────────────────────────
 const ThemeCtx = createContext(null);
-const useTheme = () => useContext(ThemeCtx);
 
 // Module-level T proxy — components read from this; App.setTheme updates it
 let T = { ...THEMES.terrain };
@@ -173,7 +173,7 @@ const css = `
 `;
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
-function Ring({ pct, color, size = 72, stroke = 6, children }) {
+function Ring({ pct, color, size, stroke, children }: { pct: number, color: string, size: number, stroke: number, children?: React.ReactNode }) {
   const r = (size - stroke * 2) / 2;
   const circ = 2 * Math.PI * r;
   const offset = circ - (Math.min(pct, 100) / 100) * circ;
