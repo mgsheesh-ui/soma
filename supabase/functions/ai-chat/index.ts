@@ -21,37 +21,15 @@ serve(async (req) => {
     }
 
     try {
-        const anthropicKey = Deno.env.get("ANTHROPIC_API_KEY");
-        if (!anthropicKey) {
-            return new Response(
-                JSON.stringify({ error: "ANTHROPIC_API_KEY secret is not set" }),
-                { status: 500, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
-            );
-        }
-
         const body = await req.json();
 
-        const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-api-key": anthropicKey,
-                "anthropic-version": "2023-06-01",
-            },
-            body: JSON.stringify(body),
-        });
-
-        const data = await anthropicRes.json();
-
-        // Extract the text reply so the client can use data.reply simply
-        const reply =
-            data.content?.find((b: { type: string; text?: string }) => b.type === "text")?.text ??
-            "Sorry, I couldn't respond right now.";
+        // Anthropic logic has been removed as Qwen is now being used from the groq key.
+        // This edge function can be repurposed for other server-side logic or safely ignored.
 
         return new Response(
-            JSON.stringify({ reply, raw: data }),
+            JSON.stringify({ reply: "Anthropic integration removed." }),
             {
-                status: anthropicRes.ok ? 200 : anthropicRes.status,
+                status: 200,
                 headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
             }
         );
