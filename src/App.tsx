@@ -27,109 +27,109 @@ const THEMES = {
     id: "ember",
     name: "Ember",
     description: "Intense & bold",
-    preview: ["#130205","#ff1f31","#92cc8f","#e78f8e"],
-    bg:       "#130205",
-    surface:  "#1f0309",
+    preview: ["#130205", "#ff1f31", "#92cc8f", "#e78f8e"],
+    bg: "#130205",
+    surface: "#1f0309",
     surface2: "#2a040b",
-    border:   "#ff1f3122",
-    lime:     "#ff1f31",
-    teal:     "#92cc8f",
-    orange:   "#e78f8e",
-    white:    "#ffffff",
-    muted:    "#e78f8e88",
-    dim:      "#1f0309",
+    border: "#ff1f3122",
+    lime: "#ff1f31",
+    teal: "#92cc8f",
+    orange: "#e78f8e",
+    white: "#ffffff",
+    muted: "#e78f8e88",
+    dim: "#1f0309",
     pageWrap: "#0d0105",
-    ring:     "#ff1f3155",
+    ring: "#ff1f3155",
   },
   ocean: {
     id: "ocean",
     name: "Ocean",
     description: "Deep & focused",
-    preview: ["#00171f","#00a8e8","#007ea7","#ffffff"],
-    bg:       "#00171f",
-    surface:  "#003459",
+    preview: ["#00171f", "#00a8e8", "#007ea7", "#ffffff"],
+    bg: "#00171f",
+    surface: "#003459",
     surface2: "#00253d",
-    border:   "#007ea733",
-    lime:     "#00a8e8",
-    teal:     "#007ea7",
-    orange:   "#00a8e8",
-    white:    "#ffffff",
-    muted:    "#007ea7bb",
-    dim:      "#003459",
+    border: "#007ea733",
+    lime: "#00a8e8",
+    teal: "#007ea7",
+    orange: "#00a8e8",
+    white: "#ffffff",
+    muted: "#007ea7bb",
+    dim: "#003459",
     pageWrap: "#00101a",
-    ring:     "#00a8e855",
+    ring: "#00a8e855",
   },
   sage: {
     id: "sage",
     name: "Sage",
     description: "Calm & refined",
-    preview: ["#2a2a2a","#93b7be","#785964","#f1fffa"],
-    bg:       "#2a2a2a",
-    surface:  "#323232",
+    preview: ["#2a2a2a", "#93b7be", "#785964", "#f1fffa"],
+    bg: "#2a2a2a",
+    surface: "#323232",
     surface2: "#3a3a3a",
-    border:   "#454545",
-    lime:     "#93b7be",
-    teal:     "#f1fffa",
-    orange:   "#785964",
-    white:    "#f1fffa",
-    muted:    "#d5c7bc99",
-    dim:      "#454545",
+    border: "#454545",
+    lime: "#93b7be",
+    teal: "#f1fffa",
+    orange: "#785964",
+    white: "#f1fffa",
+    muted: "#d5c7bc99",
+    dim: "#454545",
     pageWrap: "#1e1e1e",
-    ring:     "#93b7be55",
+    ring: "#93b7be55",
   },
   midnight: {
     id: "midnight",
     name: "Midnight",
     description: "Pure & minimal",
-    preview: ["#080808","#D4F53C","#7CE577","#F0EDE6"],
-    bg:       "#080808",
-    surface:  "#111111",
+    preview: ["#080808", "#D4F53C", "#7CE577", "#F0EDE6"],
+    bg: "#080808",
+    surface: "#111111",
     surface2: "#181818",
-    border:   "#222222",
-    lime:     "#D4F53C",
-    teal:     "#7CE577",
-    orange:   "#F5923C",
-    white:    "#F0EDE6",
-    muted:    "#555555",
-    dim:      "#333333",
+    border: "#222222",
+    lime: "#D4F53C",
+    teal: "#7CE577",
+    orange: "#F5923C",
+    white: "#F0EDE6",
+    muted: "#555555",
+    dim: "#333333",
     pageWrap: "#050505",
-    ring:     "#D4F53C44",
+    ring: "#D4F53C44",
   },
   terrain: {
     id: "terrain",
     name: "Terrain",
     description: "Light & natural",
-    preview: ["#eff1ed","#717744","#8aea92","#373d20"],
-    bg:       "#eff1ed",     // white-smoke — light base
-    surface:  "#e4e6e0",     // slightly darker white-smoke for cards
+    preview: ["#eff1ed", "#717744", "#8aea92", "#373d20"],
+    bg: "#eff1ed",     // white-smoke — light base
+    surface: "#e4e6e0",     // slightly darker white-smoke for cards
     surface2: "#d8dbd2",     // inputs / secondary surfaces
-    border:   "#71774433",   // dusty-olive low opacity — subtle borders
-    lime:     "#717744",     // dusty-olive — primary accent
-    teal:     "#373d20",     // dark-khaki — secondary / strong contrast
-    orange:   "#717744",     // dusty-olive — warm highlights / badges
-    white:    "#373d20",     // dark-khaki — primary text (inverted!)
-    muted:    "#8aea92",     // fresh green — secondary / subtext
-    dim:      "#d8dbd2",     // light dim for inactive elements
+    border: "#71774433",   // dusty-olive low opacity — subtle borders
+    lime: "#717744",     // dusty-olive — primary accent
+    teal: "#373d20",     // dark-khaki — secondary / strong contrast
+    orange: "#717744",     // dusty-olive — warm highlights / badges
+    white: "#373d20",     // dark-khaki — primary text (inverted!)
+    muted: "#8aea92",     // fresh green — secondary / subtext
+    dim: "#d8dbd2",     // light dim for inactive elements
     pageWrap: "#dfe1db",
-    ring:     "#71774455",
+    ring: "#71774455",
   },
   monolith: {
     id: "monolith",
     name: "Monolith",
     description: "Stark & editorial",
-    preview: ["#0a0b0a","#ffffff","#a6a2a2","#fbfbf2"],
-    bg:       "#0a0b0a",     // onyx — deepest black
-    surface:  "#141514",     // onyx lifted — card surfaces
+    preview: ["#0a0b0a", "#ffffff", "#a6a2a2", "#fbfbf2"],
+    bg: "#0a0b0a",     // onyx — deepest black
+    surface: "#141514",     // onyx lifted — card surfaces
     surface2: "#1c1d1c",     // inputs / secondary
-    border:   "#a6a2a222",   // silver low opacity — borders
-    lime:     "#fbfbf2",     // floral-white — primary accent
-    teal:     "#ffffff",     // pure white — strong highlight
-    orange:   "#a6a2a2",     // silver — warm secondary
-    white:    "#fbfbf2",     // floral-white — primary text
-    muted:    "#a6a2a2",     // silver — secondary / subtext
-    dim:      "#1c1d1c",     // dim backgrounds
+    border: "#a6a2a222",   // silver low opacity — borders
+    lime: "#fbfbf2",     // floral-white — primary accent
+    teal: "#ffffff",     // pure white — strong highlight
+    orange: "#a6a2a2",     // silver — warm secondary
+    white: "#fbfbf2",     // floral-white — primary text
+    muted: "#a6a2a2",     // silver — secondary / subtext
+    dim: "#1c1d1c",     // dim backgrounds
     pageWrap: "#050505",
-    ring:     "#a6a2a233",
+    ring: "#a6a2a233",
   },
 };
 
@@ -142,20 +142,20 @@ let T = { ...THEMES.terrain };
 // Light themes like Terrain have a light lime so need dark text; dark themes need light text
 function accentText() {
   // Parse hex lightness roughly: if R+G+B > 382 (avg > 127) it's light
-  const hex = T.lime.replace("#","");
-  const r = parseInt(hex.slice(0,2),16);
-  const g = parseInt(hex.slice(2,4),16);
-  const b = parseInt(hex.slice(4,6),16);
-  return (r*0.299 + g*0.587 + b*0.114) > 128 ? "#1a1a0a" : "#ffffff";
+  const hex = T.lime.replace("#", "");
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  return (r * 0.299 + g * 0.587 + b * 0.114) > 128 ? "#1a1a0a" : "#ffffff";
 }
 
 // Returns readable text for T.bg (page background)
 function bgText() {
-  const hex = T.bg.replace("#","");
-  const r = parseInt(hex.slice(0,2),16);
-  const g = parseInt(hex.slice(2,4),16);
-  const b = parseInt(hex.slice(4,6),16);
-  return (r*0.299 + g*0.587 + b*0.114) > 128 ? "#373d20" : "#ffffff";
+  const hex = T.bg.replace("#", "");
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  return (r * 0.299 + g * 0.587 + b * 0.114) > 128 ? "#373d20" : "#ffffff";
 }
 
 const css = `
@@ -212,8 +212,8 @@ function Ring({ pct, color, size = 72, stroke = 6, children }: { pct: number, co
   return (
     <div style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
       <svg width={size} height={size} style={{ transform: "rotate(-90deg)", position: "absolute" }}>
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={T.dim} strokeWidth={stroke} />
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={stroke}
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={T.dim} strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
           strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
           style={{ transition: "stroke-dashoffset 0.8s ease" }} />
       </svg>
@@ -247,7 +247,7 @@ function Card({ children, style = {} }: { children?: React.ReactNode, style?: Re
 }
 
 // ─── AUTH SCREEN ──────────────────────────────────────────────────────────────
-function AuthScreen() {
+function AuthScreen({ onGuestMode }: { onGuestMode: () => void }) {
   const [mode, setMode] = useState<"options" | "email">("options");
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
@@ -309,10 +309,10 @@ function AuthScreen() {
             onMouseLeave={e => (e.currentTarget.style.borderColor = T.border)}
           >
             <svg width="18" height="18" viewBox="0 0 18 18">
-              <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
-              <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.859-3.048.859-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
-              <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-              <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+              <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4" />
+              <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.859-3.048.859-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853" />
+              <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05" />
+              <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335" />
             </svg>
             Continue with Google
           </button>
@@ -326,6 +326,21 @@ function AuthScreen() {
           <p style={{ color: T.muted, fontSize: 11, textAlign: "center", marginTop: 8, lineHeight: 1.5 }}>
             By continuing you agree to our Terms of Service.<br />No password. No friction.
           </p>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "4px 0" }}>
+            <div style={{ flex: 1, height: 1, background: T.border }} />
+            <span style={{ color: T.muted, fontSize: 11 }}>or</span>
+            <div style={{ flex: 1, height: 1, background: T.border }} />
+          </div>
+          <button className="btn-press" onClick={onGuestMode} style={{
+            width: "100%", padding: "13px", borderRadius: 50,
+            background: "none", border: `1.5px solid ${T.border}`,
+            color: T.muted, fontFamily: "'Syne', sans-serif",
+            fontWeight: 600, fontSize: 13, cursor: "pointer",
+            transition: "border-color 0.2s, color 0.2s",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = T.lime; e.currentTarget.style.color = T.lime; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.color = T.muted; }}
+          >Continue as Guest →</button>
         </div>
       ) : (
         <div style={{ width: "100%", maxWidth: 380 }}>
@@ -367,17 +382,21 @@ function AuthScreen() {
 const OB_STEPS = [
   { id: "welcome" },
   { id: "name", q: "What should we call you?", type: "text", placeholder: "Your name" },
-  { id: "goal",  q: "What's your primary goal?", type: "choice", choices: [
-    { id: "lose",    label: "Lose Weight",     icon: "🔥", desc: "Burn fat, feel lighter" },
-    { id: "build",   label: "Build Muscle",    icon: "💪", desc: "Strength & hypertrophy" },
-    { id: "endure",  label: "Boost Endurance", icon: "🏃", desc: "Cardio & stamina" },
-    { id: "wellness",label: "Overall Wellness",icon: "🧘", desc: "Balance & longevity" },
-  ]},
-  { id: "level", q: "Your current fitness level?", type: "choice", choices: [
-    { id: "beginner",     label: "Beginner",     icon: "🌱", desc: "Just getting started" },
-    { id: "intermediate", label: "Intermediate", icon: "⚡", desc: "1–2 years consistent" },
-    { id: "advanced",     label: "Advanced",     icon: "🏆", desc: "3+ years training" },
-  ]},
+  {
+    id: "goal", q: "What's your primary goal?", type: "choice", choices: [
+      { id: "lose", label: "Lose Weight", icon: "🔥", desc: "Burn fat, feel lighter" },
+      { id: "build", label: "Build Muscle", icon: "💪", desc: "Strength & hypertrophy" },
+      { id: "endure", label: "Boost Endurance", icon: "🏃", desc: "Cardio & stamina" },
+      { id: "wellness", label: "Overall Wellness", icon: "🧘", desc: "Balance & longevity" },
+    ]
+  },
+  {
+    id: "level", q: "Your current fitness level?", type: "choice", choices: [
+      { id: "beginner", label: "Beginner", icon: "🌱", desc: "Just getting started" },
+      { id: "intermediate", label: "Intermediate", icon: "⚡", desc: "1–2 years consistent" },
+      { id: "advanced", label: "Advanced", icon: "🏆", desc: "3+ years training" },
+    ]
+  },
   { id: "days", q: "How many days can you train per week?", type: "stepper", min: 1, max: 7 },
   { id: "ready" },
 ];
@@ -584,13 +603,13 @@ const WORKOUTS = [
     program: "6-Day Powerbuilding",
     note: POWERBUILDING_NOTE,
     exercises: [
-      { name: "Flat Barbell Bench Press",           sets: 5, reps: "15",     rest: 105, desc: "Primary chest driver. Drive feet into floor, arch naturally, full ROM." },
-      { name: "Flat Barbell Bench Press (AMQRAP)",  sets: 1, reps: "AMQRAP", rest: 0,   desc: "Use 20% less than working weight. As many quality reps as possible — stop before form breaks." },
-      { name: "Seated Behind the Neck Press",       sets: 3, reps: "25",     rest: 60,  desc: "Controlled descent to ear level. Keep core braced throughout." },
-      { name: "Weighted Tricep Dips",               sets: 3, reps: "30",     rest: 60,  desc: "Lean slightly forward for chest emphasis, upright for triceps." },
-      { name: "Standing Cable Crossovers",          sets: 5, reps: "50",     rest: 30,  desc: "High-to-low arc, squeeze hard at the bottom. Keep slight elbow bend." },
-      { name: "Seated Tricep Extensions",           sets: 5, reps: "50",     rest: 30,  desc: "Dumbbell, rope, or EZ bar. Full overhead extension, slow eccentric." },
-      { name: "Seated Dumbbell Lateral Raises",     sets: 5, reps: "50",     rest: 15,  desc: "Light weight, high reps. Lead with elbows, stop at shoulder height." },
+      { name: "Flat Barbell Bench Press", sets: 5, reps: "15", rest: 105, desc: "Primary chest driver. Drive feet into floor, arch naturally, full ROM." },
+      { name: "Flat Barbell Bench Press (AMQRAP)", sets: 1, reps: "AMQRAP", rest: 0, desc: "Use 20% less than working weight. As many quality reps as possible — stop before form breaks." },
+      { name: "Seated Behind the Neck Press", sets: 3, reps: "25", rest: 60, desc: "Controlled descent to ear level. Keep core braced throughout." },
+      { name: "Weighted Tricep Dips", sets: 3, reps: "30", rest: 60, desc: "Lean slightly forward for chest emphasis, upright for triceps." },
+      { name: "Standing Cable Crossovers", sets: 5, reps: "50", rest: 30, desc: "High-to-low arc, squeeze hard at the bottom. Keep slight elbow bend." },
+      { name: "Seated Tricep Extensions", sets: 5, reps: "50", rest: 30, desc: "Dumbbell, rope, or EZ bar. Full overhead extension, slow eccentric." },
+      { name: "Seated Dumbbell Lateral Raises", sets: 5, reps: "50", rest: 15, desc: "Light weight, high reps. Lead with elbows, stop at shoulder height." },
     ]
   },
   {
@@ -606,13 +625,13 @@ const WORKOUTS = [
     program: "6-Day Powerbuilding",
     note: POWERBUILDING_NOTE,
     exercises: [
-      { name: "Barbell Conventional Deadlift",        sets: 5, reps: "15",     rest: 105, desc: "Hip hinge, bar over mid-foot, neutral spine. Drive the floor away." },
-      { name: "Barbell Deadlift (AMQRAP)",            sets: 1, reps: "AMQRAP", rest: 0,   desc: "Use 20% less than working weight. Maintain perfect form — quality over quantity." },
-      { name: "Weighted Chin-ups",                    sets: 3, reps: "25",     rest: 60,  desc: "Dead hang start, supinated grip, drive elbows to hips at the top." },
-      { name: "Chest Supported Rows",                 sets: 3, reps: "30",     rest: 60,  desc: "Eliminate lower back involvement. Pull elbows past torso, squeeze scapula." },
-      { name: "Shrugs",                               sets: 5, reps: "50",     rest: 30,  desc: "Dumbbell, barbell, or trap bar. Full elevation and hold 1s at top." },
-      { name: "Standing Barbell Curls",               sets: 5, reps: "50",     rest: 30,  desc: "No swinging. Full supination at the top, slow descent." },
-      { name: "Standing Cable Reverse Fly",           sets: 5, reps: "50",     rest: 15,  desc: "Targets rear delts & traps. Keep slight forward lean, arms wide arc." },
+      { name: "Barbell Conventional Deadlift", sets: 5, reps: "15", rest: 105, desc: "Hip hinge, bar over mid-foot, neutral spine. Drive the floor away." },
+      { name: "Barbell Deadlift (AMQRAP)", sets: 1, reps: "AMQRAP", rest: 0, desc: "Use 20% less than working weight. Maintain perfect form — quality over quantity." },
+      { name: "Weighted Chin-ups", sets: 3, reps: "25", rest: 60, desc: "Dead hang start, supinated grip, drive elbows to hips at the top." },
+      { name: "Chest Supported Rows", sets: 3, reps: "30", rest: 60, desc: "Eliminate lower back involvement. Pull elbows past torso, squeeze scapula." },
+      { name: "Shrugs", sets: 5, reps: "50", rest: 30, desc: "Dumbbell, barbell, or trap bar. Full elevation and hold 1s at top." },
+      { name: "Standing Barbell Curls", sets: 5, reps: "50", rest: 30, desc: "No swinging. Full supination at the top, slow descent." },
+      { name: "Standing Cable Reverse Fly", sets: 5, reps: "50", rest: 15, desc: "Targets rear delts & traps. Keep slight forward lean, arms wide arc." },
     ]
   },
   {
@@ -628,13 +647,13 @@ const WORKOUTS = [
     program: "6-Day Powerbuilding",
     note: POWERBUILDING_NOTE,
     exercises: [
-      { name: "Barbell Back Squat",            sets: 5, reps: "15",     rest: 105, desc: "Bar across traps, hip crease below parallel. Drive knees out on ascent." },
-      { name: "Barbell Back Squat (AMQRAP)",   sets: 1, reps: "AMQRAP", rest: 0,   desc: "Use 20% less than working weight. Depth and form are non-negotiable." },
-      { name: "Barbell Good Mornings",         sets: 3, reps: "25",     rest: 60,  desc: "Light load, hinge from hips with soft knees. Stretch hamstrings fully." },
-      { name: "Leg Press",                     sets: 3, reps: "30",     rest: 60,  desc: "Feet shoulder-width, don't lock knees at the top. Full depth." },
-      { name: "Reverse Hyperextension",        sets: 5, reps: "50",     rest: 30,  desc: "Great for posterior chain & lower back health. Controlled swing." },
-      { name: "Leg Curl",                      sets: 5, reps: "50",     rest: 30,  desc: "Seated or lying. Full stretch at bottom, full contraction at top." },
-      { name: "Calf Raise",                    sets: 5, reps: "50",     rest: 15,  desc: "Seated or standing. Full stretch at bottom, hold peak 1s. High reps." },
+      { name: "Barbell Back Squat", sets: 5, reps: "15", rest: 105, desc: "Bar across traps, hip crease below parallel. Drive knees out on ascent." },
+      { name: "Barbell Back Squat (AMQRAP)", sets: 1, reps: "AMQRAP", rest: 0, desc: "Use 20% less than working weight. Depth and form are non-negotiable." },
+      { name: "Barbell Good Mornings", sets: 3, reps: "25", rest: 60, desc: "Light load, hinge from hips with soft knees. Stretch hamstrings fully." },
+      { name: "Leg Press", sets: 3, reps: "30", rest: 60, desc: "Feet shoulder-width, don't lock knees at the top. Full depth." },
+      { name: "Reverse Hyperextension", sets: 5, reps: "50", rest: 30, desc: "Great for posterior chain & lower back health. Controlled swing." },
+      { name: "Leg Curl", sets: 5, reps: "50", rest: 30, desc: "Seated or lying. Full stretch at bottom, full contraction at top." },
+      { name: "Calf Raise", sets: 5, reps: "50", rest: 15, desc: "Seated or standing. Full stretch at bottom, hold peak 1s. High reps." },
     ]
   },
   {
@@ -650,13 +669,13 @@ const WORKOUTS = [
     program: "6-Day Powerbuilding",
     note: POWERBUILDING_NOTE,
     exercises: [
-      { name: "Standing Overhead Press",          sets: 5, reps: "15",     rest: 105, desc: "Bar from front rack, press overhead to full lockout. Brace core hard." },
-      { name: "Standing OHP (AMQRAP)",            sets: 1, reps: "AMQRAP", rest: 0,   desc: "Use 20% less than working weight. Don't use leg drive — strict press only." },
-      { name: "Incline Bench Press",              sets: 3, reps: "25",     rest: 60,  desc: "Dumbbell or barbell. 30–45° incline, targets upper chest & front delt." },
-      { name: "Close Grip Bench Press",           sets: 3, reps: "30",     rest: 60,  desc: "Hands shoulder-width or slightly inside. Elbows tucked, tricep focus." },
-      { name: "Seated Machine Fly",               sets: 5, reps: "50",     rest: 30,  desc: "Full chest stretch at the open position. Squeeze and hold at peak." },
-      { name: "Tricep Pushdown",                  sets: 5, reps: "50",     rest: 30,  desc: "Rope, V-bar, or straight bar. Full extension, keep elbows pinned at sides." },
-      { name: "Standing Cable Lateral Raises",    sets: 5, reps: "50",     rest: 15,  desc: "Cable keeps constant tension vs. dumbbells. Lead with elbows." },
+      { name: "Standing Overhead Press", sets: 5, reps: "15", rest: 105, desc: "Bar from front rack, press overhead to full lockout. Brace core hard." },
+      { name: "Standing OHP (AMQRAP)", sets: 1, reps: "AMQRAP", rest: 0, desc: "Use 20% less than working weight. Don't use leg drive — strict press only." },
+      { name: "Incline Bench Press", sets: 3, reps: "25", rest: 60, desc: "Dumbbell or barbell. 30–45° incline, targets upper chest & front delt." },
+      { name: "Close Grip Bench Press", sets: 3, reps: "30", rest: 60, desc: "Hands shoulder-width or slightly inside. Elbows tucked, tricep focus." },
+      { name: "Seated Machine Fly", sets: 5, reps: "50", rest: 30, desc: "Full chest stretch at the open position. Squeeze and hold at peak." },
+      { name: "Tricep Pushdown", sets: 5, reps: "50", rest: 30, desc: "Rope, V-bar, or straight bar. Full extension, keep elbows pinned at sides." },
+      { name: "Standing Cable Lateral Raises", sets: 5, reps: "50", rest: 15, desc: "Cable keeps constant tension vs. dumbbells. Lead with elbows." },
     ]
   },
   {
@@ -672,13 +691,13 @@ const WORKOUTS = [
     program: "6-Day Powerbuilding",
     note: POWERBUILDING_NOTE,
     exercises: [
-      { name: "Barbell Snatch Grip Deadlift",        sets: 5, reps: "15",     rest: 105, desc: "Wide overhand grip. Demands more upper back and lat engagement than conventional." },
-      { name: "Snatch Grip Deadlift (AMQRAP)",       sets: 1, reps: "AMQRAP", rest: 0,   desc: "Use 20% less than working weight. Grip will challenge — use straps if needed." },
-      { name: "Barbell Rows",                        sets: 3, reps: "25",     rest: 60,  desc: "Hinge forward ~45°, pull bar to lower chest. Control the eccentric." },
-      { name: "Weighted Pull-ups",                   sets: 3, reps: "30",     rest: 60,  desc: "Pronated grip, full dead hang. Drive elbows down and back." },
-      { name: "1-Arm Rows",                          sets: 5, reps: "50",     rest: 30,  desc: "Dumbbell or barbell. Brace on bench, elbow drives past torso. Full stretch." },
-      { name: "Incline Dumbbell Curl",               sets: 5, reps: "50",     rest: 30,  desc: "Seat at 45°, arms hang fully extended. Maximum bicep stretch at the bottom." },
-      { name: "Seated Machine Reverse Fly",          sets: 5, reps: "50",     rest: 15,  desc: "Rear delts and mid-traps. Keep a slight bend in elbows, controlled arc." },
+      { name: "Barbell Snatch Grip Deadlift", sets: 5, reps: "15", rest: 105, desc: "Wide overhand grip. Demands more upper back and lat engagement than conventional." },
+      { name: "Snatch Grip Deadlift (AMQRAP)", sets: 1, reps: "AMQRAP", rest: 0, desc: "Use 20% less than working weight. Grip will challenge — use straps if needed." },
+      { name: "Barbell Rows", sets: 3, reps: "25", rest: 60, desc: "Hinge forward ~45°, pull bar to lower chest. Control the eccentric." },
+      { name: "Weighted Pull-ups", sets: 3, reps: "30", rest: 60, desc: "Pronated grip, full dead hang. Drive elbows down and back." },
+      { name: "1-Arm Rows", sets: 5, reps: "50", rest: 30, desc: "Dumbbell or barbell. Brace on bench, elbow drives past torso. Full stretch." },
+      { name: "Incline Dumbbell Curl", sets: 5, reps: "50", rest: 30, desc: "Seat at 45°, arms hang fully extended. Maximum bicep stretch at the bottom." },
+      { name: "Seated Machine Reverse Fly", sets: 5, reps: "50", rest: 15, desc: "Rear delts and mid-traps. Keep a slight bend in elbows, controlled arc." },
     ]
   },
   {
@@ -694,13 +713,13 @@ const WORKOUTS = [
     program: "6-Day Powerbuilding",
     note: POWERBUILDING_NOTE,
     exercises: [
-      { name: "Barbell Front Squat",           sets: 5, reps: "15",     rest: 105, desc: "More quad-dominant than back squat. Keep torso upright, elbows high." },
-      { name: "Barbell Front Squat (AMQRAP)",  sets: 1, reps: "AMQRAP", rest: 0,   desc: "Use 20% less than working weight. Upper back and core will fatigue fast." },
-      { name: "Barbell Good Mornings",         sets: 3, reps: "25",     rest: 60,  desc: "Variation B — slightly higher load. Full hamstring stretch, neutral spine." },
-      { name: "Hack Squat",                    sets: 3, reps: "30",     rest: 60,  desc: "Feet low and close for quad emphasis. Full ROM, pause at the bottom." },
-      { name: "Reverse Hyperextension",        sets: 5, reps: "50",     rest: 30,  desc: "Second session this week. Decompresses the spine and hits glutes/hams." },
-      { name: "Leg Curl",                      sets: 5, reps: "50",     rest: 30,  desc: "Alternating seated or lying from Legs A. Full stretch, full contraction." },
-      { name: "Calf Raise",                    sets: 5, reps: "50",     rest: 15,  desc: "Switch variation from Legs A. Maximize stretch — don't bounce at the bottom." },
+      { name: "Barbell Front Squat", sets: 5, reps: "15", rest: 105, desc: "More quad-dominant than back squat. Keep torso upright, elbows high." },
+      { name: "Barbell Front Squat (AMQRAP)", sets: 1, reps: "AMQRAP", rest: 0, desc: "Use 20% less than working weight. Upper back and core will fatigue fast." },
+      { name: "Barbell Good Mornings", sets: 3, reps: "25", rest: 60, desc: "Variation B — slightly higher load. Full hamstring stretch, neutral spine." },
+      { name: "Hack Squat", sets: 3, reps: "30", rest: 60, desc: "Feet low and close for quad emphasis. Full ROM, pause at the bottom." },
+      { name: "Reverse Hyperextension", sets: 5, reps: "50", rest: 30, desc: "Second session this week. Decompresses the spine and hits glutes/hams." },
+      { name: "Leg Curl", sets: 5, reps: "50", rest: 30, desc: "Alternating seated or lying from Legs A. Full stretch, full contraction." },
+      { name: "Calf Raise", sets: 5, reps: "50", rest: 15, desc: "Switch variation from Legs A. Maximize stretch — don't bounce at the bottom." },
     ]
   },
 
@@ -718,12 +737,12 @@ const WORKOUTS = [
     program: "3-Day PPL",
     note: "Rest 1–2 minutes between sets. Focus on form over weight — this is a beginner program.",
     exercises: [
-      { name: "Military Press (Overhead Press)", sets: 5, reps: "5",  rest: 90, desc: "Press barbell from front rack to full lockout overhead. Brace core, keep feet planted." },
-      { name: "Dumbbell Bench Press",            sets: 3, reps: "5",  rest: 90, desc: "Full range of motion, lower to chest level. Keep shoulder blades retracted." },
-      { name: "Tricep Dip",                      sets: 3, reps: "8",  rest: 90, desc: "Use parallel bars or bench. Keep elbows tucked, lower until arms reach 90°." },
-      { name: "Lateral Raise",                   sets: 3, reps: "8",  rest: 90, desc: "Light dumbbells, raise to shoulder height. Lead with elbows, control the descent." },
-      { name: "Lying Dumbbell Extension",        sets: 3, reps: "8",  rest: 90, desc: "Skull crusher variation. Lower dumbbells to forehead, extend fully at the top." },
-      { name: "Tricep Pushdown",                 sets: 3, reps: "8",  rest: 90, desc: "Cable or band. Elbows pinned at sides, full extension at the bottom." },
+      { name: "Military Press (Overhead Press)", sets: 5, reps: "5", rest: 90, desc: "Press barbell from front rack to full lockout overhead. Brace core, keep feet planted." },
+      { name: "Dumbbell Bench Press", sets: 3, reps: "5", rest: 90, desc: "Full range of motion, lower to chest level. Keep shoulder blades retracted." },
+      { name: "Tricep Dip", sets: 3, reps: "8", rest: 90, desc: "Use parallel bars or bench. Keep elbows tucked, lower until arms reach 90°." },
+      { name: "Lateral Raise", sets: 3, reps: "8", rest: 90, desc: "Light dumbbells, raise to shoulder height. Lead with elbows, control the descent." },
+      { name: "Lying Dumbbell Extension", sets: 3, reps: "8", rest: 90, desc: "Skull crusher variation. Lower dumbbells to forehead, extend fully at the top." },
+      { name: "Tricep Pushdown", sets: 3, reps: "8", rest: 90, desc: "Cable or band. Elbows pinned at sides, full extension at the bottom." },
     ]
   },
   {
@@ -739,12 +758,12 @@ const WORKOUTS = [
     program: "3-Day PPL",
     note: "Rest 1–2 minutes between sets. If you can't do pull-ups yet, substitute lat pulldowns.",
     exercises: [
-      { name: "Pull Up (or Lat Pulldown)",  sets: 5, reps: "5",  rest: 90, desc: "Dead hang start, pull until chin clears the bar. Substitute lat pulldown if needed." },
-      { name: "Bent-Over Barbell Row",      sets: 3, reps: "5",  rest: 90, desc: "Hinge ~45°, pull bar to lower chest. Control the eccentric, keep lower back neutral." },
-      { name: "T-Bar Row",                  sets: 3, reps: "8",  rest: 90, desc: "Chest supported or free. Drive elbows back, squeeze shoulder blades at the top." },
-      { name: "Dumbbell Shrug",             sets: 3, reps: "8",  rest: 90, desc: "Full elevation, pause 1s at the top. Don't roll shoulders — straight up and down." },
-      { name: "Preacher Curl",              sets: 3, reps: "8",  rest: 90, desc: "EZ bar or dumbbell on preacher bench. Full stretch at the bottom, no swinging." },
-      { name: "Hammer Curl",                sets: 3, reps: "8",  rest: 90, desc: "Neutral grip. Targets brachialis and brachioradialis alongside biceps. Controlled tempo." },
+      { name: "Pull Up (or Lat Pulldown)", sets: 5, reps: "5", rest: 90, desc: "Dead hang start, pull until chin clears the bar. Substitute lat pulldown if needed." },
+      { name: "Bent-Over Barbell Row", sets: 3, reps: "5", rest: 90, desc: "Hinge ~45°, pull bar to lower chest. Control the eccentric, keep lower back neutral." },
+      { name: "T-Bar Row", sets: 3, reps: "8", rest: 90, desc: "Chest supported or free. Drive elbows back, squeeze shoulder blades at the top." },
+      { name: "Dumbbell Shrug", sets: 3, reps: "8", rest: 90, desc: "Full elevation, pause 1s at the top. Don't roll shoulders — straight up and down." },
+      { name: "Preacher Curl", sets: 3, reps: "8", rest: 90, desc: "EZ bar or dumbbell on preacher bench. Full stretch at the bottom, no swinging." },
+      { name: "Hammer Curl", sets: 3, reps: "8", rest: 90, desc: "Neutral grip. Targets brachialis and brachioradialis alongside biceps. Controlled tempo." },
     ]
   },
   {
@@ -760,12 +779,12 @@ const WORKOUTS = [
     program: "3-Day PPL",
     note: "Rest 1–2 minutes between sets. Prioritize squat depth and deadlift form above all else.",
     exercises: [
-      { name: "Barbell Squat",    sets: 5, reps: "5",  rest: 90, desc: "Hip crease below parallel. Drive knees out, chest up, full lockout at the top." },
-      { name: "Deadlift",         sets: 3, reps: "5",  rest: 90, desc: "Bar over mid-foot, neutral spine, drive the floor away. Hinge pattern — not a squat." },
-      { name: "Leg Press",        sets: 3, reps: "8",  rest: 90, desc: "Feet shoulder-width, full depth without rounding the lower back. Don't lock knees." },
-      { name: "Lying Leg Curl",   sets: 3, reps: "8",  rest: 90, desc: "Full stretch at the bottom, full contraction at the top. Slow and controlled." },
-      { name: "Leg Extension",    sets: 3, reps: "8",  rest: 90, desc: "Isolates the quads. Full extension, hold 1s at peak, lower slowly." },
-      { name: "Seated Calf Raise",sets: 3, reps: "8",  rest: 90, desc: "Full stretch at the bottom, hold peak contraction 1s. High reps work well here too." },
+      { name: "Barbell Squat", sets: 5, reps: "5", rest: 90, desc: "Hip crease below parallel. Drive knees out, chest up, full lockout at the top." },
+      { name: "Deadlift", sets: 3, reps: "5", rest: 90, desc: "Bar over mid-foot, neutral spine, drive the floor away. Hinge pattern — not a squat." },
+      { name: "Leg Press", sets: 3, reps: "8", rest: 90, desc: "Feet shoulder-width, full depth without rounding the lower back. Don't lock knees." },
+      { name: "Lying Leg Curl", sets: 3, reps: "8", rest: 90, desc: "Full stretch at the bottom, full contraction at the top. Slow and controlled." },
+      { name: "Leg Extension", sets: 3, reps: "8", rest: 90, desc: "Isolates the quads. Full extension, hold 1s at peak, lower slowly." },
+      { name: "Seated Calf Raise", sets: 3, reps: "8", rest: 90, desc: "Full stretch at the bottom, hold peak contraction 1s. High reps work well here too." },
     ]
   },
 
@@ -774,31 +793,31 @@ const WORKOUTS = [
     id: 1, name: "Morning Strength", emoji: "🌅", duration: 45, cal: 320,
     level: "Intermediate", category: "Strength", split: null, program: null,
     exercises: [
-      { name: "Barbell Squat",       sets: 4, reps: "8",  rest: 90, desc: "Drive through heels, keep chest up." },
-      { name: "Romanian Deadlift",   sets: 3, reps: "10", rest: 90, desc: "Hinge at hips, slight knee bend." },
-      { name: "Dumbbell Press",      sets: 3, reps: "12", rest: 60, desc: "Full range of motion, controlled." },
-      { name: "Pull-ups",            sets: 3, reps: "8",  rest: 90, desc: "Dead hang to chin over bar." },
-      { name: "Plank Hold",          sets: 3, reps: "45s",rest: 45, desc: "Neutral spine, breathe steadily." },
+      { name: "Barbell Squat", sets: 4, reps: "8", rest: 90, desc: "Drive through heels, keep chest up." },
+      { name: "Romanian Deadlift", sets: 3, reps: "10", rest: 90, desc: "Hinge at hips, slight knee bend." },
+      { name: "Dumbbell Press", sets: 3, reps: "12", rest: 60, desc: "Full range of motion, controlled." },
+      { name: "Pull-ups", sets: 3, reps: "8", rest: 90, desc: "Dead hang to chin over bar." },
+      { name: "Plank Hold", sets: 3, reps: "45s", rest: 45, desc: "Neutral spine, breathe steadily." },
     ]
   },
   {
     id: 2, name: "HIIT Cardio Blast", emoji: "🔥", duration: 30, cal: 410,
     level: "Advanced", category: "Cardio", split: null, program: null,
     exercises: [
-      { name: "Burpees",             sets: 4, reps: "15", rest: 30, desc: "Explosive jump, full extension." },
-      { name: "Jump Squats",         sets: 4, reps: "20", rest: 30, desc: "Land softly, absorb impact." },
-      { name: "Mountain Climbers",   sets: 4, reps: "30s",rest: 20, desc: "Drive knees to chest, alternate." },
-      { name: "High Knees",          sets: 3, reps: "45s",rest: 20, desc: "Pump arms, lift knees to hip." },
+      { name: "Burpees", sets: 4, reps: "15", rest: 30, desc: "Explosive jump, full extension." },
+      { name: "Jump Squats", sets: 4, reps: "20", rest: 30, desc: "Land softly, absorb impact." },
+      { name: "Mountain Climbers", sets: 4, reps: "30s", rest: 20, desc: "Drive knees to chest, alternate." },
+      { name: "High Knees", sets: 3, reps: "45s", rest: 20, desc: "Pump arms, lift knees to hip." },
     ]
   },
   {
     id: 3, name: "Mobility Flow", emoji: "🧘", duration: 20, cal: 120,
     level: "Beginner", category: "Recovery", split: null, program: null,
     exercises: [
-      { name: "Hip 90/90 Stretch",   sets: 2, reps: "60s",rest: 15, desc: "Sit tall, breathe into hip." },
-      { name: "Thoracic Rotation",   sets: 2, reps: "10",  rest: 15, desc: "Rotate from thoracic, not lumbar." },
-      { name: "World's Greatest",    sets: 2, reps: "8",   rest: 20, desc: "Full body mobility compound." },
-      { name: "Pigeon Pose",         sets: 2, reps: "60s", rest: 15, desc: "Ease into hip flexor stretch." },
+      { name: "Hip 90/90 Stretch", sets: 2, reps: "60s", rest: 15, desc: "Sit tall, breathe into hip." },
+      { name: "Thoracic Rotation", sets: 2, reps: "10", rest: 15, desc: "Rotate from thoracic, not lumbar." },
+      { name: "World's Greatest", sets: 2, reps: "8", rest: 20, desc: "Full body mobility compound." },
+      { name: "Pigeon Pose", sets: 2, reps: "60s", rest: 15, desc: "Ease into hip flexor stretch." },
     ]
   },
 ];
@@ -847,7 +866,7 @@ function WorkoutDetail({ workout, onBack, onStart }: { workout: any, onBack: () 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginTop: 14 }}>
           {[
             { icon: "⏱", val: `${workout.duration}m`, label: "Duration" },
-            { icon: "🔥", val: `${workout.cal}`,       label: "Calories" },
+            { icon: "🔥", val: `${workout.cal}`, label: "Calories" },
             { icon: "📋", val: `${workout.exercises.length}`, label: "Exercises" },
           ].map((s, i) => (
             <div key={i} style={{ background: T.surface, borderRadius: 12, padding: "12px", textAlign: "center", border: `1px solid ${T.border}` }}>
@@ -1135,20 +1154,31 @@ Keep responses concise (2-4 sentences max unless asked for detail). Be encouragi
         content: m.text
       }));
 
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: systemPrompt,
-          messages: apiMessages
-        })
-      });
+      // Route through Supabase Edge Function to avoid CORS and hide the API key
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-chat`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-5",
+            max_tokens: 1000,
+            system: systemPrompt,
+            messages: apiMessages
+          })
+        }
+      );
 
       if (!res.ok) throw new Error(`API error ${res.status}`);
       const data = await res.json();
-      const reply = data.content?.find((b: any) => b.type === "text")?.text || "Sorry, I couldn't respond right now.";
+      // Edge function returns { reply } directly; fall back to Anthropic content format
+      const reply =
+        data.reply ??
+        data.content?.find((b: any) => b.type === "text")?.text ??
+        "Sorry, I couldn't respond right now.";
       setMessages(prev => [...prev, { role: "assistant", text: reply }]);
     } catch (e) {
       setError("Couldn't reach the AI trainer. Check your connection.");
@@ -1187,7 +1217,7 @@ Keep responses concise (2-4 sentences max unless asked for detail). Be encouragi
           <div style={{ alignSelf: "flex-start", display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{ width: 20, height: 20, borderRadius: "50%", background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10 }}>✦</div>
             <div style={{ display: "flex", gap: 4 }}>
-              {[0,1,2].map(i => (
+              {[0, 1, 2].map(i => (
                 <div key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: T.lime, animation: `pulse 1.2s ${i * 0.2}s infinite` }} />
               ))}
             </div>
@@ -1257,7 +1287,7 @@ function HomeTab({
   history: WorkoutLog[];
   recoveryScore: number;
 }) {
-  const DAY_LABELS = ["M","T","W","T","F","S","S"];
+  const DAY_LABELS = ["M", "T", "W", "T", "F", "S", "S"];
   // Which day-of-week indices (0=Mon) have a workout logged this week
   const doneIndices = new Set(
     weekWorkouts.map(w => {
@@ -1285,8 +1315,8 @@ function HomeTab({
 
   const goals = [
     { label: "Workouts", cur: todayWorkouts, max: 1, color: T.lime },
-    { label: "Calories",  cur: todayCalories || 0, max: 500, color: T.lime, suffix: "kcal" },
-    { label: "Minutes",   cur: todayMinutes  || 0, max: 60,  color: T.orange, suffix: "min" },
+    { label: "Calories", cur: todayCalories || 0, max: 500, color: T.lime, suffix: "kcal" },
+    { label: "Minutes", cur: todayMinutes || 0, max: 60, color: T.orange, suffix: "min" },
   ];
 
   const now = new Date();
@@ -1575,14 +1605,14 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
     loadLatestBodyStat(userId).then(stat => {
       if (stat) {
         setStats({
-          weight:  stat.weight  != null ? String(stat.weight)  : "",
-          height:  stat.height  != null ? String(stat.height)  : "",
+          weight: stat.weight != null ? String(stat.weight) : "",
+          height: stat.height != null ? String(stat.height) : "",
           bodyFat: stat.body_fat != null ? String(stat.body_fat) : "",
-          chest:   stat.chest   != null ? String(stat.chest)   : "",
-          waist:   stat.waist   != null ? String(stat.waist)   : "",
-          hips:    stat.hips    != null ? String(stat.hips)    : "",
-          bicep:   stat.bicep   != null ? String(stat.bicep)   : "",
-          thigh:   stat.thigh   != null ? String(stat.thigh)   : "",
+          chest: stat.chest != null ? String(stat.chest) : "",
+          waist: stat.waist != null ? String(stat.waist) : "",
+          hips: stat.hips != null ? String(stat.hips) : "",
+          bicep: stat.bicep != null ? String(stat.bicep) : "",
+          thigh: stat.thigh != null ? String(stat.thigh) : "",
         });
       }
     });
@@ -1596,21 +1626,21 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
   const saveStats = async () => {
     setStats({ ...draftStats });
     setSavingStats(true);
-    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const now = new Date();
     const monthLabel = months[now.getMonth()];
 
     if (userId) {
       // Save full body stat snapshot
       await saveBodyStat(userId, {
-        weight:   draftStats.weight   ? parseFloat(draftStats.weight)   : null,
-        height:   draftStats.height   ? parseFloat(draftStats.height)   : null,
-        body_fat: draftStats.bodyFat  ? parseFloat(draftStats.bodyFat)  : null,
-        chest:    draftStats.chest    ? parseFloat(draftStats.chest)    : null,
-        waist:    draftStats.waist    ? parseFloat(draftStats.waist)    : null,
-        hips:     draftStats.hips     ? parseFloat(draftStats.hips)     : null,
-        bicep:    draftStats.bicep    ? parseFloat(draftStats.bicep)    : null,
-        thigh:    draftStats.thigh    ? parseFloat(draftStats.thigh)    : null,
+        weight: draftStats.weight ? parseFloat(draftStats.weight) : null,
+        height: draftStats.height ? parseFloat(draftStats.height) : null,
+        body_fat: draftStats.bodyFat ? parseFloat(draftStats.bodyFat) : null,
+        chest: draftStats.chest ? parseFloat(draftStats.chest) : null,
+        waist: draftStats.waist ? parseFloat(draftStats.waist) : null,
+        hips: draftStats.hips ? parseFloat(draftStats.hips) : null,
+        bicep: draftStats.bicep ? parseFloat(draftStats.bicep) : null,
+        thigh: draftStats.thigh ? parseFloat(draftStats.thigh) : null,
       });
       // If weight entered, add to weight log
       const newW = parseFloat(draftStats.weight);
@@ -1653,14 +1683,14 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
   });
 
   const STAT_FIELDS = [
-    { key: "weight",  label: "Weight",       unit: "lbs", placeholder: "e.g. 175" },
-    { key: "height",  label: "Height",        unit: "in",  placeholder: "e.g. 70" },
-    { key: "bodyFat", label: "Body Fat",      unit: "%",   placeholder: "e.g. 18" },
-    { key: "chest",   label: "Chest",         unit: "in",  placeholder: "e.g. 42" },
-    { key: "waist",   label: "Waist",         unit: "in",  placeholder: "e.g. 34" },
-    { key: "hips",    label: "Hips",          unit: "in",  placeholder: "e.g. 38" },
-    { key: "bicep",   label: "Bicep",         unit: "in",  placeholder: "e.g. 15" },
-    { key: "thigh",   label: "Thigh",         unit: "in",  placeholder: "e.g. 22" },
+    { key: "weight", label: "Weight", unit: "lbs", placeholder: "e.g. 175" },
+    { key: "height", label: "Height", unit: "in", placeholder: "e.g. 70" },
+    { key: "bodyFat", label: "Body Fat", unit: "%", placeholder: "e.g. 18" },
+    { key: "chest", label: "Chest", unit: "in", placeholder: "e.g. 42" },
+    { key: "waist", label: "Waist", unit: "in", placeholder: "e.g. 34" },
+    { key: "hips", label: "Hips", unit: "in", placeholder: "e.g. 38" },
+    { key: "bicep", label: "Bicep", unit: "in", placeholder: "e.g. 15" },
+    { key: "thigh", label: "Thigh", unit: "in", placeholder: "e.g. 22" },
   ];
 
   return (
@@ -1768,10 +1798,10 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
           <p style={{ color: T.white, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", fontSize: 16, letterSpacing: 0.3 }}>Weight Trend</p>
           {weightLog.length > 1 && (
             <span style={{
-              color: weightLog[weightLog.length-1].value < weightLog[0].value ? T.teal : T.orange,
+              color: weightLog[weightLog.length - 1].value < weightLog[0].value ? T.teal : T.orange,
               fontSize: 11, fontWeight: 700
             }}>
-              {weightLog[weightLog.length-1].value < weightLog[0].value ? "↓" : "↑"} {Math.abs(weightLog[0].value - weightLog[weightLog.length-1].value).toFixed(1)} lbs
+              {weightLog[weightLog.length - 1].value < weightLog[0].value ? "↓" : "↑"} {Math.abs(weightLog[0].value - weightLog[weightLog.length - 1].value).toFixed(1)} lbs
             </span>
           )}
         </div>
@@ -1891,11 +1921,9 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
       {/* Profile details */}
       <div style={{ marginBottom: 28 }}>
         {[
-          { k: "Goal",     v: profile?.goal     || "Build Muscle" },
-          { k: "Level",    v: profile?.level    || "Intermediate" },
+          { k: "Goal", v: profile?.goal || "Build Muscle" },
+          { k: "Level", v: profile?.level || "Intermediate" },
           { k: "Schedule", v: `${profile?.days || 4} days / week` },
-          { k: "Weight",   v: "170 lbs" },
-          { k: "Target",   v: "160 lbs" },
         ].map((row, i) => (
           <div key={i} style={{
             display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -2023,33 +2051,33 @@ const NavIcon = ({ id, active }: { id: string, active: boolean }) => {
   const icons = {
     home: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/>
-        <path d="M9 21V12h6v9"/>
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z" />
+        <path d="M9 21V12h6v9" />
       </svg>
     ),
     train: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-        <path d="M8 12h8M12 8v8"/>
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+        <path d="M8 12h8M12 8v8" />
       </svg>
     ),
     workouts: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M6.5 6.5h11M6.5 12h11M6.5 17.5h11"/>
-        <circle cx="3.5" cy="6.5" r="1.2" fill={c}/>
-        <circle cx="3.5" cy="12" r="1.2" fill={c}/>
-        <circle cx="3.5" cy="17.5" r="1.2" fill={c}/>
+        <path d="M6.5 6.5h11M6.5 12h11M6.5 17.5h11" />
+        <circle cx="3.5" cy="6.5" r="1.2" fill={c} />
+        <circle cx="3.5" cy="12" r="1.2" fill={c} />
+        <circle cx="3.5" cy="17.5" r="1.2" fill={c} />
       </svg>
     ),
     progress: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
       </svg>
     ),
     profile: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
       </svg>
     ),
   };
@@ -2057,16 +2085,26 @@ const NavIcon = ({ id, active }: { id: string, active: boolean }) => {
 };
 
 const NAV = [
-  { id: "home",     label: "Home"     },
-  { id: "train",    label: "Train"    },
+  { id: "home", label: "Home" },
+  { id: "train", label: "Train" },
   { id: "workouts", label: "Workouts" },
   { id: "progress", label: "Progress" },
-  { id: "profile",  label: "Profile"  },
+  { id: "profile", label: "Profile" },
 ];
+
+// ─── GUEST / LOCAL STORAGE HELPERS ────────────────────────────────────────────
+const GUEST_KEY = "soma_guest";
+function guestLoad(): Record<string, any> {
+  try { return JSON.parse(localStorage.getItem(GUEST_KEY) || "{}"); } catch { return {}; }
+}
+function guestSave(patch: Record<string, any>) {
+  localStorage.setItem(GUEST_KEY, JSON.stringify({ ...guestLoad(), ...patch }));
+}
 
 export default function App() {
   // ── Auth & loading state ─────────────────────────────────────────────────
-  const [authUser, setAuthUser]     = useState<any>(null);
+  const [authUser, setAuthUser] = useState<any>(null);
+  const [isGuest, setIsGuest] = useState(false);
   const [authLoading, setAuthLoading] = useState(true); // true until first session check
 
   // ── Screen routing ───────────────────────────────────────────────────────
@@ -2074,17 +2112,17 @@ export default function App() {
   const [screen, setScreen] = useState<"loading" | "auth" | "onboarding" | "app">("loading");
 
   // ── App state ────────────────────────────────────────────────────────────
-  const [profile, setProfile]             = useState<any>(null);
-  const [tab, setTab]                     = useState("home");
+  const [profile, setProfile] = useState<any>(null);
+  const [tab, setTab] = useState("home");
   const [workoutDetail, setWorkoutDetail] = useState<any>(null);
   const [activeWorkout, setActiveWorkout] = useState<any>(null);
-  const [themeId, setThemeId]             = useState("terrain");
-  const [, forceRender]                   = useState<number>(0);
+  const [themeId, setThemeId] = useState("terrain");
+  const [, forceRender] = useState<number>(0);
 
   // Real data from Supabase
-  const [history, setHistory]           = useState<WorkoutLog[]>([]);
+  const [history, setHistory] = useState<WorkoutLog[]>([]);
   const [weekWorkouts, setWeekWorkouts] = useState<WorkoutLog[]>([]);
-  const [recoveryScore, setRecovery]    = useState(88);
+  const [recoveryScore, setRecovery] = useState(88);
 
   // ── Theme ────────────────────────────────────────────────────────────────
   const applyTheme = useCallback((id: string, userId?: string) => {
@@ -2118,9 +2156,38 @@ export default function App() {
     }
   }, [applyTheme]);
 
+  // ── Guest mode entry ──────────────────────────────────────────────────────
+  const enterGuestMode = useCallback(() => {
+    setIsGuest(true);
+    const g = guestLoad();
+    if (g.profile) {
+      setProfile(g.profile);
+      applyTheme(g.profile.theme_id || "terrain");
+      const hist: WorkoutLog[] = g.history || [];
+      setHistory(hist);
+      // filter this week
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+      const monday = new Date(now);
+      monday.setDate(now.getDate() - daysFromMonday);
+      monday.setHours(0, 0, 0, 0);
+      setWeekWorkouts(hist.filter(w => new Date(w.completed_at) >= monday));
+      setRecovery(computeRecoveryScore(hist));
+      setScreen("app");
+    } else {
+      setScreen("onboarding");
+    }
+    setAuthLoading(false);
+  }, [applyTheme]);
+
   // ── Auth listener — runs once on mount ───────────────────────────────────
   useEffect(() => {
-    // Check existing session immediately
+    // Check for returning guest first
+    const g = guestLoad();
+    if (g.isGuest) { enterGuestMode(); return; }
+
+    // Check existing Supabase session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         setAuthUser(session.user);
@@ -2148,10 +2215,17 @@ export default function App() {
       }
     );
     return () => subscription.unsubscribe();
-  }, [loadUserData]);
+  }, [loadUserData, enterGuestMode]);
 
   // ── Onboarding complete ───────────────────────────────────────────────────
   const handleOnboardComplete = async (p: any) => {
+    if (isGuest) {
+      const prof = { ...p, id: "guest", theme_id: themeId };
+      setProfile(prof);
+      guestSave({ isGuest: true, profile: prof });
+      setScreen("app");
+      return;
+    }
     if (!authUser) return;
     await saveProfile(authUser.id, { ...p, theme_id: themeId });
     setProfile({ ...p, id: authUser.id, theme_id: themeId });
@@ -2163,15 +2237,33 @@ export default function App() {
   const startWorkout = (w: any) => { setActiveWorkout(w); setWorkoutDetail(null); };
 
   const endWorkout = async (completedWorkout?: any) => {
-    // Log the workout to Supabase if we have a user and workout data
-    if (authUser && completedWorkout) {
-      await logWorkout(authUser.id, {
-        workout_id:    completedWorkout.id,
-        workout_name:  completedWorkout.name,
+    if (isGuest && completedWorkout) {
+      const entry: WorkoutLog = {
+        id: String(Date.now()), user_id: "guest",
+        workout_id: completedWorkout.id,
+        workout_name: completedWorkout.name,
         duration_mins: completedWorkout.duration,
-        calories:      completedWorkout.cal,
+        calories: completedWorkout.cal,
+        completed_at: new Date().toISOString(),
+      };
+      const g = guestLoad();
+      const hist: WorkoutLog[] = [entry, ...(g.history || [])];
+      guestSave({ history: hist });
+      const now = new Date();
+      const dow = now.getDay();
+      const monday = new Date(now);
+      monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1));
+      monday.setHours(0, 0, 0, 0);
+      setHistory(hist);
+      setWeekWorkouts(hist.filter(w => new Date(w.completed_at) >= monday));
+      setRecovery(computeRecoveryScore(hist));
+    } else if (authUser && completedWorkout) {
+      await logWorkout(authUser.id, {
+        workout_id: completedWorkout.id,
+        workout_name: completedWorkout.name,
+        duration_mins: completedWorkout.duration,
+        calories: completedWorkout.cal,
       });
-      // Refresh real-time data
       const [hist, week] = await Promise.all([
         loadWorkoutHistory(authUser.id),
         loadThisWeekWorkouts(authUser.id),
@@ -2185,7 +2277,13 @@ export default function App() {
     setTab("workouts");
   };
 
-  const handleThemeChange = (id: string) => applyTheme(id, authUser?.id);
+  const handleThemeChange = (id: string) => {
+    applyTheme(id, isGuest ? undefined : authUser?.id);
+    if (isGuest) {
+      const g = guestLoad();
+      guestSave({ profile: { ...(g.profile || {}), theme_id: id } });
+    }
+  };
 
   // ── Loading screen ────────────────────────────────────────────────────────
   if (authLoading || screen === "loading") {
@@ -2220,7 +2318,7 @@ export default function App() {
       }}>
         <style>{css}</style>
         <div style={{ width: "100%", maxWidth: 460 }}>
-          <AuthScreen />
+          <AuthScreen onGuestMode={() => { guestSave({ isGuest: true }); enterGuestMode(); }} />
         </div>
       </div>
     );
@@ -2252,8 +2350,8 @@ export default function App() {
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
             <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
-              <circle cx="7" cy="7" r="6" stroke={T.lime} strokeWidth="1.5"/>
-              <path d="M7 3v4l2.5 2.5" stroke={T.lime} strokeWidth="1.5" strokeLinecap="round"/>
+              <circle cx="7" cy="7" r="6" stroke={T.lime} strokeWidth="1.5" />
+              <path d="M7 3v4l2.5 2.5" stroke={T.lime} strokeWidth="1.5" strokeLinecap="round" />
             </svg>
             <span style={{ color: T.white, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 20, letterSpacing: 4, textTransform: "uppercase" as const }}>Soma</span>
             <span className="soma-subtitle" style={{ color: T.muted, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 11, letterSpacing: 1.5, textTransform: "uppercase" as const, paddingBottom: 1 }}>: Your Intelligent Trainer</span>
@@ -2322,20 +2420,23 @@ export default function App() {
                 recoveryScore={recoveryScore}
               />
             )}
-            {tab === "train"    && <TrainTab profile={profile} onOpenWorkout={openWorkout} />}
+            {tab === "train" && <TrainTab profile={profile} onOpenWorkout={openWorkout} />}
             {tab === "workouts" && <WorkoutsTab onOpenWorkout={openWorkout} />}
             {tab === "progress" && (
               <ProgressTab
-                userId={authUser?.id}
+                userId={isGuest ? undefined : authUser?.id}
                 history={history}
               />
             )}
-            {tab === "profile"  && (
+            {tab === "profile" && (
               <ProfileTab
                 profile={profile}
                 currentThemeId={themeId}
                 onThemeChange={handleThemeChange}
-                onSignOut={async () => { await signOut(); }}
+                onSignOut={isGuest
+                  ? () => { localStorage.removeItem(GUEST_KEY); setIsGuest(false); setProfile(null); setHistory([]); setWeekWorkouts([]); setRecovery(88); setScreen("auth"); }
+                  : async () => { await signOut(); }
+                }
               />
             )}
           </div>
