@@ -1,4 +1,6 @@
-// supabase/functions/ai-chat/index.ts
+// @ts-nocheck — This is a Deno Edge Function; Deno globals (Deno, serve) are not available in the Node/browser tsconfig used by VS Code.
+// Deploy with: npx supabase functions deploy ai-chat
+
 // Supabase Edge Function — proxies Anthropic API calls to avoid browser CORS
 // Deploy with:  npx supabase functions deploy ai-chat
 //

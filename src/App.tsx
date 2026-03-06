@@ -13,11 +13,9 @@ import {
   loadThisWeekWorkouts,
   computeRecoveryScore,
   recommendWorkoutId,
-  signInWithGoogle,
+
   signInWithEmail,
   signOut,
-  type Profile,
-  type WeightEntry,
   type WorkoutLog,
 } from "./supabase";
 
@@ -254,11 +252,7 @@ function AuthScreen({ onGuestMode }: { onGuestMode: () => void }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleGoogle = async () => {
-    setLoading(true); setError(null);
-    const { error: err } = await signInWithGoogle();
-    if (err) { setError(err.message); setLoading(false); }
-  };
+
 
   const handleEmail = async () => {
     if (!email.trim()) return;
@@ -298,24 +292,7 @@ function AuthScreen({ onGuestMode }: { onGuestMode: () => void }) {
 
       {mode === "options" ? (
         <div style={{ width: "100%", maxWidth: 380, display: "flex", flexDirection: "column", gap: 12 }}>
-          <button className="btn-press" onClick={handleGoogle} disabled={loading} style={{
-            width: "100%", padding: "15px", borderRadius: 50,
-            background: T.surface, border: `1.5px solid ${T.border}`,
-            color: T.white, fontFamily: "'Syne', sans-serif", fontWeight: 700,
-            fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center",
-            justifyContent: "center", gap: 10, transition: "border-color 0.2s",
-          }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = T.lime)}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = T.border)}
-          >
-            <svg width="18" height="18" viewBox="0 0 18 18">
-              <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4" />
-              <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.859-3.048.859-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853" />
-              <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05" />
-              <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335" />
-            </svg>
-            Continue with Google
-          </button>
+
           <button className="btn-press" onClick={() => setMode("email")} style={{
             width: "100%", padding: "15px", borderRadius: 50,
             background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
@@ -987,7 +964,7 @@ function WorkoutTimer({ workout, onDone }: { workout: any, onDone: (w?: any) => 
       intervalRef.current = setInterval(() => {
         setSeconds(s => {
           if ((s ?? 0) <= 1) {
-            clearInterval(intervalRef.current as number);
+            clearInterval(intervalRef.current as ReturnType<typeof setInterval>);
             setRunning(false);
             if (isRest) nextSet();
             return 0;
@@ -996,7 +973,7 @@ function WorkoutTimer({ workout, onDone }: { workout: any, onDone: (w?: any) => 
         });
       }, 1000);
     }
-    return () => clearInterval(intervalRef.current as number);
+    return () => clearInterval(intervalRef.current as ReturnType<typeof setInterval>);
   }, [running, isRest, nextSet]);
 
   if (isDone) return (
@@ -1095,7 +1072,7 @@ function WorkoutTimer({ workout, onDone }: { workout: any, onDone: (w?: any) => 
           }}>✓ Set Complete — Start Rest</button>
         )}
         {isRest && (
-          <button className="btn-press" onClick={() => { clearInterval(intervalRef.current as number); setRunning(false); nextSet(); }} style={{
+          <button className="btn-press" onClick={() => { clearInterval(intervalRef.current as ReturnType<typeof setInterval>); setRunning(false); nextSet(); }} style={{
             padding: "16px", background: T.surface2,
             border: `2px solid ${T.orange}`, borderRadius: 50, color: T.orange,
             fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 14, cursor: "pointer"
@@ -1145,40 +1122,32 @@ User profile:
 - Level: ${profile?.level || "intermediate"}
 - Training days: ${profile?.days || 4} per week
 
-Available workouts: Morning Strength (45min, intermediate), HIIT Cardio Blast (30min, advanced), Mobility Flow (20min, beginner).
-
-Keep responses concise (2-4 sentences max unless asked for detail). Be encouraging but realistic. Use a warm, coach-like tone. Occasionally use a relevant emoji to add personality.`;
+Keep responses concise (2-4 sentences max unless asked for detail). Be encouraging but realistic. Use a warm, coach-like tone. Occasionally use a relevant emoji.`;
 
       const apiMessages = newMessages.map((m: any) => ({
         role: m.role === "assistant" ? "assistant" : "user",
         content: m.text
       }));
 
-      // Route through Supabase Edge Function to avoid CORS and hide the API key
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-chat`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({
-            model: "claude-sonnet-4-5",
-            max_tokens: 1000,
-            system: systemPrompt,
-            messages: apiMessages
-          })
-        }
-      );
+      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "qwen/qwen3-32b",
+          max_tokens: 512,
+          messages: [
+            { role: "system", content: systemPrompt },
+            ...apiMessages
+          ],
+        })
+      });
 
       if (!res.ok) throw new Error(`API error ${res.status}`);
       const data = await res.json();
-      // Edge function returns { reply } directly; fall back to Anthropic content format
-      const reply =
-        data.reply ??
-        data.content?.find((b: any) => b.type === "text")?.text ??
-        "Sorry, I couldn't respond right now.";
+      const reply = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond right now.";
       setMessages(prev => [...prev, { role: "assistant", text: reply }]);
     } catch (e) {
       setError("Couldn't reach the AI trainer. Check your connection.");
@@ -2289,7 +2258,7 @@ export default function App() {
   if (authLoading || screen === "loading") {
     return (
       <div style={{
-        minHeight: "100vh", background: T.bg,
+        minHeight: "100dvh", background: T.bg,
         display: "flex", alignItems: "center", justifyContent: "center",
         flexDirection: "column", gap: 16,
       }}>
@@ -2312,7 +2281,7 @@ export default function App() {
   if (screen === "auth") {
     return (
       <div style={{
-        minHeight: "100vh", background: T.bg,
+        minHeight: "100dvh", background: T.bg,
         display: "flex", alignItems: "center", justifyContent: "center",
         padding: "20px 16px", fontFamily: "'Syne', sans-serif"
       }}>
@@ -2327,16 +2296,16 @@ export default function App() {
   // ── Main app ───────────────────────────────────────────────────────────────
   return (
     <div style={{
-      minHeight: "100vh", background: T.bg,
+      minHeight: "100dvh", background: T.bg,
       fontFamily: "'Syne', sans-serif",
       display: "flex", flexDirection: "column",
       transition: "background 0.4s ease"
     }}>
       <style>{css}</style>
       <style>{`
-        body { background: ${T.bg} !important; margin: 0; transition: background 0.4s ease; }
+        body { background: ${T.bg} !important; margin: 0; transition: background 0.4s ease; overflow-x: hidden; }
         * { box-sizing: border-box; }
-        html { font-size: 16px; }
+        html { font-size: 16px; overflow-x: hidden; }
       `}</style>
 
       {/* ── DESKTOP top navbar (hidden on mobile) ──────────────────────── */}
@@ -2387,11 +2356,11 @@ export default function App() {
       )}
 
       {/* ── Main content area ───────────────────────────────────────────── */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", maxWidth: 1000, margin: "0 auto", width: "100%" }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", width: "100%", margin: "0 auto" }}>
 
         {/* Onboarding */}
         {screen === "onboarding" && (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "20px 16px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100dvh", padding: "20px 16px" }}>
             <div style={{ width: "100%", maxWidth: 460 }}>
               <OnboardingFlow onComplete={handleOnboardComplete} />
             </div>
