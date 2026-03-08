@@ -130,6 +130,24 @@ const THEMES = {
     pageWrap: "#050505",
     ring: "#a6a2a233",
   },
+  hellokitty: {
+    id: "hellokitty",
+    name: "Hello Kitty",
+    description: "Sweet & iconic",
+    preview: ["#ffe6f0", "#ff85b3", "#ffffff", "#ff2d78"],
+    bg: "#fff0f5",
+    surface: "#ffe6f0",
+    surface2: "#ffd6e8",
+    border: "#ff85b333",
+    lime: "#ff2d78",
+    teal: "#ff85b3",
+    orange: "#ff6bb5",
+    white: "#3d1a2e",
+    muted: "#b06090",
+    dim: "#ffc8df",
+    pageWrap: "#ffe0ed",
+    ring: "#ff2d7855",
+  },
 };
 
 // ─── THEME CONTEXT ────────────────────────────────────────────────────────────

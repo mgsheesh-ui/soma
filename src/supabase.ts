@@ -12,7 +12,7 @@
 import { createClient } from "@supabase/supabase-js";
 
 // ── CLIENT ────────────────────────────────────────────────────────────────────
-const SUPABASE_URL  = import.meta.env.VITE_SUPABASE_URL  as string;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 
 if (!SUPABASE_URL || !SUPABASE_ANON) {
@@ -29,46 +29,46 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
 // ── TYPES ─────────────────────────────────────────────────────────────────────
 
 export interface Profile {
-  id:         string;
-  name:       string;
-  goal:       string;
-  level:      string;
-  days:       number;
-  theme_id:   string;
+  id: string;
+  name: string;
+  goal: string;
+  level: string;
+  days: number;
+  theme_id: string;
   created_at: string;
   updated_at: string;
 }
 
 export interface BodyStat {
-  id:        string;
-  user_id:   string;
-  weight:    number | null;
-  height:    number | null;
-  body_fat:  number | null;
-  chest:     number | null;
-  waist:     number | null;
-  hips:      number | null;
-  bicep:     number | null;
-  thigh:     number | null;
+  id: string;
+  user_id: string;
+  weight: number | null;
+  height: number | null;
+  body_fat: number | null;
+  chest: number | null;
+  waist: number | null;
+  hips: number | null;
+  bicep: number | null;
+  thigh: number | null;
   logged_at: string;
 }
 
 export interface WeightEntry {
-  id:        string;
-  user_id:   string;
-  value:     number;
-  label:     string;
+  id: string;
+  user_id: string;
+  value: number;
+  label: string;
   logged_at: string;
 }
 
 export interface WorkoutLog {
-  id:            string;
-  user_id:       string;
-  workout_id:    number;
-  workout_name:  string;
+  id: string;
+  user_id: string;
+  workout_id: number;
+  workout_name: string;
   duration_mins: number;
-  calories:      number;
-  completed_at:  string;
+  calories: number;
+  completed_at: string;
 }
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
@@ -113,11 +113,11 @@ export async function saveProfile(
 ): Promise<{ error: Error | null }> {
   const { error } = await supabase.from("profiles").upsert(
     {
-      id:       userId,
-      name:     profile.name,
-      goal:     profile.goal,
-      level:    profile.level,
-      days:     profile.days,
+      id: userId,
+      name: profile.name,
+      goal: profile.goal,
+      level: profile.level,
+      days: profile.days,
       theme_id: profile.theme_id ?? "terrain",
     },
     { onConflict: "id" }
@@ -139,26 +139,26 @@ export async function saveTheme(userId: string, themeId: string): Promise<void> 
 export async function saveBodyStat(
   userId: string,
   stats: {
-    weight?:   number | null;
-    height?:   number | null;
+    weight?: number | null;
+    height?: number | null;
     body_fat?: number | null;
-    chest?:    number | null;
-    waist?:    number | null;
-    hips?:     number | null;
-    bicep?:    number | null;
-    thigh?:    number | null;
+    chest?: number | null;
+    waist?: number | null;
+    hips?: number | null;
+    bicep?: number | null;
+    thigh?: number | null;
   }
 ): Promise<{ error: Error | null }> {
   const { error } = await supabase.from("body_stats").insert({
-    user_id:  userId,
-    weight:   stats.weight   ?? null,
-    height:   stats.height   ?? null,
+    user_id: userId,
+    weight: stats.weight ?? null,
+    height: stats.height ?? null,
     body_fat: stats.body_fat ?? null,
-    chest:    stats.chest    ?? null,
-    waist:    stats.waist    ?? null,
-    hips:     stats.hips     ?? null,
-    bicep:    stats.bicep    ?? null,
-    thigh:    stats.thigh    ?? null,
+    chest: stats.chest ?? null,
+    waist: stats.waist ?? null,
+    hips: stats.hips ?? null,
+    bicep: stats.bicep ?? null,
+    thigh: stats.thigh ?? null,
   });
   if (error) console.error("[Soma] saveBodyStat:", error.message);
   return { error: error ? new Error(error.message) : null };
@@ -213,18 +213,18 @@ export async function addWeightEntry(
 export async function logWorkout(
   userId: string,
   workout: {
-    workout_id:    number;
-    workout_name:  string;
+    workout_id: number;
+    workout_name: string;
     duration_mins: number;
-    calories:      number;
+    calories: number;
   }
 ): Promise<{ error: Error | null }> {
   const { error } = await supabase.from("workout_history").insert({
-    user_id:       userId,
-    workout_id:    workout.workout_id,
-    workout_name:  workout.workout_name,
+    user_id: userId,
+    workout_id: workout.workout_id,
+    workout_name: workout.workout_name,
     duration_mins: workout.duration_mins,
-    calories:      workout.calories,
+    calories: workout.calories,
   });
   if (error) console.error("[Soma] logWorkout:", error.message);
   return { error: error ? new Error(error.message) : null };
