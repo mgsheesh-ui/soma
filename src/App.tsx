@@ -2686,6 +2686,13 @@ const NavIcon = ({ id, active }: { id: string, active: boolean }) => {
         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
       </svg>
     ),
+    program: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+        <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
+      </svg>
+    ),
     profile: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="8" r="4" />
@@ -2700,6 +2707,7 @@ const NAV = [
   { id: "home", label: "Home" },
   { id: "train", label: "Train" },
   { id: "workouts", label: "Workouts" },
+  { id: "program", label: "Program" },
   { id: "progress", label: "Progress" },
   { id: "profile", label: "Profile" },
 ];
@@ -3034,6 +3042,12 @@ export default function App() {
             )}
             {tab === "train" && <TrainTab profile={profile} onOpenWorkout={openWorkout} />}
             {tab === "workouts" && <WorkoutsTab onOpenWorkout={openWorkout} />}
+            {tab === "program" && (
+              <MyProgramTab
+                onOpenWorkout={openWorkout}
+                userId={isGuest ? undefined : authUser?.id}
+              />
+            )}
             {tab === "progress" && (
               <ProgressTab
                 userId={isGuest ? undefined : authUser?.id}
