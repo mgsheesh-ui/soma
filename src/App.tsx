@@ -21,11 +21,18 @@ import {
 } from "./supabase";
 
 // ─── TYPES ──────────────────────────────────────────────────────────────────
-type DayProgram = { workoutId?: number; custom?: string; rest?: boolean };
+type DayProgram = {
+  workoutId?: number;
+  custom?: string;
+  rest?: boolean;
+  customEmoji?: string;
+  exercises?: { name: string; sets: string; reps: string }[];
+};
 type WeekProgram = Record<string, DayProgram>;
 
 const DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const DAY_SHORT = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+const CUSTOM_EMOJIS = ["🏃", "🧘", "🚲", "🏊", "🧗", "🥊", "⚽", "🏀", "🎾", "🏋️", "🤸", "🚶"];
 
 // ─── THEME PALETTES ───────────────────────────────────────────────────────────
 const THEMES = {
@@ -1443,6 +1450,11 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
     try { return JSON.parse(localStorage.getItem(programKey) || "{}"); } catch { return {}; }
   });
   const [pickerDay, setPickerDay] = useState<string | null>(null);
+  const [customMode, setCustomMode] = useState(false);
+  const [customName, setCustomName] = useState("");
+  const [customEmoji, setCustomEmoji] = useState("🏋️");
+  const [customExercises, setCustomExercises] = useState<{ name: string; sets: string; reps: string }[]>([]);
+  const [exInput, setExInput] = useState({ name: "", sets: "3", reps: "10" });
 
   const save = (updated: WeekProgram) => {
     setProgram(updated);
@@ -1478,9 +1490,14 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                     <p style={{ color: T.lime, fontSize: 11 }}>{workout.category} • {workout.duration}m</p>
                   </div>
                 ) : entry?.custom ? (
-                  <div>
-                    <p style={{ color: T.white, fontWeight: 600, fontSize: 14 }}>{entry.custom}</p>
-                    <p style={{ color: T.muted, fontSize: 11 }}>Activity</p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontSize: 20 }}>{entry.customEmoji || "🏋️"}</span>
+                    <div>
+                      <p style={{ color: T.white, fontWeight: 600, fontSize: 13 }}>{entry.custom}</p>
+                      {entry.exercises && entry.exercises.length > 0 && (
+                        <p style={{ color: T.muted, fontSize: 11 }}>📋 {entry.exercises.length} exercise{entry.exercises.length !== 1 ? "s" : ""}</p>
+                      )}
+                    </div>
                   </div>
                 ) : entry?.rest ? (
                   <p style={{ color: T.muted, fontSize: 14, fontStyle: "italic" }}>Rest Day</p>
@@ -1514,25 +1531,194 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
             Plan for {pickerDay}
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <p style={{ color: T.muted, fontSize: 10, textTransform: "uppercase", letterSpacing: 1 }}>Library Workouts</p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-              {WORKOUTS.slice(0, 6).map(w => (
-                <button key={w.id} onClick={() => setDay(pickerDay, { workoutId: w.id })} style={{
-                  background: T.surface, border: `1px solid ${T.border}`, borderRadius: 12,
-                  padding: "10px", color: T.white, fontSize: 12, textAlign: "left", cursor: "pointer"
+            {customMode ? (
+              <div style={{ padding: "10px 0" }}>
+                {/* Icon picker */}
+                <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 8 }}>Icon</p>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
+                  {CUSTOM_EMOJIS.map(e => (
+                    <button key={e} onClick={() => setCustomEmoji(e)} style={{
+                      width: 42, height: 42, fontSize: 20,
+                      background: customEmoji === e ? `${T.lime}22` : T.surface2,
+                      border: `2px solid ${customEmoji === e ? T.lime : "transparent"}`,
+                      borderRadius: 12, cursor: "pointer"
+                    }}>{e}</button>
+                  ))}
+                </div>
+
+                {/* Workout name */}
+                <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 6 }}>Workout Name</p>
+                <input
+                  autoFocus placeholder="e.g. Morning Run, Yoga, My Push Day..."
+                  value={customName} onChange={e => setCustomName(e.target.value)}
+                  style={{
+                    width: "100%", background: T.surface, border: `2px solid ${T.border}`,
+                    borderRadius: 12, padding: "12px 14px", color: T.white, fontSize: 15,
+                    fontFamily: "'Syne', sans-serif", outline: "none", marginBottom: 20,
+                    transition: "border-color 0.2s"
+                  }}
+                  onFocus={e => e.target.style.borderColor = T.lime}
+                  onBlur={e => e.target.style.borderColor = T.border}
+                />
+
+                {/* Exercise builder */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                  <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif" }}>Exercises</p>
+                  <span style={{ color: T.muted, fontSize: 11 }}>{customExercises.length} added</span>
+                </div>
+
+                {/* Existing exercises list */}
+                {customExercises.length > 0 && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
+                    {customExercises.map((ex, i) => (
+                      <div key={i} style={{
+                        background: T.surface, borderRadius: 12, padding: "10px 14px",
+                        display: "flex", alignItems: "center", gap: 12,
+                        border: `1px solid ${T.border}`
+                      }}>
+                        <div style={{
+                          width: 28, height: 28, borderRadius: 8, flexShrink: 0,
+                          background: `${T.lime}18`, display: "flex", alignItems: "center",
+                          justifyContent: "center", color: T.lime,
+                          fontWeight: 800, fontSize: 11, fontFamily: "'Syne', sans-serif"
+                        }}>{i + 1}</div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <p style={{ color: T.white, fontSize: 13, fontWeight: 600, fontFamily: "'Syne', sans-serif", marginBottom: 1 }}>{ex.name}</p>
+                          <p style={{ color: T.muted, fontSize: 11 }}>{ex.sets} sets · {ex.reps} reps</p>
+                        </div>
+                        <button onClick={() => setCustomExercises(prev => prev.filter((_, idx) => idx !== i))} style={{
+                          background: "none", border: "none", color: T.orange,
+                          fontSize: 14, cursor: "pointer", padding: "4px", flexShrink: 0
+                        }}>✕</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Add exercise input row */}
+                <div style={{
+                  background: T.surface, borderRadius: 14, padding: "14px",
+                  border: `1px solid ${T.border}`, marginBottom: 20
                 }}>
-                  {w.emoji} {w.name}
-                </button>
-              ))}
-            </div>
-            <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-              <button onClick={() => setDay(pickerDay, { rest: true })} style={{ flex: 1, padding: 12, borderRadius: 12, background: T.dim, border: "none", color: T.muted, cursor: "pointer" }}>☕ Rest Day</button>
-              <button onClick={() => {
-                const c = prompt("Custom activity?");
-                if (c) setDay(pickerDay, { custom: c });
-              }} style={{ flex: 1, padding: 12, borderRadius: 12, background: T.dim, border: "none", color: T.muted, cursor: "pointer" }}>📝 Custom</button>
-              <button onClick={() => setDay(pickerDay, {})} style={{ padding: 12, borderRadius: 12, background: "none", border: `1px solid ${T.border}`, color: T.orange, cursor: "pointer" }}>Clear</button>
-            </div>
+                  <p style={{ color: T.lime, fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 10 }}>+ Add Exercise</p>
+
+                  <input
+                    placeholder="Exercise name (e.g. Bench Press, Run 5km...)"
+                    value={exInput.name}
+                    onChange={e => setExInput(prev => ({ ...prev, name: e.target.value }))}
+                    style={{
+                      width: "100%", background: T.surface2, border: `1.5px solid ${T.border}`,
+                      borderRadius: 10, padding: "10px 12px", color: T.white, fontSize: 13,
+                      fontFamily: "'Syne', sans-serif", outline: "none", marginBottom: 10,
+                      transition: "border-color 0.2s"
+                    }}
+                    onFocus={e => e.target.style.borderColor = T.lime}
+                    onBlur={e => e.target.style.borderColor = T.border}
+                  />
+
+                  <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ color: T.muted, fontSize: 10, marginBottom: 4, letterSpacing: 0.8, textTransform: "uppercase", fontFamily: "'Syne', sans-serif" }}>Sets</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <button onClick={() => setExInput(p => ({ ...p, sets: String(Math.max(1, Number(p.sets) - 1)) }))} style={{
+                          width: 30, height: 30, borderRadius: "50%", background: T.surface2,
+                          border: `1px solid ${T.border}`, color: T.white, fontSize: 16, cursor: "pointer"
+                        }}>−</button>
+                        <span style={{ color: T.white, fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 700, minWidth: 28, textAlign: "center" }}>{exInput.sets}</span>
+                        <button onClick={() => setExInput(p => ({ ...p, sets: String(Math.min(20, Number(p.sets) + 1)) }))} style={{
+                          width: 30, height: 30, borderRadius: "50%", background: T.surface2,
+                          border: `1px solid ${T.border}`, color: T.white, fontSize: 16, cursor: "pointer"
+                        }}>+</button>
+                      </div>
+                    </div>
+
+                    <div style={{ flex: 1 }}>
+                      <p style={{ color: T.muted, fontSize: 10, marginBottom: 4, letterSpacing: 0.8, textTransform: "uppercase", fontFamily: "'Syne', sans-serif" }}>Reps / Duration</p>
+                      <input
+                        placeholder="10, 30s, 1km..."
+                        value={exInput.reps}
+                        onChange={e => setExInput(p => ({ ...p, reps: e.target.value }))}
+                        style={{
+                          width: "100%", background: T.surface2, border: `1.5px solid ${T.border}`,
+                          borderRadius: 10, padding: "6px 10px", color: T.white, fontSize: 14,
+                          fontFamily: "'Syne', sans-serif", outline: "none",
+                          transition: "border-color 0.2s"
+                        }}
+                        onFocus={e => e.target.style.borderColor = T.lime}
+                        onBlur={e => e.target.style.borderColor = T.border}
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      if (!exInput.name.trim()) return;
+                      setCustomExercises(prev => [...prev, { name: exInput.name.trim(), sets: exInput.sets, reps: exInput.reps }]);
+                      setExInput({ name: "", sets: "3", reps: "10" });
+                    }}
+                    disabled={!exInput.name.trim()}
+                    className="btn-press"
+                    style={{
+                      width: "100%", padding: "10px",
+                      background: exInput.name.trim() ? `${T.lime}22` : T.dim,
+                      border: `1px solid ${exInput.name.trim() ? T.lime : "transparent"}`,
+                      borderRadius: 50, color: exInput.name.trim() ? T.lime : T.muted,
+                      fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 12,
+                      cursor: exInput.name.trim() ? "pointer" : "default", transition: "all 0.2s"
+                    }}
+                  >+ Add to List</button>
+                </div>
+
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button onClick={() => { setCustomMode(false); setCustomExercises([]); }} style={{
+                    flex: 1, padding: "12px", background: "none",
+                    border: `1px solid ${T.border}`, borderRadius: 50, color: T.muted,
+                    fontFamily: "'Syne', sans-serif", fontSize: 12, cursor: "pointer"
+                  }}>← Back</button>
+                  <button
+                    onClick={() => {
+                      if (!customName.trim()) return;
+                      setDay(pickerDay!, {
+                        custom: customName.trim(),
+                        customEmoji,
+                        exercises: customExercises,
+                      });
+                      setCustomName("");
+                      setCustomMode(false);
+                      setCustomExercises([]);
+                    }}
+                    disabled={!customName.trim()}
+                    className="btn-press"
+                    style={{
+                      flex: 2, padding: "12px",
+                      background: customName.trim() ? `linear-gradient(135deg, ${T.lime}, ${T.orange})` : T.dim,
+                      border: "none", borderRadius: 50, color: accentText(),
+                      fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13,
+                      cursor: customName.trim() ? "pointer" : "default"
+                    }}
+                  >{customExercises.length > 0 ? `Save ${customExercises.length} Exercise${customExercises.length !== 1 ? "s" : ""} →` : `Save Activity →`}</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <p style={{ color: T.muted, fontSize: 10, textTransform: "uppercase", letterSpacing: 1 }}>Library Workouts</p>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                  {WORKOUTS.slice(0, 6).map(w => (
+                    <button key={w.id} onClick={() => setDay(pickerDay, { workoutId: w.id })} style={{
+                      background: T.surface, border: `1px solid ${T.border}`, borderRadius: 12,
+                      padding: "10px", color: T.white, fontSize: 12, textAlign: "left", cursor: "pointer"
+                    }}>
+                      {w.emoji} {w.name}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+                  <button onClick={() => setDay(pickerDay, { rest: true })} style={{ flex: 1, padding: 12, borderRadius: 12, background: T.dim, border: "none", color: T.muted, cursor: "pointer" }}>☕ Rest Day</button>
+                  <button onClick={() => setCustomMode(true)} style={{ flex: 1, padding: 12, borderRadius: 12, background: T.dim, border: "none", color: T.muted, cursor: "pointer" }}>📝 Custom</button>
+                  <button onClick={() => setDay(pickerDay, {})} style={{ padding: 12, borderRadius: 12, background: "none", border: `1px solid ${T.border}`, color: T.orange, cursor: "pointer" }}>Clear</button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
