@@ -2244,7 +2244,7 @@ function ProfilePicture({ profile, onUpdate, size = 64 }: { profile: any, onUpda
         <div className="fadeUp" style={{
           position: "absolute", top: size + 8, left: 0, zIndex: 200,
           background: T.surface, border: `1px solid ${T.border}`,
-          borderRadius: 18, padding: "16px", width: 260,
+          borderRadius: 18, padding: "16px", width: 232,
           boxShadow: `0 20px 60px rgba(0,0,0,0.4)`
         }}>
           <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12, fontFamily: "'Syne', sans-serif" }}>Choose your look</p>
@@ -2257,7 +2257,7 @@ function ProfilePicture({ profile, onUpdate, size = 64 }: { profile: any, onUpda
             }}>📷 Take a photo / Upload</button>
           </div>
           <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8, fontFamily: "'Syne', sans-serif" }}>Or pick an avatar</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
             {AVATARS.map(emoji => (
               <button key={emoji} onClick={() => handleAvatar(emoji)} style={{
                 background: avatarEmoji === emoji ? `${T.lime}22` : T.surface2,
