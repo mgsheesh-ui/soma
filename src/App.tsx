@@ -920,6 +920,13 @@ function WorkoutDetail({ workout, onBack, onStart }: { workout: any, onBack: () 
             </p>
           </div>
         )}
+        {workout.category === "Custom" && (
+          <div style={{ marginTop: 12, background: `${T.lime}12`, border: `1px solid ${T.lime}22`, borderRadius: 12, padding: "10px 14px" }}>
+            <p style={{ color: T.lime, fontSize: 11, lineHeight: 1.5 }}>
+              <strong>Your Workout</strong> · Built by you in My Program.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Exercises */}
@@ -1466,6 +1473,12 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
     setPickerDay(null);
   };
 
+  const clearDay = (day: string) => {
+    const updated = { ...program };
+    delete updated[day];
+    save(updated);
+  };
+
   return (
     <div className="fadeIn">
       <div style={{ display: "grid", gap: 10 }}>
@@ -1506,17 +1519,53 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                 )}
               </div>
 
-              <button
-                onClick={() => setPickerDay(pickerDay === day ? null : day)}
-                className="btn-press"
-                style={{
-                  background: T.surface2, border: `1px solid ${T.border}`,
-                  borderRadius: 50, padding: "6px 14px", color: T.white,
-                  fontSize: 11, fontWeight: 700, cursor: "pointer"
-                }}
-              >
-                {entry ? "Edit" : "+ Plan"}
-              </button>
+              {/* Actions */}
+              <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+                {workout && (
+                  <button onClick={() => onOpenWorkout(workout)} className="btn-press" style={{
+                    background: T.lime, border: "none", borderRadius: 50,
+                    padding: "6px 12px", color: accentText(),
+                    fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 11, cursor: "pointer"
+                  }}>▶</button>
+                )}
+                {entry?.custom && entry?.exercises && entry.exercises.length > 0 && (
+                  <button onClick={() => onOpenWorkout({
+                    id: String(Date.now()), // temp ID for the session
+                    name: entry.custom,
+                    emoji: entry.customEmoji || "🏋️",
+                    subtitle: "Custom Workout",
+                    duration: Math.round(entry.exercises!.reduce((acc, ex) => acc + (Number(ex.sets) * 2.5), 0)),
+                    cal: Math.round(entry.exercises!.reduce((acc, ex) => acc + (Number(ex.sets) * 15), 0)),
+                    level: "Custom",
+                    category: "Custom",
+                    exercises: entry.exercises!.map(ex => ({
+                      name: ex.name,
+                      sets: Number(ex.sets),
+                      reps: ex.reps,
+                      rest: 60,
+                      desc: "",
+                    }))
+                  })} className="btn-press" style={{
+                    background: T.lime, border: "none", borderRadius: 50,
+                    padding: "6px 12px", color: accentText(),
+                    fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 11, cursor: "pointer"
+                  }}>▶</button>
+                )}
+                {entry?.custom && (!entry.exercises || entry.exercises.length === 0) && (
+                  <span style={{ color: T.muted, fontSize: 11, padding: "6px 4px" }}>No exercises</span>
+                )}
+                <button onClick={() => { setPickerDay(day); setCustomMode(false); }} className="btn-press" style={{
+                  background: T.surface2, border: `1px solid ${T.border}`, borderRadius: 50,
+                  padding: "6px 12px", color: T.muted,
+                  fontFamily: "'Syne', sans-serif", fontSize: 11, cursor: "pointer"
+                }}>{entry ? "↺" : "+"}</button>
+                {entry && (
+                  <button onClick={() => clearDay(day)} className="btn-press" style={{
+                    background: "none", border: `1px solid ${T.orange}33`, borderRadius: 50,
+                    padding: "6px 10px", color: T.orange, fontSize: 11, cursor: "pointer"
+                  }}>✕</button>
+                )}
+              </div>
             </div>
           );
         })}
