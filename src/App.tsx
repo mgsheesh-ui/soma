@@ -20,6 +20,13 @@ import {
   type WorkoutLog,
 } from "./supabase";
 
+// ─── TYPES ──────────────────────────────────────────────────────────────────
+type DayProgram = { workoutId?: number; custom?: string; rest?: boolean };
+type WeekProgram = Record<string, DayProgram>;
+
+const DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAY_SHORT = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
 // ─── THEME PALETTES ───────────────────────────────────────────────────────────
 const THEMES = {
   ember: {
@@ -1427,65 +1434,147 @@ function TrainTab({ profile, onOpenWorkout: _onOpenWorkout }: { profile: any, on
     </div>
   );
 }
+const FILTERS = ["All", "Powerbuilding", "PPL", "Strength", "Cardio", "Recovery", "My Program"];
 
-const FILTERS = ["All", "Powerbuilding", "PPL", "Strength", "Cardio", "Recovery"];
+// ─── MY PROGRAM TAB (As a sub-view) ──────────────────────────────────────────
+function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => void, userId?: string }) {
+  const programKey = `soma_program_${userId || "guest"}`;
+  const [program, setProgram] = useState<WeekProgram>(() => {
+    try { return JSON.parse(localStorage.getItem(programKey) || "{}"); } catch { return {}; }
+  });
+  const [pickerDay, setPickerDay] = useState<string | null>(null);
 
-function WorkoutCard({ w, i, onOpenWorkout }: { w: any, i: number, onOpenWorkout: (w: any) => void }) {
-  const isPB = w.category === "Powerbuilding";
-  const isPPL = w.category === "PPL";
-  const isProgram = isPB || isPPL;
-  const programColor = isPB ? T.lime : T.orange;
+  const save = (updated: WeekProgram) => {
+    setProgram(updated);
+    localStorage.setItem(programKey, JSON.stringify(updated));
+  };
+
+  const setDay = (day: string, data: DayProgram) => {
+    save({ ...program, [day]: data });
+    setPickerDay(null);
+  };
+
   return (
-    <button
-      key={w.id}
-      onClick={() => onOpenWorkout(w)}
-      className="btn-press fadeUp"
-      style={{
-        animationDelay: `${i * 0.06}s`,
-        background: T.surface,
-        border: `1px solid ${isProgram ? programColor + "44" : T.border}`,
-        borderRadius: 20, padding: "16px 18px",
-        cursor: "pointer", textAlign: "left",
-        transition: "border-color 0.2s, background 0.2s",
-        width: "100%",
-      }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = programColor; e.currentTarget.style.background = programColor + "08"; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = isProgram ? programColor + "44" : T.border; e.currentTarget.style.background = T.surface; }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
-        <div style={{
-          width: 50, height: 50, borderRadius: 14, flexShrink: 0,
-          background: isProgram ? `linear-gradient(135deg, ${programColor}22, ${T.orange}22)` : T.dim,
-          border: isProgram ? `1px solid ${programColor}33` : "none",
-          display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24
-        }}>{w.emoji}</div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2, flexWrap: "wrap" }}>
-            <p style={{ color: T.white, fontWeight: 600, fontFamily: "'Syne', sans-serif", fontSize: 14, letterSpacing: 0.2, minWidth: 0 }}>{w.name}</p>
-            {w.split && <span style={{ color: programColor, fontSize: 10, fontWeight: 700, background: programColor + "18", borderRadius: 50, padding: "2px 8px", letterSpacing: 0.5, flexShrink: 0 }}>{w.split}</span>}
-          </div>
-          {w.subtitle && <p style={{ color: T.muted, fontSize: 12, marginBottom: 6 }}>{w.subtitle}</p>}
-          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-            <Pill color={T.lime} style={{ padding: "3px 9px", fontSize: 10 }}>{w.level}</Pill>
-            <Pill color={T.orange} style={{ padding: "3px 9px", fontSize: 10 }}>{w.category}</Pill>
+    <div className="fadeIn">
+      <div style={{ display: "grid", gap: 10 }}>
+        {DAYS_OF_WEEK.map((day, i) => {
+          const entry = program[day];
+          const workout = entry?.workoutId ? WORKOUTS.find(w => w.id === entry.workoutId) : null;
+
+          return (
+            <div key={day} style={{
+              background: T.surface, borderRadius: 18, border: `1px solid ${T.border}`,
+              padding: "14px 16px", display: "flex", alignItems: "center", gap: 14,
+              animation: `fadeUp 0.4s ease both ${i * 0.05}s`
+            }}>
+              <div style={{ width: 44, textAlign: "center" }}>
+                <p style={{ color: T.muted, fontSize: 9, fontWeight: 800, letterSpacing: 1 }}>{DAY_SHORT[i]}</p>
+              </div>
+
+              <div style={{ flex: 1 }}>
+                {workout ? (
+                  <div onClick={() => onOpenWorkout(workout)} style={{ cursor: "pointer" }}>
+                    <p style={{ color: T.white, fontWeight: 600, fontSize: 14 }}>{workout.name}</p>
+                    <p style={{ color: T.lime, fontSize: 11 }}>{workout.category} • {workout.duration}m</p>
+                  </div>
+                ) : entry?.custom ? (
+                  <div>
+                    <p style={{ color: T.white, fontWeight: 600, fontSize: 14 }}>{entry.custom}</p>
+                    <p style={{ color: T.muted, fontSize: 11 }}>Activity</p>
+                  </div>
+                ) : entry?.rest ? (
+                  <p style={{ color: T.muted, fontSize: 14, fontStyle: "italic" }}>Rest Day</p>
+                ) : (
+                  <p style={{ color: T.muted, fontSize: 14, opacity: 0.4 }}>Nothing planned</p>
+                )}
+              </div>
+
+              <button
+                onClick={() => setPickerDay(pickerDay === day ? null : day)}
+                className="btn-press"
+                style={{
+                  background: T.surface2, border: `1px solid ${T.border}`,
+                  borderRadius: 50, padding: "6px 14px", color: T.white,
+                  fontSize: 11, fontWeight: 700, cursor: "pointer"
+                }}
+              >
+                {entry ? "Edit" : "+ Plan"}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      {pickerDay && (
+        <div className="fadeUp" style={{
+          marginTop: 20, padding: 20, background: T.surface2, borderRadius: 24,
+          border: `2px solid ${T.lime}44`
+        }}>
+          <h3 style={{ color: T.white, fontSize: 18, marginBottom: 16, fontFamily: "'Cormorant Garamond', serif" }}>
+            Plan for {pickerDay}
+          </h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <p style={{ color: T.muted, fontSize: 10, textTransform: "uppercase", letterSpacing: 1 }}>Library Workouts</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              {WORKOUTS.slice(0, 6).map(w => (
+                <button key={w.id} onClick={() => setDay(pickerDay, { workoutId: w.id })} style={{
+                  background: T.surface, border: `1px solid ${T.border}`, borderRadius: 12,
+                  padding: "10px", color: T.white, fontSize: 12, textAlign: "left", cursor: "pointer"
+                }}>
+                  {w.emoji} {w.name}
+                </button>
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+              <button onClick={() => setDay(pickerDay, { rest: true })} style={{ flex: 1, padding: 12, borderRadius: 12, background: T.dim, border: "none", color: T.muted, cursor: "pointer" }}>☕ Rest Day</button>
+              <button onClick={() => {
+                const c = prompt("Custom activity?");
+                if (c) setDay(pickerDay, { custom: c });
+              }} style={{ flex: 1, padding: 12, borderRadius: 12, background: T.dim, border: "none", color: T.muted, cursor: "pointer" }}>📝 Custom</button>
+              <button onClick={() => setDay(pickerDay, {})} style={{ padding: 12, borderRadius: 12, background: "none", border: `1px solid ${T.border}`, color: T.orange, cursor: "pointer" }}>Clear</button>
+            </div>
           </div>
         </div>
-      </div>
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-        {[["⏱", `${w.duration}m`], ["🔥", `${w.cal} kcal`], ["📋", `${w.exercises.length} ex`]].map(([icon, val]) => (
-          <span key={val} style={{ color: T.muted, fontSize: 12, whiteSpace: "nowrap" }}>{icon} {val}</span>
-        ))}
-      </div>
-    </button>
+      )}
+    </div>
   );
 }
 
-function WorkoutsTab({ onOpenWorkout }: { onOpenWorkout: (w: any) => void }) {
+function WorkoutsTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => void, userId?: string }) {
   const [filter, setFilter] = useState("All");
   const filtered = filter === "All" ? WORKOUTS : WORKOUTS.filter(w => w.category === filter);
   const pbWorkouts = filtered.filter(w => w.category === "Powerbuilding");
   const pplWorkouts = filtered.filter(w => w.category === "PPL");
   const otherWorkouts = filtered.filter(w => w.category !== "Powerbuilding" && w.category !== "PPL");
+
+  if (filter === "My Program") {
+    return (
+      <div>
+        <div style={{ marginBottom: 16 }}>
+          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6, fontFamily: "'Syne', sans-serif", fontWeight: 400 }}>Personal</p>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300 }}>
+            My <span style={{ color: T.orange, fontStyle: "italic" }}>Program</span>
+          </h1>
+        </div>
+
+        {/* Filter chips (re-used) */}
+        <div style={{ display: "flex", gap: 8, marginBottom: 20, overflowX: "auto", paddingBottom: 4 }}>
+          {FILTERS.map(f => (
+            <button key={f} onClick={() => setFilter(f)} className="btn-press" style={{
+              background: filter === f ? T.lime : T.surface,
+              border: `1px solid ${filter === f ? T.lime : T.border}`,
+              borderRadius: 50, padding: "7px 16px", cursor: "pointer",
+              color: filter === f ? accentText() : T.muted,
+              fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 12,
+              letterSpacing: 0.5, whiteSpace: "nowrap", flexShrink: 0
+            }}>{f}</button>
+          ))}
+        </div>
+
+        <MyProgramTab onOpenWorkout={onOpenWorkout} userId={userId} />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -1497,16 +1586,15 @@ function WorkoutsTab({ onOpenWorkout }: { onOpenWorkout: (w: any) => void }) {
       </div>
 
       {/* Filter chips */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: 16, overflowX: "auto", paddingBottom: 4 }}>
         {FILTERS.map(f => (
           <button key={f} onClick={() => setFilter(f)} className="btn-press" style={{
             background: filter === f ? T.lime : T.surface,
-            border: `1.5px solid ${filter === f ? T.lime : T.border}`,
+            border: `1px solid ${filter === f ? T.lime : T.border}`,
             borderRadius: 50, padding: "7px 16px", cursor: "pointer",
             color: filter === f ? accentText() : T.muted,
             fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 12,
-            letterSpacing: 0.5, whiteSpace: "nowrap", flexShrink: 0,
-            transition: "all 0.2s"
+            letterSpacing: 0.5, whiteSpace: "nowrap", flexShrink: 0
           }}>{f}</button>
         ))}
       </div>
@@ -1577,6 +1665,58 @@ function WorkoutsTab({ onOpenWorkout }: { onOpenWorkout: (w: any) => void }) {
     </div>
   );
 }
+
+
+function WorkoutCard({ w, i, onOpenWorkout }: { w: any, i: number, onOpenWorkout: (w: any) => void }) {
+  const isPB = w.category === "Powerbuilding";
+  const isPPL = w.category === "PPL";
+  const isProgram = isPB || isPPL;
+  const programColor = isPB ? T.lime : T.orange;
+  return (
+    <button
+      key={w.id}
+      onClick={() => onOpenWorkout(w)}
+      className="btn-press fadeUp"
+      style={{
+        animationDelay: `${i * 0.06}s`,
+        background: T.surface,
+        border: `1px solid ${isProgram ? programColor + "44" : T.border}`,
+        borderRadius: 20, padding: "16px 18px",
+        cursor: "pointer", textAlign: "left",
+        transition: "border-color 0.2s, background 0.2s",
+        width: "100%",
+      }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = programColor; e.currentTarget.style.background = programColor + "08"; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = isProgram ? programColor + "44" : T.border; e.currentTarget.style.background = T.surface; }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
+        <div style={{
+          width: 50, height: 50, borderRadius: 14, flexShrink: 0,
+          background: isProgram ? `linear-gradient(135deg, ${programColor}22, ${T.orange}22)` : T.dim,
+          border: isProgram ? `1px solid ${programColor}33` : "none",
+          display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24
+        }}>{w.emoji}</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2, flexWrap: "wrap" }}>
+            <p style={{ color: T.white, fontWeight: 600, fontFamily: "'Syne', sans-serif", fontSize: 14, letterSpacing: 0.2, minWidth: 0 }}>{w.name}</p>
+            {w.split && <span style={{ color: programColor, fontSize: 10, fontWeight: 700, background: programColor + "18", borderRadius: 50, padding: "2px 8px", letterSpacing: 0.5, flexShrink: 0 }}>{w.split}</span>}
+          </div>
+          {w.subtitle && <p style={{ color: T.muted, fontSize: 12, marginBottom: 6 }}>{w.subtitle}</p>}
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            <Pill color={T.lime} style={{ padding: "3px 9px", fontSize: 10 }}>{w.level}</Pill>
+            <Pill color={T.orange} style={{ padding: "3px 9px", fontSize: 10 }}>{w.category}</Pill>
+          </div>
+        </div>
+      </div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+        {[["⏱", `${w.duration}m`], ["🔥", `${w.cal} kcal`], ["📋", `${w.exercises.length} ex`]].map(([icon, val]) => (
+          <span key={val} style={{ color: T.muted, fontSize: 12, whiteSpace: "nowrap" }}>{icon} {val}</span>
+        ))}
+      </div>
+    </button>
+  );
+}
+
 
 const ALEXANDER_QUOTES = [
   { latin: "Aut viam inveniam aut faciam.", translation: "I will either find a way or make one." },
@@ -3033,7 +3173,12 @@ export default function App() {
               />
             )}
             {tab === "train" && <TrainTab profile={profile} onOpenWorkout={openWorkout} />}
-            {tab === "workouts" && <WorkoutsTab onOpenWorkout={openWorkout} />}
+            {tab === "workouts" && (
+              <WorkoutsTab
+                onOpenWorkout={openWorkout}
+                userId={isGuest ? undefined : authUser?.id}
+              />
+            )}
             {tab === "progress" && (
               <ProgressTab
                 userId={isGuest ? undefined : authUser?.id}
