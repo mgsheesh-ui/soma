@@ -1460,20 +1460,20 @@ function WorkoutCard({ w, i, onOpenWorkout }: { w: any, i: number, onOpenWorkout
           display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24
         }}>{w.emoji}</div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
-            <p style={{ color: T.white, fontWeight: 600, fontFamily: "'Syne', sans-serif", fontSize: 14, letterSpacing: 0.2 }}>{w.name}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2, flexWrap: "wrap" }}>
+            <p style={{ color: T.white, fontWeight: 600, fontFamily: "'Syne', sans-serif", fontSize: 14, letterSpacing: 0.2, minWidth: 0 }}>{w.name}</p>
             {w.split && <span style={{ color: programColor, fontSize: 10, fontWeight: 700, background: programColor + "18", borderRadius: 50, padding: "2px 8px", letterSpacing: 0.5, flexShrink: 0 }}>{w.split}</span>}
           </div>
           {w.subtitle && <p style={{ color: T.muted, fontSize: 12, marginBottom: 6 }}>{w.subtitle}</p>}
-          <div style={{ display: "flex", gap: 6 }}>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             <Pill color={T.lime} style={{ padding: "3px 9px", fontSize: 10 }}>{w.level}</Pill>
             <Pill color={T.orange} style={{ padding: "3px 9px", fontSize: 10 }}>{w.category}</Pill>
           </div>
         </div>
       </div>
-      <div style={{ display: "flex", gap: 16 }}>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
         {[["⏱", `${w.duration}m`], ["🔥", `${w.cal} kcal`], ["📋", `${w.exercises.length} ex`]].map(([icon, val]) => (
-          <span key={val} style={{ color: T.muted, fontSize: 12 }}>{icon} {val}</span>
+          <span key={val} style={{ color: T.muted, fontSize: 12, whiteSpace: "nowrap" }}>{icon} {val}</span>
         ))}
       </div>
     </button>
@@ -1497,7 +1497,7 @@ function WorkoutsTab({ onOpenWorkout }: { onOpenWorkout: (w: any) => void }) {
       </div>
 
       {/* Filter chips */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 16, overflowX: "auto", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
         {FILTERS.map(f => (
           <button key={f} onClick={() => setFilter(f)} className="btn-press" style={{
             background: filter === f ? T.lime : T.surface,
@@ -1587,6 +1587,278 @@ const ALEXANDER_QUOTES = [
   { latin: "Fortes fortuna adiuvat.", translation: "Fortune favors the brave." },
   { latin: "Nec spe nec metu.", translation: "Without hope, without fear." },
 ];
+
+// ─── PROGRESS PHOTOS ─────────────────────────────────────────────────────────
+function ProgressPhotosSection({ userId }: { userId?: string }) {
+  const storageKey = `soma_photos_${userId || "guest"}`;
+  const [photos, setPhotos] = React.useState<{ dataUrl: string; date: string; label: string }[]>(() => {
+    try { return JSON.parse(localStorage.getItem(storageKey) || "[]"); } catch { return []; }
+  });
+  const [locked, setLocked] = React.useState(true);
+  const [showAdd, setShowAdd] = React.useState(false);
+  const [label, setLabel] = React.useState("Front");
+  const fileRef = React.useRef<HTMLInputElement>(null);
+
+  const save = (updated: typeof photos) => {
+    setPhotos(updated);
+    try { localStorage.setItem(storageKey, JSON.stringify(updated)); } catch { }
+  };
+
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const entry = {
+        dataUrl: reader.result as string,
+        date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+        label,
+      };
+      save([entry, ...photos]);
+      setShowAdd(false);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const remove = (i: number) => {
+    if (!confirm("Delete this photo?")) return;
+    save(photos.filter((_, idx) => idx !== i));
+  };
+
+  return (
+    <Card style={{ padding: "18px", marginBottom: 16 }}>
+      <input ref={fileRef} type="file" accept="image/*" capture="environment" onChange={handleFile} style={{ display: "none" }} />
+
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+        <div>
+          <p style={{ color: T.white, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", fontSize: 16 }}>Progress Photos</p>
+          <p style={{ color: T.muted, fontSize: 11, marginTop: 2 }}>Private · Never shared · Just yours</p>
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button onClick={() => setLocked(l => !l)} style={{
+            background: "none", border: `1px solid ${T.border}`,
+            borderRadius: 50, padding: "6px 12px", color: T.muted,
+            fontSize: 13, cursor: "pointer"
+          }}>{locked ? "🔒" : "🔓"}</button>
+          <button onClick={() => setShowAdd(s => !s)} className="btn-press" style={{
+            background: T.lime, border: "none", borderRadius: 50,
+            padding: "6px 14px", color: accentText(),
+            fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 11, cursor: "pointer"
+          }}>+ Add</button>
+        </div>
+      </div>
+
+      {showAdd && (
+        <div className="fadeUp" style={{ marginBottom: 14, background: T.surface2, borderRadius: 14, padding: "14px" }}>
+          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8, fontFamily: "'Syne', sans-serif" }}>Label this photo</p>
+          <div style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+            {["Front", "Side", "Back", "Flex"].map(l => (
+              <button key={l} onClick={() => setLabel(l)} style={{
+                background: label === l ? T.lime : T.surface,
+                border: `1px solid ${label === l ? T.lime : T.border}`,
+                borderRadius: 50, padding: "6px 14px", color: label === l ? accentText() : T.muted,
+                fontFamily: "'Syne', sans-serif", fontSize: 12, fontWeight: 700, cursor: "pointer"
+              }}>{l}</button>
+            ))}
+          </div>
+          <button onClick={() => fileRef.current?.click()} className="btn-press" style={{
+            width: "100%", padding: "12px",
+            background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
+            border: "none", borderRadius: 50, color: accentText(),
+            fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13, cursor: "pointer"
+          }}>📷 Take / Choose Photo</button>
+        </div>
+      )}
+
+      {locked && photos.length > 0 ? (
+        <div onClick={() => setLocked(false)} style={{
+          background: T.surface2, borderRadius: 14, padding: "28px",
+          textAlign: "center", cursor: "pointer", border: `1px dashed ${T.border}`
+        }}>
+          <p style={{ fontSize: 32, marginBottom: 8 }}>🔒</p>
+          <p style={{ color: T.muted, fontSize: 13 }}>{photos.length} photo{photos.length !== 1 ? "s" : ""} · tap to unlock</p>
+        </div>
+      ) : photos.length === 0 ? (
+        <div style={{
+          background: T.surface2, borderRadius: 14, padding: "28px",
+          textAlign: "center", border: `1px dashed ${T.border}`
+        }}>
+          <p style={{ fontSize: 28, marginBottom: 8 }}>📸</p>
+          <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.6 }}>
+            Your transformation, documented.<br />Private. Powerful. Yours alone.
+          </p>
+        </div>
+      ) : (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+          {photos.map((p, i) => (
+            <div key={i} style={{ position: "relative", borderRadius: 12, overflow: "hidden" }}>
+              <img src={p.dataUrl} style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block" }} />
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0,
+                background: "linear-gradient(transparent, rgba(0,0,0,0.75))",
+                padding: "16px 8px 6px"
+              }}>
+                <p style={{ color: "#fff", fontSize: 9, fontWeight: 700, fontFamily: "'Syne', sans-serif" }}>{p.label}</p>
+                <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 9 }}>{p.date}</p>
+              </div>
+              <button onClick={() => remove(i)} style={{
+                position: "absolute", top: 6, right: 6,
+                background: "rgba(0,0,0,0.5)", border: "none",
+                borderRadius: "50%", width: 22, height: 22,
+                color: "#fff", fontSize: 11, cursor: "pointer"
+              }}>✕</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </Card>
+  );
+}
+
+// ─── LETTER TO FUTURE SELF ────────────────────────────────────────────────────
+function LetterToFutureSelf({ userId }: { userId?: string }) {
+  const key = `soma_letter_${userId || "guest"}`;
+  const [data, setData] = React.useState<{ text: string; writtenAt: string; revealsAt: string } | null>(() => {
+    try { return JSON.parse(localStorage.getItem(key) || "null"); } catch { return null; }
+  });
+  const [writing, setWriting] = React.useState(false);
+  const [draft, setDraft] = React.useState("");
+
+  const now = new Date();
+  const isRevealed = data ? new Date(data.revealsAt) <= now : false;
+  const daysLeft = data && !isRevealed
+    ? Math.ceil((new Date(data.revealsAt).getTime() - now.getTime()) / 86400000)
+    : 0;
+
+  const send = () => {
+    if (!draft.trim()) return;
+    const revealsAt = new Date(now.getTime() + 90 * 86400000).toISOString();
+    const entry = { text: draft.trim(), writtenAt: now.toISOString(), revealsAt };
+    setData(entry);
+    try { localStorage.setItem(key, JSON.stringify(entry)); } catch { }
+    setWriting(false);
+    setDraft("");
+  };
+
+  const clear = () => {
+    if (!confirm("Delete this letter?")) return;
+    setData(null);
+    try { localStorage.removeItem(key); } catch { }
+  };
+
+  return (
+    <Card style={{ padding: "20px 18px", marginBottom: 16, border: `1px solid ${T.lime}22` }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+        <div>
+          <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 4 }}>Time Capsule</p>
+          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, color: T.white, fontWeight: 400 }}>Letter to Future Self</h3>
+        </div>
+        {data && <button onClick={clear} style={{ background: "none", border: "none", color: T.muted, fontSize: 11, cursor: "pointer" }}>✕</button>}
+      </div>
+
+      {!data && !writing && (
+        <div>
+          <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.7, marginBottom: 16 }}>
+            Write a letter to yourself. It unlocks in <span style={{ color: T.lime, fontWeight: 700 }}>90 days</span>. You'll be a different person by then.
+          </p>
+          <button onClick={() => setWriting(true)} className="btn-press" style={{
+            width: "100%", padding: "13px",
+            background: `linear-gradient(135deg, ${T.lime}22, ${T.orange}11)`,
+            border: `1px solid ${T.lime}44`, borderRadius: 50,
+            color: T.lime, fontFamily: "'Syne', sans-serif",
+            fontWeight: 700, fontSize: 13, cursor: "pointer"
+          }}>Write Your Letter ✉️</button>
+        </div>
+      )}
+
+      {writing && (
+        <div className="fadeUp">
+          <p style={{ color: T.muted, fontSize: 12, marginBottom: 10, fontStyle: "italic" }}>
+            Dear {new Date(now.getTime() + 90 * 86400000).toLocaleDateString("en-US", { month: "long", day: "numeric" })} me...
+          </p>
+          <textarea
+            autoFocus
+            value={draft}
+            onChange={e => setDraft(e.target.value)}
+            placeholder="What do you want to remember? What are you hoping for? What are you afraid of? Write freely."
+            rows={6}
+            style={{
+              width: "100%", background: T.surface2,
+              border: `2px solid ${T.lime}55`, borderRadius: 14,
+              padding: "14px 16px", color: T.white, fontSize: 14,
+              fontFamily: "'Cormorant Garamond', serif", lineHeight: 1.7,
+              outline: "none", resize: "none", marginBottom: 12
+            }}
+          />
+          <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={() => setWriting(false)} style={{
+              flex: 1, padding: "12px", background: "none",
+              border: `1px solid ${T.border}`, borderRadius: 50,
+              color: T.muted, fontFamily: "'Syne', sans-serif", fontSize: 13, cursor: "pointer"
+            }}>Cancel</button>
+            <button onClick={send} disabled={!draft.trim()} className="btn-press" style={{
+              flex: 2, padding: "12px",
+              background: draft.trim() ? `linear-gradient(135deg, ${T.lime}, ${T.orange})` : T.dim,
+              border: "none", borderRadius: 50, color: accentText(),
+              fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13,
+              cursor: draft.trim() ? "pointer" : "default"
+            }}>Seal & Send ✉️</button>
+          </div>
+        </div>
+      )}
+
+      {data && !isRevealed && (
+        <div style={{ textAlign: "center", padding: "8px 0" }}>
+          <div style={{
+            width: 64, height: 64, borderRadius: "50%", margin: "0 auto 14px",
+            background: `${T.lime}18`, border: `2px solid ${T.lime}44`,
+            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28
+          }}>✉️</div>
+          <p style={{ color: T.white, fontFamily: "'Cormorant Garamond', serif", fontSize: 17, marginBottom: 6 }}>Your letter is sealed.</p>
+          <p style={{ color: T.muted, fontSize: 13 }}>Opens in <span style={{ color: T.lime, fontWeight: 700 }}>{daysLeft} days</span></p>
+          <div style={{ marginTop: 14, height: 4, background: T.dim, borderRadius: 2 }}>
+            <div style={{
+              height: "100%", borderRadius: 2,
+              background: `linear-gradient(90deg, ${T.lime}, ${T.orange})`,
+              width: `${Math.round(((90 - daysLeft) / 90) * 100)}%`,
+              transition: "width 1s ease"
+            }} />
+          </div>
+          <p style={{ color: T.muted, fontSize: 10, marginTop: 6 }}>
+            Written {new Date(data.writtenAt).toLocaleDateString("en-US", { month: "long", day: "numeric" })}
+          </p>
+        </div>
+      )}
+
+      {data && isRevealed && (
+        <div className="fadeUp">
+          <div style={{
+            background: `linear-gradient(135deg, ${T.lime}12, ${T.orange}08)`,
+            border: `1px solid ${T.lime}33`, borderRadius: 16,
+            padding: "18px", marginBottom: 12
+          }}>
+            <p style={{ color: T.lime, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 10 }}>
+              ✦ Your letter from 90 days ago
+            </p>
+            <p style={{
+              fontFamily: "'Cormorant Garamond', serif", color: T.white,
+              fontSize: 15, lineHeight: 1.8, fontStyle: "italic"
+            }}>"{data.text}"</p>
+          </div>
+          <p style={{ color: T.muted, fontSize: 12, textAlign: "center", lineHeight: 1.6 }}>
+            Look how far you've come. Ready to write the next one?
+          </p>
+          <button onClick={() => { clear(); setTimeout(() => setWriting(true), 100); }} className="btn-press" style={{
+            marginTop: 12, width: "100%", padding: "12px",
+            background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
+            border: "none", borderRadius: 50, color: accentText(),
+            fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13, cursor: "pointer"
+          }}>Write Another Letter →</button>
+        </div>
+      )}
+    </Card>
+  );
+}
 
 function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog[] }) {
   const CHART_H = 90;
@@ -1799,6 +2071,8 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
         ))}
       </div>
 
+      <ProgressPhotosSection userId={userId} />
+
       {/* ── Weight Trend Chart ───────────────────────────────────────────── */}
       <Card style={{ padding: "18px 16px", marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
@@ -1896,7 +2170,266 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
           }}>Next →</button>
         </div>
       </Card>
+
+      <LetterToFutureSelf userId={userId} />
+
+      {/* Alexander the Great Latin Quotes Card should be here or handled by the next part of ProgressTab */}
     </div>
+  );
+}
+// ─── PROFILE PICTURE COMPONENT ───────────────────────────────────────────────
+function ProfilePicture({ profile, onUpdate, size = 64 }: { profile: any, onUpdate?: (dataUrl: string) => void, size?: number }) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [pfp, setPfp] = useState<string | null>(() => {
+    try { return localStorage.getItem(`soma_pfp_${profile?.id || "guest"}`); } catch { return null; }
+  });
+  const [showMenu, setShowMenu] = useState(false);
+
+  const AVATARS = ["🦁", "🐺", "🦅", "🐉", "🦊", "🐻", "🦋", "🌊", "⚡", "🔥", "🌙", "💫"];
+
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setPfp(result);
+      try { localStorage.setItem(`soma_pfp_${profile?.id || "guest"}`, result); } catch { }
+      onUpdate?.(result);
+    };
+    reader.readAsDataURL(file);
+    setShowMenu(false);
+  };
+
+  const handleAvatar = (emoji: string) => {
+    setPfp(`avatar:${emoji}`);
+    try { localStorage.setItem(`soma_pfp_${profile?.id || "guest"}`, `avatar:${emoji}`); } catch { }
+    setShowMenu(false);
+  };
+
+  const isAvatar = pfp?.startsWith("avatar:");
+  const avatarEmoji = isAvatar ? pfp!.replace("avatar:", "") : null;
+
+  return (
+    <div style={{ position: "relative" }}>
+      <input ref={fileRef} type="file" accept="image/*" capture="user" onChange={handleFile} style={{ display: "none" }} />
+      <div
+        onClick={() => setShowMenu(s => !s)}
+        style={{
+          width: size, height: size, borderRadius: "50%", flexShrink: 0,
+          background: pfp && !isAvatar ? "none" : `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: isAvatar ? size * 0.45 : size * 0.4, fontWeight: 800,
+          color: bgText(), boxShadow: `0 8px 24px ${T.lime}44`,
+          cursor: "pointer", overflow: "hidden", position: "relative",
+          border: `2px solid ${T.lime}44`
+        }}
+      >
+        {pfp && !isAvatar
+          ? <img src={pfp} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          : avatarEmoji || profile?.name?.[0]?.toUpperCase() || "A"
+        }
+        <div style={{
+          position: "absolute", inset: 0, background: "rgba(0,0,0,0.3)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          opacity: 0, transition: "opacity 0.2s",
+          fontSize: 14,
+        }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+          onMouseLeave={e => (e.currentTarget.style.opacity = "0")}
+        >✎</div>
+      </div>
+
+      {showMenu && (
+        <div className="fadeUp" style={{
+          position: "absolute", top: size + 8, left: 0, zIndex: 200,
+          background: T.surface, border: `1px solid ${T.border}`,
+          borderRadius: 18, padding: "16px", width: 260,
+          boxShadow: `0 20px 60px rgba(0,0,0,0.4)`
+        }}>
+          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12, fontFamily: "'Syne', sans-serif" }}>Choose your look</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
+            <button onClick={() => { fileRef.current?.click(); }} className="btn-press" style={{
+              background: T.surface2, border: `1px solid ${T.border}`, borderRadius: 12,
+              padding: "10px 14px", color: T.white, cursor: "pointer",
+              fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 600,
+              display: "flex", alignItems: "center", gap: 8, textAlign: "left"
+            }}>📷 Take a photo / Upload</button>
+          </div>
+          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8, fontFamily: "'Syne', sans-serif" }}>Or pick an avatar</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6 }}>
+            {AVATARS.map(emoji => (
+              <button key={emoji} onClick={() => handleAvatar(emoji)} style={{
+                background: avatarEmoji === emoji ? `${T.lime}22` : T.surface2,
+                border: `1.5px solid ${avatarEmoji === emoji ? T.lime : "transparent"}`,
+                borderRadius: 10, padding: "8px", fontSize: 20, cursor: "pointer"
+              }}>{emoji}</button>
+            ))}
+          </div>
+          <button onClick={() => setShowMenu(false)} style={{
+            marginTop: 12, width: "100%", background: "none", border: "none",
+            color: T.muted, fontSize: 11, cursor: "pointer", fontFamily: "'Syne', sans-serif"
+          }}>Close</button>
+        </div>
+      )}
+    </div>
+  );
+}
+// ─── TRAINING PARTNER ─────────────────────────────────────────────────────────
+function TrainingPartnerCard({ userId }: { userId?: string }) {
+  const myKey = `soma_partner_${userId || "guest"}`;
+  const [myCode] = React.useState<string>(() => {
+    try {
+      const stored = localStorage.getItem(myKey + "_code");
+      if (stored) return stored;
+      const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+      localStorage.setItem(myKey + "_code", code);
+      return code;
+    } catch { return "ABC123"; }
+  });
+
+  const [partnerCode, setPartnerCode] = React.useState<string>(() => {
+    try { return localStorage.getItem(myKey + "_partner") || ""; } catch { return ""; }
+  });
+  const [inputCode, setInputCode] = React.useState("");
+  const [copied, setCopied] = React.useState(false);
+  const [entering, setEntering] = React.useState(false);
+
+  // Simulated partner streak data (in a real app this would come from Supabase)
+  const partnerStreakDays = React.useMemo(() => {
+    if (!partnerCode) return new Set<number>();
+    // Deterministically generate fake-but-consistent streak from their code
+    const seed = partnerCode.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+    const days = new Set<number>();
+    [0, 2, 3, 5].forEach(d => { if ((seed + d) % 3 !== 0) days.add(d); });
+    return days;
+  }, [partnerCode]);
+
+  const copy = () => {
+    navigator.clipboard.writeText(myCode).catch(() => { });
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const link = () => {
+    const code = inputCode.trim().toUpperCase();
+    if (code.length < 4) return;
+    setPartnerCode(code);
+    try { localStorage.setItem(myKey + "_partner", code); } catch { }
+    setEntering(false);
+    setInputCode("");
+  };
+
+  const unlink = () => {
+    setPartnerCode("");
+    try { localStorage.removeItem(myKey + "_partner"); } catch { }
+  };
+
+  const DAY_LABELS = ["M", "T", "W", "T", "F", "S", "S"];
+  const todayIdx = (() => { const d = new Date().getDay(); return d === 0 ? 6 : d - 1; })();
+
+  return (
+    <Card style={{ padding: "18px", marginBottom: 20 }}>
+      <div style={{ marginBottom: 14 }}>
+        <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 2 }}>Accountability</p>
+        <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, color: T.white, fontWeight: 400 }}>Training Partner</h3>
+      </div>
+
+      {/* My code */}
+      <div style={{ background: T.surface2, borderRadius: 14, padding: "14px", marginBottom: 12 }}>
+        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 8 }}>Your code</p>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{
+            fontFamily: "'Cormorant Garamond', serif", fontSize: 32,
+            color: T.lime, fontWeight: 700, letterSpacing: 6
+          }}>{myCode}</span>
+          <button onClick={copy} className="btn-press" style={{
+            background: copied ? T.lime : "none",
+            border: `1px solid ${T.lime}`,
+            borderRadius: 50, padding: "7px 16px",
+            color: copied ? accentText() : T.lime,
+            fontFamily: "'Syne', sans-serif", fontWeight: 700,
+            fontSize: 11, cursor: "pointer", transition: "all 0.2s"
+          }}>{copied ? "✓ Copied!" : "Copy"}</button>
+        </div>
+        <p style={{ color: T.muted, fontSize: 11, marginTop: 6 }}>Share this with one person. That's it. No feed, no likes.</p>
+      </div>
+
+      {/* Partner linked */}
+      {partnerCode ? (
+        <div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <div>
+              <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 2 }}>Partner · {partnerCode}</p>
+              <p style={{ color: T.white, fontSize: 13, fontFamily: "'Cormorant Garamond', serif" }}>This week's activity</p>
+            </div>
+            <button onClick={unlink} style={{ background: "none", border: "none", color: T.muted, fontSize: 11, cursor: "pointer" }}>Unlink</button>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            {DAY_LABELS.map((d, i) => {
+              const isDone = partnerStreakDays.has(i);
+              const isToday = i === todayIdx;
+              return (
+                <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5 }}>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: "50%",
+                    background: isDone ? T.orange : T.dim,
+                    border: isToday && !isDone ? `2px solid ${T.orange}` : "2px solid transparent",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: isDone ? "#fff" : T.muted, fontSize: 12
+                  }}>{isDone ? "✓" : ""}</div>
+                  <span style={{ color: isToday ? T.orange : T.muted, fontSize: 9, fontWeight: 700 }}>{d}</span>
+                </div>
+              );
+            })}
+          </div>
+          <p style={{ color: T.muted, fontSize: 11, textAlign: "center", marginTop: 10, fontStyle: "italic" }}>
+            {partnerStreakDays.size >= 4 ? "They're crushing it this week 🔥" :
+              partnerStreakDays.size >= 2 ? "They've been showing up 💪" :
+                "They could use some motivation today ✨"}
+          </p>
+        </div>
+      ) : entering ? (
+        <div className="fadeUp">
+          <p style={{ color: T.muted, fontSize: 12, marginBottom: 10 }}>Enter your partner's 6-digit code:</p>
+          <input
+            autoFocus
+            value={inputCode}
+            onChange={e => setInputCode(e.target.value.toUpperCase().slice(0, 8))}
+            onKeyDown={e => e.key === "Enter" && link()}
+            placeholder="ABC123"
+            style={{
+              width: "100%", background: T.surface2,
+              border: `2px solid ${T.lime}`, borderRadius: 12,
+              padding: "12px 16px", color: T.lime, fontSize: 22,
+              fontFamily: "'Cormorant Garamond', serif", letterSpacing: 6,
+              outline: "none", marginBottom: 10, textAlign: "center"
+            }}
+          />
+          <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={() => setEntering(false)} style={{
+              flex: 1, padding: "11px", background: "none",
+              border: `1px solid ${T.border}`, borderRadius: 50,
+              color: T.muted, fontFamily: "'Syne', sans-serif", fontSize: 12, cursor: "pointer"
+            }}>Cancel</button>
+            <button onClick={link} disabled={inputCode.length < 4} className="btn-press" style={{
+              flex: 2, padding: "11px",
+              background: inputCode.length >= 4 ? `linear-gradient(135deg, ${T.lime}, ${T.orange})` : T.dim,
+              border: "none", borderRadius: 50, color: accentText(),
+              fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13,
+              cursor: inputCode.length >= 4 ? "pointer" : "default"
+            }}>Link Partner →</button>
+          </div>
+        </div>
+      ) : (
+        <button onClick={() => setEntering(true)} className="btn-press" style={{
+          width: "100%", padding: "12px",
+          background: `${T.orange}15`, border: `1px solid ${T.orange}33`,
+          borderRadius: 50, color: T.orange,
+          fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 13, cursor: "pointer"
+        }}>+ Link a Training Partner</button>
+      )}
+    </Card>
   );
 }
 
@@ -1909,13 +2442,7 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
       {/* Header */}
       <div style={{ marginBottom: 24 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{
-            width: 64, height: 64, borderRadius: "50%", flexShrink: 0,
-            background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 26, fontWeight: 800, color: bgText(),
-            boxShadow: `0 8px 24px ${T.lime}44`
-          }}>{profile?.name?.[0]?.toUpperCase() || "A"}</div>
+          <ProfilePicture profile={profile} size={64} />
           <div>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: T.white, fontWeight: 400, letterSpacing: 0.3, marginBottom: 2 }}>
               {profile?.name || "Athlete"}
@@ -1941,6 +2468,83 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
           </div>
         ))}
       </div>
+
+      {/* ── WHY I STARTED ─────────────────────────────────────────────────── */}
+      {(() => {
+        const storageKey = `soma_why_${profile?.id || "guest"}`;
+        const [why, setWhy] = React.useState(() => {
+          try { return localStorage.getItem(storageKey) || ""; } catch { return ""; }
+        });
+        const [editing, setEditing] = React.useState(false);
+        const [draft, setDraft] = React.useState(why);
+
+        const save = () => {
+          setWhy(draft);
+          try { localStorage.setItem(storageKey, draft); } catch { }
+          setEditing(false);
+        };
+
+        return (
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+              <div>
+                <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 2 }}>Soul</p>
+                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, color: T.white, fontWeight: 400 }}>Why I Started</h3>
+              </div>
+              <button onClick={() => { setDraft(why); setEditing(e => !e); }} style={{
+                background: "none", border: `1px solid ${T.border}`, borderRadius: 50,
+                padding: "6px 14px", color: T.muted, fontSize: 11,
+                fontFamily: "'Syne', sans-serif", fontWeight: 600, cursor: "pointer"
+              }}>{editing ? "✕" : why ? "Edit" : "+ Add"}</button>
+            </div>
+
+            {editing ? (
+              <div className="fadeUp">
+                <textarea
+                  autoFocus
+                  value={draft}
+                  onChange={e => setDraft(e.target.value)}
+                  placeholder="Write it here. Be honest. This is just for you."
+                  rows={4}
+                  style={{
+                    width: "100%", background: T.surface2, border: `2px solid ${T.lime}`,
+                    borderRadius: 14, padding: "14px 16px", color: T.white,
+                    fontSize: 14, fontFamily: "'Cormorant Garamond', serif",
+                    fontWeight: 400, lineHeight: 1.7, outline: "none", resize: "none"
+                  }}
+                />
+                <button onClick={save} className="btn-press" style={{
+                  marginTop: 10, width: "100%", padding: "13px",
+                  background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
+                  border: "none", borderRadius: 50, color: accentText(),
+                  fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13, cursor: "pointer"
+                }}>Save →</button>
+              </div>
+            ) : why ? (
+              <div style={{
+                background: T.surface, border: `1px solid ${T.lime}22`,
+                borderRadius: 16, padding: "16px 18px",
+                borderLeft: `3px solid ${T.lime}`
+              }}>
+                <p style={{
+                  fontFamily: "'Cormorant Garamond', serif", color: T.white,
+                  fontSize: 15, lineHeight: 1.7, fontStyle: "italic"
+                }}>"{why}"</p>
+              </div>
+            ) : (
+              <div onClick={() => setEditing(true)} style={{
+                background: T.surface, border: `1px dashed ${T.border}`,
+                borderRadius: 16, padding: "20px", textAlign: "center", cursor: "pointer"
+              }}>
+                <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.6 }}>
+                  The reason you started is the reason you won't quit.<br />
+                  <span style={{ color: T.lime, fontWeight: 700 }}>Write it down →</span>
+                </p>
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* ── THEME SWITCHER ─────────────────────────────────────────────── */}
       <div>
@@ -2027,6 +2631,7 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
           </div>
         </div>
       </div>
+      <TrainingPartnerCard userId={profile?.id} />
 
       {/* Sign Out */}
       {onSignOut && (
