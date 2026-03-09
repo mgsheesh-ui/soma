@@ -1342,8 +1342,8 @@ function HomeTab({
   const todayWorkouts = todayLogs.length;
 
   const goals = [
-    { label: "Workouts", cur: todayWorkouts, max: 1, color: T.lime },
-    { label: "Calories", cur: todayCalories || 0, max: 500, color: T.lime, suffix: "kcal" },
+    { label: "Workouts", cur: todayWorkouts, max: 1, color: T.orange },
+    { label: "Calories", cur: todayCalories || 0, max: 500, color: T.orange, suffix: "kcal" },
     { label: "Minutes", cur: todayMinutes || 0, max: 60, color: T.orange, suffix: "min" },
   ];
 
