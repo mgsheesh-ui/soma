@@ -112,7 +112,7 @@ const THEMES = {
     id: "terrain",
     name: "Terrain",
     description: "Light & natural",
-    preview: ["#eff1ed", "#717744", "#8aea92", "#373d20"],
+    preview: ["#eff1ed", "#717744", "#38e146", "#373d20"],
     bg: "#eff1ed",     // white-smoke — light base
     surface: "#e4e6e0",     // slightly darker white-smoke for cards
     surface2: "#d8dbd2",     // inputs / secondary surfaces
@@ -121,7 +121,7 @@ const THEMES = {
     teal: "#373d20",     // dark-khaki — secondary / strong contrast
     orange: "#717744",     // dusty-olive — warm highlights / badges
     white: "#373d20",     // dark-khaki — primary text (inverted!)
-    muted: "#8aea92",     // fresh green — secondary / subtext
+    muted: "#38e146",     // fresh green — secondary / subtext
     dim: "#d8dbd2",     // light dim for inactive elements
     pageWrap: "#dfe1db",
     ring: "#71774455",
