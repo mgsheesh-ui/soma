@@ -2515,7 +2515,7 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
       </Card>
 
       {/* Alexander the Great Latin Quotes */}
-      <Card style={{ padding: "20px 18px" }}>
+      <Card style={{ padding: "20px 18px", marginBottom: 16 }}>
         <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginBottom: 14, fontFamily: "'Syne', sans-serif" }}>Words of the Conqueror</p>
         <div style={{ marginBottom: 18 }}>
           <p style={{
