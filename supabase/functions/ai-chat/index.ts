@@ -8,22 +8,26 @@ import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 
 const CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "authorization, content-type",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Free models on OpenRouter — tried in order until one succeeds.
-// The ":free" suffix guarantees $0 cost. Add/remove models here freely.
+// Verified free models on OpenRouter (using exact IDs from their "free" filter)
 const FREE_MODELS = [
-    "meta-llama/llama-4-scout:free",
-    "qwen/qwen3-32b:free",
-    "deepseek/deepseek-r1:free",
-    "google/gemma-3-27b-it:free",
-    "mistralai/mistral-7b-instruct:free",
+    "stepfun/step-3.5-flash:free",
+    "arcee-ai/trinity-large-preview:free",
+    "liquid/lfm-2.5-1.2b-thinking:free",
+    "nousresearch/hermes-3-llama-3.1-405b:free",
+    "minimax/minimax-m2.5:free",
 ];
 
 serve(async (req) => {
     if (req.method === "OPTIONS") {
-        return new Response("ok", { headers: CORS_HEADERS });
+        return new Response("ok", {
+            headers: {
+                ...CORS_HEADERS,
+                "Access-Control-Allow-Headers": req.headers.get("Access-Control-Request-Headers") || CORS_HEADERS["Access-Control-Allow-Headers"],
+            },
+        });
     }
 
     try {
@@ -37,6 +41,9 @@ serve(async (req) => {
             );
         }
 
+        // Version flag for debugging
+        const responseMetadata = { version: "v1.3" };
+
         // Build the message array — system prompt first, then conversation history
         const openRouterMessages = [
             { role: "system", content: systemPrompt },
@@ -44,7 +51,7 @@ serve(async (req) => {
         ];
 
         // Try each free model in order until one succeeds
-        let lastError = "";
+        const errors: string[] = [];
         for (const model of FREE_MODELS) {
             try {
                 const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -52,7 +59,7 @@ serve(async (req) => {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${apiKey}`,
-                        "HTTP-Referer": "https://soma-fitness.app", // Identifies your app on OpenRouter
+                        "HTTP-Referer": "https://soma-fitness.app",
                         "X-Title": "Soma Fitness AI Trainer",
                     },
                     body: JSON.stringify({
@@ -64,12 +71,8 @@ serve(async (req) => {
 
                 if (!res.ok) {
                     const errBody = await res.text();
-                    // 429 = rate limited, 503 = model unavailable — try next model
-                    if (res.status === 429 || res.status === 503) {
-                        lastError = `${model}: ${res.status}`;
-                        continue;
-                    }
-                    throw new Error(`OpenRouter error ${res.status}: ${errBody}`);
+                    errors.push(`${model}: ${res.status} - ${errBody}`);
+                    continue;
                 }
 
                 const data = await res.json();
@@ -77,19 +80,18 @@ serve(async (req) => {
                 const usedModel = data.model || model;
 
                 return new Response(
-                    JSON.stringify({ reply, model: usedModel }),
+                    JSON.stringify({ reply, model: usedModel, ...responseMetadata }),
                     { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
                 );
             } catch (modelErr) {
-                lastError = String(modelErr);
-                // If fetch itself failed, try the next model
+                errors.push(`${model}: ${String(modelErr)}`);
                 continue;
             }
         }
 
         // All models exhausted
         return new Response(
-            JSON.stringify({ error: `All models failed. Last error: ${lastError}` }),
+            JSON.stringify({ error: "All models failed.", details: errors, ...responseMetadata }),
             { status: 503, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
         );
 
