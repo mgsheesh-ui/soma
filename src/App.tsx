@@ -1188,28 +1188,18 @@ Keep responses concise (2-4 sentences max unless asked for detail). Be encouragi
         content: m.text
       }));
 
-      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+      const { data, error: fnError } = await supabase.functions.invoke("ai-chat", {
+        body: {
+          messages: apiMessages,
+          systemPrompt,
         },
-        body: JSON.stringify({
-          model: "qwen/qwen3-32b",
-          max_tokens: 512,
-          messages: [
-            { role: "system", content: systemPrompt },
-            ...apiMessages
-          ],
-        })
       });
 
-      if (!res.ok) throw new Error(`API error ${res.status}`);
-      const data = await res.json();
-      const reply = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond right now.";
+      if (fnError) throw fnError;
+      const reply = data?.reply || "Sorry, I couldn't respond right now.";
       setMessages(prev => [...prev, { role: "assistant", text: reply }]);
     } catch (e) {
-      setError("Couldn't reach the AI trainer. Check your connection.");
+      setError("Couldn't reach the AI trainer. Check your connection or try again shortly.");
     } finally {
       setLoading(false);
     }
