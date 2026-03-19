@@ -1148,7 +1148,7 @@ function WorkoutTimer({ workout, onDone }: { workout: any, onDone: (w?: any) => 
 }
 
 // ─── AI TRAINER CHAT ──────────────────────────────────────────────────────────
-function AITrainerChat({ profile }: { profile: any }) {
+function AITrainerChat({ profile, onOpenWorkout, onStart }: { profile: any, onOpenWorkout?: (w: any) => void, onStart?: (w: any) => void }) {
   const [messages, setMessages] = useState([
     { role: "assistant", text: `Hey ${profile?.name || "there"}! 💪 I'm your Soma. I've built your plan around your goal to ${(profile?.goal || "get fit").toLowerCase()}. Ask me anything — form tips, schedule adjustments, nutrition, recovery. I'm here to help you thrive.` }
   ]);
@@ -1157,13 +1157,38 @@ function AITrainerChat({ profile }: { profile: any }) {
   const [error, setError] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [isListening, setIsListening] = useState(false);
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading]);
+  // Speech Recognition setup
+  const startListening = () => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setError("Speech recognition is not supported in this browser.");
+      return;
+    }
 
-  const send = async () => {
-    const text = input.trim();
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onerror = () => setIsListening(false);
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setInput(transcript);
+      // Auto-send if it sounds like a command
+      if (transcript.toLowerCase().includes("workout") || transcript.toLowerCase().includes("make")) {
+        // give a small delay to show the text
+        setTimeout(() => send(transcript), 500);
+      }
+    };
+
+    recognition.start();
+  };
+
+  const send = async (overrideText?: string) => {
+    const text = (overrideText || input).trim();
     if (!text || loading) return;
     setInput("");
     setError(null);
@@ -1180,6 +1205,24 @@ User profile:
 - Goal: ${profile?.goal || "general fitness"}
 - Level: ${profile?.level || "intermediate"}
 - Training days: ${profile?.days || 4} per week
+
+ACTION-DRIVEN WORKOUT GENERATION:
+If the user asks to create, make, or generate a workout (especially via voice), follow these steps:
+1. Provide a motivating, brief coach-like response.
+2. After your text, append a JSON block wrapped in \`\`\`json:workout and \`\`\` tags.
+3. The JSON must follow this structure EXACTLY:
+{
+  "id": "gen_" + Date.now(),
+  "name": "Workout Name",
+  "emoji": "🏋️",
+  "duration": number (mins),
+  "cal": number (estimated burn),
+  "level": "Beginner" | "Intermediate" | "Advanced",
+  "category": "Custom",
+  "exercises": [
+    { "name": "Exercise Name", "sets": number, "reps": "string", "rest": number (secs), "desc": "form tip" }
+  ]
+}
 
 Keep responses concise (2-4 sentences max unless asked for detail). Be encouraging but realistic. Use a warm, coach-like tone. Occasionally use a relevant emoji.`;
 
@@ -1198,6 +1241,23 @@ Keep responses concise (2-4 sentences max unless asked for detail). Be encouragi
       if (fnError) throw fnError;
       const reply = data?.reply || "Sorry, I couldn't respond right now.";
       setMessages(prev => [...prev, { role: "assistant", text: reply }]);
+
+      // Check for workout JSON
+      const jsonMatch = reply.match(/```json:workout\s*([\s\S]*?)\s*```/);
+      if (jsonMatch && jsonMatch[1]) {
+        try {
+          const workout = JSON.parse(jsonMatch[1]);
+          if (onOpenWorkout && onStart) {
+            // Short delay for the message to be readable
+            setTimeout(() => {
+              onOpenWorkout(workout);
+              onStart(workout);
+            }, 1500);
+          }
+        } catch (err) {
+          console.error("Failed to parse generated workout:", err);
+        }
+      }
     } catch (e) {
       setError("Couldn't reach the AI trainer. Check your connection or try again shortly.");
     } finally {
@@ -1276,7 +1336,22 @@ Keep responses concise (2-4 sentences max unless asked for detail). Be encouragi
           onBlur={e => e.target.style.borderColor = T.border}
         />
         <button
-          onClick={send}
+          onClick={isListening ? () => { } : startListening}
+          className="btn-press"
+          style={{
+            width: 44, height: 44, borderRadius: "50%",
+            background: isListening ? `rgba(235, 94, 40, 0.2)` : T.surface2,
+            border: isListening ? `2px solid ${T.orange}` : `1.5px solid ${T.border}`,
+            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+            flexShrink: 0, position: "relative"
+          }}
+        >
+          {isListening && <div style={{ position: "absolute", inset: -4, borderRadius: "50%", border: `2px solid ${T.orange}`, animation: "pulse 1.5s infinite" }} />}
+          <small style={{ fontSize: 18, filter: isListening ? "grayscale(0)" : "grayscale(1)" }}>🎙️</small>
+        </button>
+
+        <button
+          onClick={() => send()}
           disabled={loading || !input.trim()}
           className="btn-press"
           style={{
@@ -1425,7 +1500,7 @@ function HomeTab({
   );
 }
 
-function TrainTab({ profile, onOpenWorkout: _onOpenWorkout }: { profile: any, onOpenWorkout: (w: any) => void }) {
+function TrainTab({ profile, onOpenWorkout, onStart }: { profile: any, onOpenWorkout: (w: any) => void, onStart: (w: any) => void }) {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ marginBottom: 4 }}>
@@ -1434,7 +1509,7 @@ function TrainTab({ profile, onOpenWorkout: _onOpenWorkout }: { profile: any, on
           Your <span style={{ color: T.orange, fontStyle: "italic" }}>Trainer</span>
         </h1>
       </div>
-      <AITrainerChat profile={profile} />
+      <AITrainerChat profile={profile} onOpenWorkout={onOpenWorkout} onStart={onStart} />
     </div>
   );
 }
@@ -3397,7 +3472,7 @@ export default function App() {
                 recoveryScore={recoveryScore}
               />
             )}
-            {tab === "train" && <TrainTab profile={profile} onOpenWorkout={openWorkout} />}
+            {tab === "train" && <TrainTab profile={profile} onOpenWorkout={openWorkout} onStart={startWorkout} />}
             {tab === "workouts" && (
               <WorkoutsTab
                 onOpenWorkout={openWorkout}

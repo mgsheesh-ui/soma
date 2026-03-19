@@ -42,7 +42,7 @@ serve(async (req) => {
         }
 
         // Version flag for debugging
-        const responseMetadata = { version: "v1.3" };
+        const responseMetadata = { version: "v1.6" };
 
         // Build the message array — system prompt first, then conversation history
         const openRouterMessages = [
@@ -64,7 +64,7 @@ serve(async (req) => {
                     },
                     body: JSON.stringify({
                         model,
-                        max_tokens: 512,
+                        max_tokens: 2048,
                         messages: openRouterMessages,
                     }),
                 });
