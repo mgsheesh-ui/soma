@@ -10,6 +10,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { createClient } from "@supabase/supabase-js";
+import { createWorkoutHistoryStore, type WorkoutLog } from "./workoutHistory";
+export type { WorkoutLog } from "./workoutHistory";
 
 // ── CLIENT ────────────────────────────────────────────────────────────────────
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
@@ -59,16 +61,6 @@ export interface WeightEntry {
   value: number;
   label: string;
   logged_at: string;
-}
-
-export interface WorkoutLog {
-  id: string;
-  user_id: string;
-  workout_id: number;
-  workout_name: string;
-  duration_mins: number;
-  calories: number;
-  completed_at: string;
 }
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
@@ -210,62 +202,33 @@ export async function addWeightEntry(
 
 // ── WORKOUT HISTORY ───────────────────────────────────────────────────────────
 
-export async function logWorkout(
-  userId: string,
-  workout: {
-    workout_id: number;
-    workout_name: string;
-    duration_mins: number;
-    calories: number;
+export const workoutHistory = createWorkoutHistoryStore(
+  () => window.localStorage,
+  {
+    async insert(entry) {
+      // Retrying an acknowledged or interrupted upload must count only once.
+      const { error } = await supabase.from("workout_history")
+        .upsert(entry, { onConflict: "id", ignoreDuplicates: true });
+      if (error) throw new Error(error.message);
+    },
+    async load(userId) {
+      const history: WorkoutLog[] = [];
+      const pageSize = 1000;
+      for (let offset = 0; ; offset += pageSize) {
+        const { data, error } = await supabase
+          .from("workout_history")
+          .select("*")
+          .eq("user_id", userId)
+          .order("completed_at", { ascending: false })
+          .order("id", { ascending: false })
+          .range(offset, offset + pageSize - 1);
+        if (error) throw new Error(error.message);
+        history.push(...((data as WorkoutLog[]) || []));
+        if (!data || data.length < pageSize) return history;
+      }
+    },
   }
-): Promise<{ error: Error | null }> {
-  const { error } = await supabase.from("workout_history").insert({
-    user_id: userId,
-    workout_id: workout.workout_id,
-    workout_name: workout.workout_name,
-    duration_mins: workout.duration_mins,
-    calories: workout.calories,
-  });
-  if (error) console.error("[Soma] logWorkout:", error.message);
-  return { error: error ? new Error(error.message) : null };
-}
-
-export async function loadWorkoutHistory(userId: string): Promise<WorkoutLog[]> {
-  const { data, error } = await supabase
-    .from("workout_history")
-    .select("*")
-    .eq("user_id", userId)
-    .order("completed_at", { ascending: false });
-
-  if (error) {
-    console.error("[Soma] loadWorkoutHistory:", error.message);
-    return [];
-  }
-  return (data as WorkoutLog[]) || [];
-}
-
-export async function loadThisWeekWorkouts(userId: string): Promise<WorkoutLog[]> {
-  // Monday 00:00:00 of the current week
-  const now = new Date();
-  const dayOfWeek = now.getDay(); // 0=Sun
-  const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - daysFromMonday);
-  monday.setHours(0, 0, 0, 0);
-
-  const { data, error } = await supabase
-    .from("workout_history")
-    .select("*")
-    .eq("user_id", userId)
-    .gte("completed_at", monday.toISOString())
-    .order("completed_at", { ascending: true });
-
-  if (error) {
-    console.error("[Soma] loadThisWeekWorkouts:", error.message);
-    return [];
-  }
-  return (data as WorkoutLog[]) || [];
-}
+);
 
 // ── AI LOGIC (pure functions — no DB needed) ──────────────────────────────────
 
