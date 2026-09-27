@@ -8,9 +8,7 @@ import {
   loadLatestBodyStat,
   loadWeightLog,
   addWeightEntry,
-  logWorkout,
-  loadWorkoutHistory,
-  loadThisWeekWorkouts,
+  workoutHistory,
   computeRecoveryScore,
   recommendWorkoutId,
 
@@ -19,6 +17,7 @@ import {
   signOut,
   type WorkoutLog,
 } from "./supabase";
+import { thisWeekWorkouts } from "./workoutHistory";
 
 // ─── TYPES ──────────────────────────────────────────────────────────────────
 type DayProgram = {
@@ -979,13 +978,42 @@ function WorkoutDetail({ workout, onBack, onStart }: { workout: any, onBack: () 
   );
 }
 
-function WorkoutTimer({ workout, onDone }: { workout: any, onDone: (w?: any) => void }) {
+function WorkoutTimer({ workout, onDone, onComplete }: {
+  workout: any;
+  onDone: () => void;
+  onComplete: (workout: any, completion: { id: string; completed_at: string }) => Promise<string>;
+}) {
   const [exIdx, setExIdx] = useState(0);
   const [setIdx, setSetIdx] = useState(0);
   const [phase, setPhase] = useState("work"); // work | rest | done
   const [seconds, setSeconds] = useState<number | null>(null);
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const completion = useRef<{ id: string; completed_at: string } | null>(null);
+  const [saveMessage, setSaveMessage] = useState("");
+  const [saveError, setSaveError] = useState("");
+  const [saving, setSaving] = useState(false);
+  const saveInFlight = useRef(false);
+
+  const saveCompletion = useCallback(async () => {
+    if (saveInFlight.current) return;
+    saveInFlight.current = true;
+    completion.current ??= { id: crypto.randomUUID(), completed_at: new Date().toISOString() };
+    setSaving(true);
+    setSaveError("");
+    try {
+      setSaveMessage(await onComplete(workout, completion.current));
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : "Could not save this workout. Please retry.");
+    } finally {
+      saveInFlight.current = false;
+      setSaving(false);
+    }
+  }, [onComplete, workout]);
+
+  useEffect(() => {
+    if (phase === "done") void saveCompletion();
+  }, [phase, saveCompletion]);
 
   const ex = workout.exercises[exIdx];
   const isRest = phase === "rest";
@@ -1049,7 +1077,14 @@ function WorkoutTimer({ workout, onDone }: { workout: any, onDone: (w?: any) => 
           </div>
         ))}
       </div>
-      <button className="btn-press" onClick={() => onDone(workout)} style={{
+      <p role="status" style={{ color: T.muted, fontSize: 13, marginBottom: 16 }}>
+        {saving ? "Saving your workout…" : saveMessage}
+      </p>
+      {saveError && <div role="alert" style={{ color: T.orange, marginBottom: 16 }}>
+        <p>{saveError}</p>
+        <button className="btn-press" onClick={() => void saveCompletion()}>Retry saving</button>
+      </div>}
+      <button className="btn-press" onClick={onDone} disabled={saving || !!saveError} style={{
         width: "100%", padding: "16px",
         background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
         border: "none", borderRadius: 50, color: accentText(),
@@ -3173,8 +3208,9 @@ export default function App() {
 
   // Real data from Supabase
   const [history, setHistory] = useState<WorkoutLog[]>([]);
-  const [weekWorkouts, setWeekWorkouts] = useState<WorkoutLog[]>([]);
-  const [recoveryScore, setRecovery] = useState(88);
+  const activeUserId = useRef<string | null>(null);
+  const weekWorkouts = thisWeekWorkouts(history);
+  const recoveryScore = computeRecoveryScore(history);
 
   // ── Theme ────────────────────────────────────────────────────────────────
   const applyTheme = useCallback((id: string, userId?: string) => {
@@ -3188,15 +3224,14 @@ export default function App() {
 
   // ── Load user data after sign-in ─────────────────────────────────────────
   const loadUserData = useCallback(async (userId: string) => {
-    const [prof, hist, week] = await Promise.all([
+    activeUserId.current = userId;
+    setHistory(workoutHistory.load(userId));
+    const [prof, result] = await Promise.all([
       loadProfile(userId),
-      loadWorkoutHistory(userId),
-      loadThisWeekWorkouts(userId),
+      workoutHistory.sync(userId),
     ]);
-
-    setHistory(hist);
-    setWeekWorkouts(week);
-    setRecovery(computeRecoveryScore(hist));
+    if (activeUserId.current !== userId) return;
+    setHistory(result.history);
 
     if (prof) {
       setProfile(prof);
@@ -3210,22 +3245,13 @@ export default function App() {
 
   // ── Guest mode entry ──────────────────────────────────────────────────────
   const enterGuestMode = useCallback(() => {
+    activeUserId.current = "guest";
     setIsGuest(true);
+    setHistory(workoutHistory.load("guest"));
     const g = guestLoad();
     if (g.profile) {
       setProfile(g.profile);
       applyTheme(g.profile.theme_id || "terrain");
-      const hist: WorkoutLog[] = g.history || [];
-      setHistory(hist);
-      // filter this week
-      const now = new Date();
-      const dayOfWeek = now.getDay();
-      const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-      const monday = new Date(now);
-      monday.setDate(now.getDate() - daysFromMonday);
-      monday.setHours(0, 0, 0, 0);
-      setWeekWorkouts(hist.filter(w => new Date(w.completed_at) >= monday));
-      setRecovery(computeRecoveryScore(hist));
       setScreen("app");
     } else {
       setScreen("onboarding");
@@ -3241,6 +3267,7 @@ export default function App() {
 
     // Check existing Supabase session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      if (activeUserId.current === "guest") return;
       if (session?.user) {
         setAuthUser(session.user);
         loadUserData(session.user.id);
@@ -3253,15 +3280,15 @@ export default function App() {
     // Listen for sign-in / sign-out events
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
+        if (activeUserId.current === "guest") return;
         if (session?.user) {
           setAuthUser(session.user);
           loadUserData(session.user.id);
         } else {
+          activeUserId.current = null;
           setAuthUser(null);
           setProfile(null);
           setHistory([]);
-          setWeekWorkouts([]);
-          setRecovery(88);
           setScreen("auth");
         }
       }
@@ -3288,46 +3315,59 @@ export default function App() {
   const openWorkout = (w: any) => { setWorkoutDetail(w); setActiveWorkout(null); };
   const startWorkout = (w: any) => { setActiveWorkout(w); setWorkoutDetail(null); };
 
-  const endWorkout = async (completedWorkout?: any) => {
-    if (isGuest && completedWorkout) {
-      const entry: WorkoutLog = {
-        id: String(Date.now()), user_id: "guest",
-        workout_id: completedWorkout.id,
-        workout_name: completedWorkout.name,
-        duration_mins: completedWorkout.duration,
-        calories: completedWorkout.cal,
-        completed_at: new Date().toISOString(),
-      };
-      const g = guestLoad();
-      const hist: WorkoutLog[] = [entry, ...(g.history || [])];
-      guestSave({ history: hist });
-      const now = new Date();
-      const dow = now.getDay();
-      const monday = new Date(now);
-      monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1));
-      monday.setHours(0, 0, 0, 0);
-      setHistory(hist);
-      setWeekWorkouts(hist.filter(w => new Date(w.completed_at) >= monday));
-      setRecovery(computeRecoveryScore(hist));
-    } else if (authUser && completedWorkout) {
-      await logWorkout(authUser.id, {
-        workout_id: completedWorkout.id,
-        workout_name: completedWorkout.name,
-        duration_mins: completedWorkout.duration,
-        calories: completedWorkout.cal,
-      });
-      const [hist, week] = await Promise.all([
-        loadWorkoutHistory(authUser.id),
-        loadThisWeekWorkouts(authUser.id),
-      ]);
-      setHistory(hist);
-      setWeekWorkouts(week);
-      setRecovery(computeRecoveryScore(hist));
+  const completeWorkout = useCallback(async (completedWorkout: any, completion: { id: string; completed_at: string }) => {
+    const userId = isGuest ? "guest" : authUser?.id;
+    if (!userId) throw new Error("Please sign in again to save this workout.");
+    const entry: WorkoutLog = {
+      ...completion,
+      user_id: userId,
+      workout_id: completedWorkout.id,
+      workout_name: completedWorkout.name,
+      duration_mins: completedWorkout.duration,
+      calories: completedWorkout.cal,
+    };
+    // This write happens before any network request or navigation.
+    const saved = workoutHistory.record(entry);
+    setHistory(saved.history);
+    if (isGuest) {
+      if (!saved.savedLocally) throw new Error("Your browser could not save this workout. Free up storage and retry before leaving.");
+      return "Workout saved on this device.";
     }
+    const result = await workoutHistory.sync(userId);
+    if (activeUserId.current === userId) setHistory(result.history);
+    if (result.error) {
+      if (!saved.savedLocally) throw new Error("Your workout could not be saved. Check your connection and retry before leaving.");
+      return "Workout saved on this device. Account sync will retry when you reconnect.";
+    }
+    return "Workout saved to your account.";
+  }, [isGuest, authUser?.id]);
+
+  const endWorkout = () => {
     setActiveWorkout(null);
     setWorkoutDetail(null);
     setTab("workouts");
   };
+
+  // Retry pending uploads on return/reconnect, and keep calendar totals current.
+  useEffect(() => {
+    if (screen !== "app") return;
+    const userId = isGuest ? "guest" : authUser?.id;
+    if (!userId) return;
+    const refresh = () => {
+      setHistory(workoutHistory.load(userId));
+      void workoutHistory.sync(userId).then(result => {
+        if (activeUserId.current === userId) setHistory(result.history);
+      });
+    };
+    const tick = setInterval(() => forceRender(n => n + 1), 60_000);
+    window.addEventListener("online", refresh);
+    window.addEventListener("focus", refresh);
+    return () => {
+      clearInterval(tick);
+      window.removeEventListener("online", refresh);
+      window.removeEventListener("focus", refresh);
+    };
+  }, [screen, isGuest, authUser?.id]);
 
   const handleThemeChange = (id: string) => {
     applyTheme(id, isGuest ? undefined : authUser?.id);
@@ -3452,7 +3492,7 @@ export default function App() {
 
         {/* Active workout */}
         {screen === "app" && activeWorkout && (
-          <WorkoutTimer workout={activeWorkout} onDone={endWorkout} />
+          <WorkoutTimer workout={activeWorkout} onDone={endWorkout} onComplete={completeWorkout} />
         )}
 
         {/* Workout detail */}
@@ -3491,7 +3531,7 @@ export default function App() {
                 currentThemeId={themeId}
                 onThemeChange={handleThemeChange}
                 onSignOut={isGuest
-                  ? () => { localStorage.removeItem(GUEST_KEY); setIsGuest(false); setProfile(null); setHistory([]); setWeekWorkouts([]); setRecovery(88); setScreen("auth"); }
+                  ? () => { guestSave({ isGuest: false }); activeUserId.current = null; setIsGuest(false); setProfile(null); setHistory([]); setScreen("auth"); }
                   : async () => { await signOut(); }
                 }
               />
