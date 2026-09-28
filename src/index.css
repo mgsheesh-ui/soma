@@ -1,1 +1,3 @@
-/* Cleared default Vite CSS to allow App.tsx to dictate full screen styling */
+/* Soma's screens define their own surfaces; keep the document from adding a white frame. */
+html, body, #root { min-height: 100%; }
+body { margin: 0; }

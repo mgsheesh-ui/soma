@@ -6,6 +6,10 @@ export interface WorkoutLog {
   duration_mins: number;
   calories: number;
   completed_at: string;
+  completed_sets?: number;
+  skipped_sets?: number;
+  total_sets?: number;
+  completion_status?: "completed" | "partial";
 }
 
 interface Snapshot {
