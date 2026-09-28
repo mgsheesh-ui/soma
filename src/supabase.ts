@@ -172,6 +172,12 @@ export async function loadLatestBodyStat(userId: string): Promise<BodyStat | nul
   return data as BodyStat;
 }
 
+export async function loadBodyStats(userId: string): Promise<BodyStat[]> {
+  const { data, error } = await supabase.from("body_stats").select("*").eq("user_id", userId).order("logged_at", { ascending: true });
+  if (error) { console.error("[Soma] loadBodyStats:", error.message); return []; }
+  return (data as BodyStat[]) || [];
+}
+
 // ── WEIGHT LOG ────────────────────────────────────────────────────────────────
 
 export async function loadWeightLog(userId: string): Promise<WeightEntry[]> {
@@ -207,8 +213,17 @@ export const workoutHistory = createWorkoutHistoryStore(
   {
     async insert(entry) {
       // Retrying an acknowledged or interrupted upload must count only once.
+      const storedEntry = {
+        id: entry.id,
+        user_id: entry.user_id,
+        workout_id: entry.workout_id,
+        workout_name: entry.workout_name,
+        duration_mins: entry.duration_mins,
+        calories: entry.calories,
+        completed_at: entry.completed_at,
+      };
       const { error } = await supabase.from("workout_history")
-        .upsert(entry, { onConflict: "id", ignoreDuplicates: true });
+        .upsert(storedEntry, { onConflict: "id", ignoreDuplicates: true });
       if (error) throw new Error(error.message);
     },
     async load(userId) {

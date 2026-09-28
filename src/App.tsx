@@ -981,7 +981,7 @@ function WorkoutDetail({ workout, onBack, onStart }: { workout: any, onBack: () 
 function WorkoutTimer({ workout, onDone, onComplete }: {
   workout: any;
   onDone: () => void;
-  onComplete: (workout: any, completion: { id: string; completed_at: string }) => Promise<string>;
+  onComplete: (workout: any, completion: { id: string; completed_at: string; completed_sets: number; skipped_sets: number; total_sets: number; completion_status: "completed" | "partial" }) => Promise<string>;
 }) {
   const [exIdx, setExIdx] = useState(0);
   const [setIdx, setSetIdx] = useState(0);
@@ -989,7 +989,9 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
   const [seconds, setSeconds] = useState<number | null>(null);
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const completion = useRef<{ id: string; completed_at: string } | null>(null);
+  const completion = useRef<{ id: string; completed_at: string; completed_sets: number; skipped_sets: number; total_sets: number; completion_status: "completed" | "partial" } | null>(null);
+  const [completedSets, setCompletedSets] = useState(0);
+  const [skippedSets, setSkippedSets] = useState(0);
   const [saveMessage, setSaveMessage] = useState("");
   const [saveError, setSaveError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -998,7 +1000,15 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
   const saveCompletion = useCallback(async () => {
     if (saveInFlight.current) return;
     saveInFlight.current = true;
-    completion.current ??= { id: crypto.randomUUID(), completed_at: new Date().toISOString() };
+    const totalSetsPlanned = workout.exercises.reduce((sum: number, item: any) => sum + (Number(item.sets) || 1), 0);
+    completion.current ??= {
+      id: crypto.randomUUID(),
+      completed_at: new Date().toISOString(),
+      completed_sets: completedSets,
+      skipped_sets: skippedSets,
+      total_sets: totalSetsPlanned,
+      completion_status: skippedSets > 0 ? "partial" : "completed",
+    };
     setSaving(true);
     setSaveError("");
     try {
@@ -1009,7 +1019,7 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
       saveInFlight.current = false;
       setSaving(false);
     }
-  }, [onComplete, workout]);
+  }, [completedSets, onComplete, skippedSets, workout]);
 
   useEffect(() => {
     if (phase === "done") void saveCompletion();
@@ -1024,6 +1034,7 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
   const overallPct = ((exIdx * 10 + setIdx) / (totalEx * 10)) * 100;
 
   const startRest = useCallback(() => {
+    setCompletedSets(count => count + 1);
     setPhase("rest");
     setSeconds(ex.rest as number);
     setRunning(true);
@@ -1172,11 +1183,11 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
             fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 14, cursor: "pointer"
           }}>Skip Rest →</button>
         )}
-        <button className="btn-press" onClick={nextSet} style={{
+        <button className="btn-press" onClick={() => { setSkippedSets(count => count + 1); nextSet(); }} style={{
           padding: "14px", background: "none",
           border: `1.5px solid ${T.border}`, borderRadius: 50, color: T.muted,
           fontFamily: "'Syne', sans-serif", fontWeight: 600, fontSize: 13, cursor: "pointer"
-        }}>Skip Exercise</button>
+        }}>Skip Set</button>
       </div>
     </div>
   );
@@ -1193,6 +1204,7 @@ function AITrainerChat({ profile, onOpenWorkout, onStart }: { profile: any, onOp
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isListening, setIsListening] = useState(false);
+  const [generatedWorkout, setGeneratedWorkout] = useState<any>(null);
 
   // Speech Recognition setup
   const startListening = () => {
@@ -1282,13 +1294,7 @@ Keep responses concise (2-4 sentences max unless asked for detail). Be encouragi
       if (jsonMatch && jsonMatch[1]) {
         try {
           const workout = JSON.parse(jsonMatch[1]);
-          if (onOpenWorkout && onStart) {
-            // Short delay for the message to be readable
-            setTimeout(() => {
-              onOpenWorkout(workout);
-              onStart(workout);
-            }, 1500);
-          }
+          setGeneratedWorkout(workout);
         } catch (err) {
           console.error("Failed to parse generated workout:", err);
         }
@@ -1338,6 +1344,17 @@ Keep responses concise (2-4 sentences max unless asked for detail). Be encouragi
         )}
 
         {error && <p style={{ color: T.orange, fontSize: 12, textAlign: "center" }}>{error}</p>}
+        {generatedWorkout && (
+          <div className="fadeUp" style={{ background: T.surface2, border: `1px solid ${T.lime}55`, borderRadius: 16, padding: 14 }}>
+            <p style={{ color: T.lime, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 5 }}>Workout ready</p>
+            <p style={{ color: T.white, fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{generatedWorkout.emoji || "🏋️"} {generatedWorkout.name}</p>
+            <p style={{ color: T.muted, fontSize: 12, marginBottom: 12 }}>{generatedWorkout.exercises?.length || 0} exercises · {generatedWorkout.duration || "—"} minutes</p>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button className="btn-press" onClick={() => { onOpenWorkout?.(generatedWorkout); setGeneratedWorkout(null); }} style={{ flex: 1, padding: "10px 12px", background: "none", border: `1px solid ${T.lime}`, borderRadius: 50, color: T.lime, fontWeight: 700, cursor: "pointer" }}>Review</button>
+              <button className="btn-press" onClick={() => { onStart?.(generatedWorkout); setGeneratedWorkout(null); }} style={{ flex: 1, padding: "10px 12px", background: T.lime, border: "none", borderRadius: 50, color: accentText(), fontWeight: 800, cursor: "pointer" }}>Start</button>
+            </div>
+          </div>
+        )}
         <div ref={bottomRef} />
       </div>
 
@@ -2072,25 +2089,44 @@ function ProgressPhotosSection({ userId }: { userId?: string }) {
   const [locked, setLocked] = React.useState(true);
   const [showAdd, setShowAdd] = React.useState(false);
   const [label, setLabel] = React.useState("Front");
+  const [saveError, setSaveError] = React.useState("");
   const fileRef = React.useRef<HTMLInputElement>(null);
 
   const save = (updated: typeof photos) => {
     setPhotos(updated);
-    try { localStorage.setItem(storageKey, JSON.stringify(updated)); } catch { }
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(updated));
+      setSaveError("");
+    } catch {
+      setSaveError("Your browser is out of storage. Remove an old photo and try again.");
+    }
   };
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 12 * 1024 * 1024) {
+      setSaveError("Choose a photo smaller than 12 MB.");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
-      const entry = {
-        dataUrl: reader.result as string,
-        date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-        label,
+      const image = new Image();
+      image.onload = () => {
+        const scale = Math.min(1, 1200 / Math.max(image.width, image.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(image.width * scale));
+        canvas.height = Math.max(1, Math.round(image.height * scale));
+        canvas.getContext("2d")?.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const entry = {
+          dataUrl: canvas.toDataURL("image/jpeg", 0.82),
+          date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+          label,
+        };
+        save([entry, ...photos]);
+        setShowAdd(false);
       };
-      save([entry, ...photos]);
-      setShowAdd(false);
+      image.src = reader.result as string;
     };
     reader.readAsDataURL(file);
   };
@@ -2144,6 +2180,8 @@ function ProgressPhotosSection({ userId }: { userId?: string }) {
           }}>📷 Take / Choose Photo</button>
         </div>
       )}
+
+      {saveError && <p role="alert" style={{ color: T.orange, fontSize: 12, lineHeight: 1.4, marginBottom: 12 }}>{saveError}</p>}
 
       {locked && photos.length > 0 ? (
         <div onClick={() => setLocked(false)} style={{
@@ -2335,7 +2373,7 @@ function LetterToFutureSelf({ userId }: { userId?: string }) {
   );
 }
 
-function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog[] }) {
+function ProgressTab({ userId, history, profile }: { userId?: string; history: WorkoutLog[]; profile?: any }) {
   const CHART_H = 90;
   const LABEL_H = 18;
   const VALUE_H = 16;
@@ -2353,9 +2391,17 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
 
   // ── Weight log — load from Supabase on mount, fall back to empty ─────────
   const [weightLog, setWeightLog] = useState<{ label: string; value: number }[]>([]);
+  const statsKey = `soma_body_stats_${userId || "guest"}`;
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId) {
+      try {
+        const saved = JSON.parse(localStorage.getItem(statsKey) || "null");
+        if (saved?.stats) setStats(saved.stats);
+        if (Array.isArray(saved?.weightLog)) setWeightLog(saved.weightLog);
+      } catch { /* keep an empty local state */ }
+      return;
+    }
     loadLatestBodyStat(userId).then(stat => {
       if (stat) {
         setStats({
@@ -2375,7 +2421,7 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
         setWeightLog(log.map(e => ({ label: e.label, value: e.value })));
       }
     });
-  }, [userId]);
+  }, [statsKey, userId]);
 
   const saveStats = async () => {
     setStats({ ...draftStats });
@@ -2405,16 +2451,17 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
         setWeightLog(freshLog.map(e => ({ label: e.label, value: e.value })));
       }
     } else {
-      // Not logged in — just update local state
+      // Guest users get the same persistence guarantees as signed-in users.
       const newW = parseFloat(draftStats.weight);
-      if (!isNaN(newW) && newW > 0) {
-        setWeightLog(prev => {
+      setWeightLog(prev => {
+        let next = prev;
+        if (!isNaN(newW) && newW > 0) {
           const last = prev[prev.length - 1];
-          if (last && last.value === newW) return prev;
-          const next = [...prev, { label: monthLabel, value: newW }];
-          return next.length > 8 ? next.slice(next.length - 8) : next;
-        });
-      }
+          if (!last || last.value !== newW) next = [...prev, { label: monthLabel, value: newW }].slice(-8);
+        }
+        try { localStorage.setItem(statsKey, JSON.stringify({ stats: draftStats, weightLog: next })); } catch { /* show the values in this session */ }
+        return next;
+      });
     }
     setSavingStats(false);
     setShowStatsForm(false);
@@ -2426,6 +2473,10 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
   const totalLost = weightLog.length > 1
     ? (weightLog[0].value - weightLog[weightLog.length - 1].value).toFixed(1)
     : "—";
+  const weeklyTarget = Math.max(1, Number(profile?.days) || 4);
+  const completedThisWeek = thisWeekWorkouts(history).length;
+  const accountability = Math.min(100, Math.round((completedThisWeek / weeklyTarget) * 100));
+  const accountabilityLabel = accountability >= 100 ? "Target reached" : accountability >= 70 ? "Strong week" : accountability > 0 ? "Keep building" : "Ready to begin";
 
   const inputStyle = (_focused: boolean): React.CSSProperties => ({
     width: "100%", background: T.surface2,
@@ -2546,6 +2597,29 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
         ))}
       </div>
 
+      <Card style={{ padding: "18px 16px", marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <p style={{ color: T.white, fontFamily: "'Cormorant Garamond', serif", fontSize: 16 }}>Recent Workouts</p>
+          <span style={{ color: T.muted, fontSize: 10 }}>{history.length} total</span>
+        </div>
+        {history.length === 0 ? (
+          <p style={{ color: T.muted, fontSize: 12, lineHeight: 1.5 }}>Your completed sessions will appear here.</p>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {history.slice(0, 5).map((session, index) => (
+              <div key={session.id || index} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: index < Math.min(4, history.length - 1) ? `1px solid ${T.border}` : "none" }}>
+                <div style={{ width: 32, height: 32, borderRadius: 10, background: `${T.lime}18`, color: T.lime, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>✓</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ color: T.white, fontSize: 13, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{session.workout_name}</p>
+                  <p style={{ color: T.muted, fontSize: 10 }}>{new Date(session.completed_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })} · {session.duration_mins || 0} min · {session.calories || 0} kcal</p>
+                </div>
+                {session.completion_status === "partial" && <span style={{ color: T.orange, fontSize: 10, fontWeight: 700 }}>Partial</span>}
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
+
       <ProgressPhotosSection userId={userId} />
 
       {/* ── Weight Trend Chart ───────────────────────────────────────────── */}
@@ -2604,12 +2678,12 @@ function ProgressTab({ userId, history }: { userId?: string; history: WorkoutLog
       <Card style={{ padding: "18px", marginBottom: 16 }}>
         <p style={{ color: T.white, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", marginBottom: 14, fontSize: 16, letterSpacing: 0.3 }}>Accountability</p>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <Ring pct={84} color={T.lime} size={72} stroke={6}>
-            <span style={{ color: T.white, fontWeight: 800, fontSize: 18, fontFamily: "'Syne', sans-serif" }}>84</span>
+          <Ring pct={accountability} color={T.lime} size={72} stroke={6}>
+            <span style={{ color: T.white, fontWeight: 800, fontSize: 18, fontFamily: "'Syne', sans-serif" }}>{accountability}</span>
           </Ring>
           <div>
-            <p style={{ color: T.lime, fontWeight: 600, marginBottom: 4, fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontStyle: "italic" }}>Excellent!</p>
-            <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.5 }}>84% of scheduled workouts completed. Top 12% of all users.</p>
+            <p style={{ color: T.lime, fontWeight: 600, marginBottom: 4, fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontStyle: "italic" }}>{accountabilityLabel}</p>
+            <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.5 }}>{completedThisWeek} of {weeklyTarget} planned workouts completed this week.</p>
           </div>
         </div>
       </Card>
@@ -2770,15 +2844,9 @@ function TrainingPartnerCard({ userId }: { userId?: string }) {
   const [copied, setCopied] = React.useState(false);
   const [entering, setEntering] = React.useState(false);
 
-  // Simulated partner streak data (in a real app this would come from Supabase)
-  const partnerStreakDays = React.useMemo(() => {
-    if (!partnerCode) return new Set<number>();
-    // Deterministically generate fake-but-consistent streak from their code
-    const seed = partnerCode.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
-    const days = new Set<number>();
-    [0, 2, 3, 5].forEach(d => { if ((seed + d) % 3 !== 0) days.add(d); });
-    return days;
-  }, [partnerCode]);
+  // Partner activity is shown only after a real account link is available.
+  // Never invent activity from the code itself.
+  const partnerStreakDays = React.useMemo(() => new Set<number>(), [partnerCode]);
 
   const copy = () => {
     navigator.clipboard.writeText(myCode).catch(() => { });
@@ -2859,9 +2927,7 @@ function TrainingPartnerCard({ userId }: { userId?: string }) {
             })}
           </div>
           <p style={{ color: T.muted, fontSize: 11, textAlign: "center", marginTop: 10, fontStyle: "italic" }}>
-            {partnerStreakDays.size >= 4 ? "They're crushing it this week 🔥" :
-              partnerStreakDays.size >= 2 ? "They've been showing up 💪" :
-                "They could use some motivation today ✨"}
+            {partnerStreakDays.size > 0 ? "They're showing up this week 🔥" : "Activity will appear when your partner connects their Soma account."}
           </p>
         </div>
       ) : entering ? (
@@ -2908,58 +2974,20 @@ function TrainingPartnerCard({ userId }: { userId?: string }) {
   );
 }
 
-// ─── PROFILE + THEME TAB ─────────────────────────────────────────────────────
-function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { profile: any, currentThemeId: string, onThemeChange: (id: string) => void, onSignOut?: () => void }) {
-  const themeList = Object.values(THEMES);
+function WhyIStarted({ profileId }: { profileId?: string }) {
+  const storageKey = `soma_why_${profileId || "guest"}`;
+  const [why, setWhy] = useState(() => {
+    try { return localStorage.getItem(storageKey) || ""; } catch { return ""; }
+  });
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(why);
+  const save = () => {
+    setWhy(draft);
+    try { localStorage.setItem(storageKey, draft); } catch { /* keep the text for this session */ }
+    setEditing(false);
+  };
 
   return (
-    <div>
-      {/* Header */}
-      <div style={{ marginBottom: 24 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <ProfilePicture profile={profile} size={64} />
-          <div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: T.white, fontWeight: 400, letterSpacing: 0.3, marginBottom: 2 }}>
-              {profile?.name || "Athlete"}
-            </h2>
-            <p style={{ color: T.muted, fontSize: 12 }}>Member since Jan 2025 · Pro Plan</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Profile details */}
-      <div style={{ marginBottom: 28 }}>
-        {[
-          { k: "Goal", v: profile?.goal || "Build Muscle" },
-          { k: "Level", v: profile?.level || "Intermediate" },
-          { k: "Schedule", v: `${profile?.days || 4} days / week` },
-        ].map((row, i) => (
-          <div key={i} style={{
-            display: "flex", justifyContent: "space-between", alignItems: "center",
-            padding: "13px 0", borderBottom: `1px solid ${T.border}`
-          }}>
-            <span style={{ color: T.muted, fontSize: 13 }}>{row.k}</span>
-            <span style={{ color: T.white, fontSize: 13, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", textTransform: "capitalize" }}>{row.v}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* ── WHY I STARTED ─────────────────────────────────────────────────── */}
-      {(() => {
-        const storageKey = `soma_why_${profile?.id || "guest"}`;
-        const [why, setWhy] = React.useState(() => {
-          try { return localStorage.getItem(storageKey) || ""; } catch { return ""; }
-        });
-        const [editing, setEditing] = React.useState(false);
-        const [draft, setDraft] = React.useState(why);
-
-        const save = () => {
-          setWhy(draft);
-          try { localStorage.setItem(storageKey, draft); } catch { }
-          setEditing(false);
-        };
-
-        return (
           <div style={{ marginBottom: 28 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
               <div>
@@ -3019,7 +3047,46 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
             )}
           </div>
         );
-      })()}
+}
+
+// ─── PROFILE + THEME TAB ─────────────────────────────────────────────────────
+function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { profile: any, currentThemeId: string, onThemeChange: (id: string) => void, onSignOut?: () => void }) {
+  const themeList = Object.values(THEMES);
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <ProfilePicture profile={profile} size={64} />
+          <div>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: T.white, fontWeight: 400, letterSpacing: 0.3, marginBottom: 2 }}>
+              {profile?.name || "Athlete"}
+            </h2>
+            <p style={{ color: T.muted, fontSize: 12 }}>Member since Jan 2025 · Pro Plan</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Profile details */}
+      <div style={{ marginBottom: 28 }}>
+        {[
+          { k: "Goal", v: profile?.goal || "Build Muscle" },
+          { k: "Level", v: profile?.level || "Intermediate" },
+          { k: "Schedule", v: `${profile?.days || 4} days / week` },
+        ].map((row, i) => (
+          <div key={i} style={{
+            display: "flex", justifyContent: "space-between", alignItems: "center",
+            padding: "13px 0", borderBottom: `1px solid ${T.border}`
+          }}>
+            <span style={{ color: T.muted, fontSize: 13 }}>{row.k}</span>
+            <span style={{ color: T.white, fontSize: 13, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", textTransform: "capitalize" }}>{row.v}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* ── WHY I STARTED ─────────────────────────────────────────────────── */}
+      <WhyIStarted profileId={profile?.id} />
 
       {/* ── THEME SWITCHER ─────────────────────────────────────────────── */}
       <div>
@@ -3315,13 +3382,13 @@ export default function App() {
   const openWorkout = (w: any) => { setWorkoutDetail(w); setActiveWorkout(null); };
   const startWorkout = (w: any) => { setActiveWorkout(w); setWorkoutDetail(null); };
 
-  const completeWorkout = useCallback(async (completedWorkout: any, completion: { id: string; completed_at: string }) => {
+  const completeWorkout = useCallback(async (completedWorkout: any, completion: { id: string; completed_at: string; completed_sets: number; skipped_sets: number; total_sets: number; completion_status: "completed" | "partial" }) => {
     const userId = isGuest ? "guest" : authUser?.id;
     if (!userId) throw new Error("Please sign in again to save this workout.");
     const entry: WorkoutLog = {
       ...completion,
       user_id: userId,
-      workout_id: completedWorkout.id,
+      workout_id: typeof completedWorkout.id === "number" ? completedWorkout.id : 0,
       workout_name: completedWorkout.name,
       duration_mins: completedWorkout.duration,
       calories: completedWorkout.cal,
@@ -3523,6 +3590,7 @@ export default function App() {
               <ProgressTab
                 userId={isGuest ? undefined : authUser?.id}
                 history={history}
+                profile={profile}
               />
             )}
             {tab === "profile" && (
