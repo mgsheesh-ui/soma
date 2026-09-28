@@ -2138,7 +2138,7 @@ function ProgressPhotosSection({ userId }: { userId?: string }) {
 
   return (
     <Card style={{ padding: "18px", marginBottom: 16 }}>
-      <input ref={fileRef} type="file" accept="image/*" capture="environment" onChange={handleFile} style={{ display: "none" }} />
+      <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} style={{ display: "none" }} />
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
         <div>
@@ -2177,7 +2177,7 @@ function ProgressPhotosSection({ userId }: { userId?: string }) {
             background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
             border: "none", borderRadius: 50, color: accentText(),
             fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13, cursor: "pointer"
-          }}>📷 Take / Choose Photo</button>
+          }}>🖼️ Choose Photo</button>
         </div>
       )}
 
@@ -2761,7 +2761,7 @@ function ProfilePicture({ profile, onUpdate, size = 64 }: { profile: any, onUpda
 
   return (
     <div style={{ position: "relative" }}>
-      <input ref={fileRef} type="file" accept="image/*" capture="user" onChange={handleFile} style={{ display: "none" }} />
+      <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} style={{ display: "none" }} />
       <div
         onClick={() => setShowMenu(s => !s)}
         style={{
@@ -2803,7 +2803,7 @@ function ProfilePicture({ profile, onUpdate, size = 64 }: { profile: any, onUpda
               padding: "10px 14px", color: T.white, cursor: "pointer",
               fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 600,
               display: "flex", alignItems: "center", gap: 8, textAlign: "left"
-            }}>📷 Take a photo / Upload</button>
+            }}>🖼️ Choose Photo</button>
           </div>
           <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8, fontFamily: "'Syne', sans-serif" }}>Or pick an avatar</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
