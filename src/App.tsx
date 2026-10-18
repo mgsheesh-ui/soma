@@ -189,9 +189,9 @@ function bgText() {
 }
 
 const css = `
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700;800&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--app-bg, #130205); }
+  body { background: var(--app-bg, #130205); font-family: 'EB Garamond', serif; }
   ::-webkit-scrollbar { width: 0; }
   input, textarea { font-family: inherit; }
   @keyframes fadeUp {
@@ -262,7 +262,7 @@ function Pill({ children, color = T.lime, bg, onClick, style = {} }: { children?
       color, borderRadius: 50, padding: "8px 18px",
       fontSize: 12, fontWeight: 700, letterSpacing: 0.8,
       textTransform: "uppercase", cursor: "pointer",
-      fontFamily: "'Syne', sans-serif",
+      fontFamily: "'EB Garamond', serif",
       transition: "all 0.2s", ...style
     }}>{children}</button>
   );
@@ -301,14 +301,14 @@ function AuthScreen({ onGuestMode }: { onGuestMode: () => void }) {
   if (sent) return (
     <div className="fadeUp" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 28px", textAlign: "center" }}>
       <div style={{ fontSize: 52, marginBottom: 20 }}>📬</div>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, color: T.white, marginBottom: 12 }}>Check your email</h2>
+      <h2 style={{ fontFamily: "'EB Garamond', serif", fontSize: 32, color: T.white, marginBottom: 12 }}>Check your email</h2>
       <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.6, maxWidth: 280 }}>
         We sent a magic link to <strong style={{ color: T.lime }}>{email}</strong>. Click it to sign in — no password needed.
       </p>
       <button onClick={() => { setSent(false); setEmail(""); }} style={{
         marginTop: 28, background: "none", border: `1px solid ${T.border}`,
         borderRadius: 50, padding: "10px 24px", color: T.muted,
-        fontFamily: "'Syne', sans-serif", fontWeight: 600, fontSize: 12, cursor: "pointer"
+        fontFamily: "'EB Garamond', serif", fontWeight: 600, fontSize: 12, cursor: "pointer"
       }}>Use a different email</button>
     </div>
   );
@@ -322,7 +322,7 @@ function AuthScreen({ onGuestMode }: { onGuestMode: () => void }) {
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: 32, boxShadow: `0 20px 50px ${T.lime}44`
         }}>✦</div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 44, color: T.white, fontWeight: 300, letterSpacing: -1, marginBottom: 8 }}>Soma</h1>
+        <h1 style={{ fontFamily: "'EB Garamond', serif", fontSize: 44, color: T.white, fontWeight: 300, letterSpacing: -1, marginBottom: 8 }}>Soma</h1>
         <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.6 }}>Your intelligent fitness trainer</p>
       </div>
 
@@ -333,7 +333,7 @@ function AuthScreen({ onGuestMode }: { onGuestMode: () => void }) {
             width: "100%", padding: "15px", borderRadius: 50,
             background: T.surface2, border: `1.5px solid ${T.border}`,
             color: T.white, display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-            fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 14, cursor: "pointer",
+            fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 14, cursor: "pointer",
           }}>
             <svg width="20" height="20" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -348,7 +348,7 @@ function AuthScreen({ onGuestMode }: { onGuestMode: () => void }) {
             width: "100%", padding: "15px", borderRadius: 50,
             background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
             border: "none", color: accentText(),
-            fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 14, cursor: "pointer",
+            fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 14, cursor: "pointer",
           }}>Continue with Email →</button>
           {error && <p style={{ color: "#ff4444", fontSize: 12, textAlign: "center" }}>{error}</p>}
           <p style={{ color: T.muted, fontSize: 11, textAlign: "center", marginTop: 8, lineHeight: 1.5 }}>
@@ -362,7 +362,7 @@ function AuthScreen({ onGuestMode }: { onGuestMode: () => void }) {
           <button className="btn-press" onClick={onGuestMode} style={{
             width: "100%", padding: "13px", borderRadius: 50,
             background: "none", border: `1.5px solid ${T.border}`,
-            color: T.muted, fontFamily: "'Syne', sans-serif",
+            color: T.muted, fontFamily: "'EB Garamond', serif",
             fontWeight: 600, fontSize: 13, cursor: "pointer",
             transition: "border-color 0.2s, color 0.2s",
           }}
@@ -381,7 +381,7 @@ function AuthScreen({ onGuestMode }: { onGuestMode: () => void }) {
               width: "100%", background: T.surface2,
               border: `2px solid ${T.border}`, borderRadius: 14,
               padding: "16px 18px", color: T.white, fontSize: 16,
-              fontFamily: "'Syne', sans-serif", outline: "none",
+              fontFamily: "'EB Garamond', serif", outline: "none",
               marginBottom: 12, transition: "border-color 0.2s",
             }}
             onFocus={e => (e.target.style.borderColor = T.lime)}
@@ -391,12 +391,12 @@ function AuthScreen({ onGuestMode }: { onGuestMode: () => void }) {
             width: "100%", padding: "15px", borderRadius: 50,
             background: email.trim() ? `linear-gradient(135deg, ${T.lime}, ${T.orange})` : T.dim,
             border: "none", color: accentText(),
-            fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 14,
+            fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 14,
             cursor: email.trim() ? "pointer" : "default", marginBottom: 12,
           }}>{loading ? "Sending…" : "Send Magic Link →"}</button>
           <button onClick={() => setMode("options")} style={{
             background: "none", border: "none", color: T.muted,
-            fontFamily: "'Syne', sans-serif", fontSize: 12, cursor: "pointer",
+            fontFamily: "'EB Garamond', serif", fontSize: 12, cursor: "pointer",
             width: "100%", textAlign: "center", padding: "8px",
           }}>← Back</button>
           {error && <p style={{ color: "#ff4444", fontSize: 12, textAlign: "center" }}>{error}</p>}
@@ -449,7 +449,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: 36, boxShadow: `0 20px 60px rgba(147,183,190,0.35)`
         }}>✦</div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 42, color: T.white, fontWeight: 700, lineHeight: 1.1, marginBottom: 12 }}>
+        <h1 style={{ fontFamily: "'EB Garamond', serif", fontSize: 42, color: T.white, fontWeight: 700, lineHeight: 1.1, marginBottom: 12 }}>
           Welcome to<br /><span style={{ color: T.lime }}>Soma</span>
         </h1>
         <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.6, maxWidth: 280, margin: "0 auto" }}>
@@ -468,7 +468,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
         marginTop: 32, width: "100%", padding: "16px",
         background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
         border: "none", borderRadius: 50, color: accentText(),
-        fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
+        fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
       }}>Let's Get Started →</button>
     </div>
   );
@@ -483,7 +483,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
         fontSize: 44, animation: "pulse 2s infinite",
         boxShadow: `0 0 60px rgba(147,183,190,0.45)`
       }}>🔥</div>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, color: T.white, marginBottom: 12 }}>
+      <h2 style={{ fontFamily: "'EB Garamond', serif", fontSize: 36, color: T.white, marginBottom: 12 }}>
         You're all set,<br /><span style={{ color: T.lime }}>{profile.name || "Champion"}!</span>
       </h2>
       <p style={{ color: T.muted, fontSize: 14, marginBottom: 32 }}>
@@ -505,7 +505,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
         width: "100%", padding: "16px",
         background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
         border: "none", borderRadius: 50, color: accentText(),
-        fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
+        fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
       }}>Enter Soma →</button>
     </div>
   );
@@ -515,7 +515,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
     <div className="fadeUp" style={{ flex: 1, display: "flex", flexDirection: "column", padding: "48px 28px 28px" }}>
       <div style={{ marginBottom: "auto" }}>
         <p style={{ color: T.muted, fontSize: 12, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>Step {step} of {OB_STEPS.length - 2}</p>
-        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 30, color: T.white, fontWeight: 300, marginBottom: 32, lineHeight: 1.2 }}>{cur.q}</h2>
+        <h2 style={{ fontFamily: "'EB Garamond', serif", fontSize: 30, color: T.white, fontWeight: 300, marginBottom: 32, lineHeight: 1.2 }}>{cur.q}</h2>
         <input
           autoFocus
           placeholder={cur.placeholder}
@@ -524,7 +524,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
           style={{
             width: "100%", background: T.surface2, border: `2px solid ${T.border}`,
             borderRadius: 14, padding: "16px 18px", color: T.white, fontSize: 18,
-            fontFamily: "'Syne', sans-serif", fontWeight: 600, outline: "none",
+            fontFamily: "'EB Garamond', serif", fontWeight: 600, outline: "none",
             transition: "border-color 0.2s"
           }}
           onFocus={e => e.target.style.borderColor = T.lime}
@@ -538,7 +538,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
         marginTop: 24, padding: "16px",
         background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
         border: "none", borderRadius: 50, color: accentText(),
-        fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
+        fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
       }}>Continue →</button>
     </div>
   );
@@ -547,7 +547,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
   if (cur.type === "choice") return (
     <div className="fadeUp" style={{ flex: 1, display: "flex", flexDirection: "column", padding: "48px 28px 28px" }}>
       <p style={{ color: T.muted, fontSize: 12, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>Step {step} of {OB_STEPS.length - 2}</p>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 30, color: T.white, fontWeight: 300, marginBottom: 28, lineHeight: 1.2 }}>{cur.q}</h2>
+      <h2 style={{ fontFamily: "'EB Garamond', serif", fontSize: 30, color: T.white, fontWeight: 300, marginBottom: 28, lineHeight: 1.2 }}>{cur.q}</h2>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
         {(cur.choices ?? []).map((c, i) => (
           <button key={c.id} className="btn-press fadeUp" onClick={() => next({ [cur.id]: c.label })} style={{
@@ -562,7 +562,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
           >
             <span style={{ fontSize: 28 }}>{c.icon}</span>
             <div>
-              <p style={{ color: T.white, fontWeight: 500, fontFamily: "'Syne', sans-serif", fontSize: 14, marginBottom: 2 }}>{c.label}</p>
+              <p style={{ color: T.white, fontWeight: 500, fontFamily: "'EB Garamond', serif", fontSize: 14, marginBottom: 2 }}>{c.label}</p>
               <p style={{ color: T.muted, fontSize: 12 }}>{c.desc}</p>
             </div>
             <span style={{ marginLeft: "auto", color: T.muted, fontSize: 18 }}>›</span>
@@ -576,14 +576,14 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
   if (cur.type === "stepper") return (
     <div className="fadeUp" style={{ flex: 1, display: "flex", flexDirection: "column", padding: "48px 28px 28px" }}>
       <p style={{ color: T.muted, fontSize: 12, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>Step {step} of {OB_STEPS.length - 2}</p>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 30, color: T.white, fontWeight: 300, marginBottom: 48, lineHeight: 1.2 }}>{cur.q}</h2>
+      <h2 style={{ fontFamily: "'EB Garamond', serif", fontSize: 30, color: T.white, fontWeight: 300, marginBottom: 48, lineHeight: 1.2 }}>{cur.q}</h2>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 32, marginBottom: "auto" }}>
         <button className="btn-press" onClick={() => setProfile(p => ({ ...p, days: Math.max(cur.min ?? 1, p.days - 1) }))} style={{
           width: 56, height: 56, borderRadius: "50%", background: T.surface2,
           border: `2px solid ${T.border}`, color: T.white, fontSize: 24, cursor: "pointer"
         }}>−</button>
         <div style={{ textAlign: "center" }}>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 80, color: T.lime, fontWeight: 700, lineHeight: 1 }}>{profile.days}</span>
+          <span style={{ fontFamily: "'EB Garamond', serif", fontSize: 80, color: T.lime, fontWeight: 700, lineHeight: 1 }}>{profile.days}</span>
           <p style={{ color: T.muted, fontSize: 13, marginTop: 4 }}>days per week</p>
         </div>
         <button className="btn-press" onClick={() => setProfile(p => ({ ...p, days: Math.min(cur.max ?? 7, p.days + 1) }))} style={{
@@ -604,7 +604,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (profile: Record<string, a
         padding: "16px",
         background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
         border: "none", borderRadius: 50, color: accentText(),
-        fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
+        fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
       }}>Continue →</button>
     </div>
   );
@@ -869,7 +869,7 @@ function WorkoutDetail({ workout, onBack, onStart }: { workout: any, onBack: () 
 
         {isProgram && (
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-            <span style={{ color: T.muted, fontSize: 9, letterSpacing: 1.5, textTransform: "uppercase", fontFamily: "'Syne', sans-serif" }}>{programLabel}</span>
+            <span style={{ color: T.muted, fontSize: 9, letterSpacing: 1.5, textTransform: "uppercase", fontFamily: "'EB Garamond', serif" }}>{programLabel}</span>
             <span style={{ color: programColor, fontWeight: 700, fontSize: 11, background: programColor + "18", borderRadius: 50, padding: "2px 10px" }}>{workout.split}</span>
           </div>
         )}
@@ -882,7 +882,7 @@ function WorkoutDetail({ workout, onBack, onStart }: { workout: any, onBack: () 
             display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, flexShrink: 0
           }}>{workout.emoji}</div>
           <div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: T.white, fontWeight: 400, marginBottom: 2 }}>{workout.name}</h2>
+            <h2 style={{ fontFamily: "'EB Garamond', serif", fontSize: 28, color: T.white, fontWeight: 400, marginBottom: 2 }}>{workout.name}</h2>
             {workout.subtitle && <p style={{ color: T.muted, fontSize: 13, marginBottom: 8 }}>{workout.subtitle}</p>}
             <div style={{ display: "flex", gap: 8 }}>
               <Pill color={T.lime} style={{ fontSize: 11 }}>{workout.level}</Pill>
@@ -899,7 +899,7 @@ function WorkoutDetail({ workout, onBack, onStart }: { workout: any, onBack: () 
           ].map((s, i) => (
             <div key={i} style={{ background: T.surface, borderRadius: 12, padding: "12px", textAlign: "center", border: `1px solid ${T.border}` }}>
               <p style={{ fontSize: 18, marginBottom: 2 }}>{s.icon}</p>
-              <p style={{ color: T.white, fontWeight: 800, fontSize: 16, fontFamily: "'Syne', sans-serif" }}>{s.val}</p>
+              <p style={{ color: T.white, fontWeight: 800, fontSize: 16, fontFamily: "'EB Garamond', serif" }}>{s.val}</p>
               <p style={{ color: T.muted, fontSize: 10, textTransform: "uppercase", letterSpacing: 1 }}>{s.label}</p>
             </div>
           ))}
@@ -930,7 +930,7 @@ function WorkoutDetail({ workout, onBack, onStart }: { workout: any, onBack: () 
 
       {/* Exercises */}
       <div style={{ flex: 1 }}>
-        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 14, fontFamily: "'Syne', sans-serif", fontWeight: 400 }}>Exercise Plan</p>
+        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 14, fontFamily: "'EB Garamond', serif", fontWeight: 400 }}>Exercise Plan</p>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
           {workout.exercises.map((ex: any, i: number) => {
             const isAMQRAP = ex.reps === "AMQRAP";
@@ -947,11 +947,11 @@ function WorkoutDetail({ workout, onBack, onStart }: { workout: any, onBack: () 
                   background: isAMQRAP ? T.orange + "22" : T.dim,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   color: isAMQRAP ? T.orange : T.lime,
-                  fontWeight: 800, fontSize: 12, fontFamily: "'Syne', sans-serif",
+                  fontWeight: 800, fontSize: 12, fontFamily: "'EB Garamond', serif",
                 }}>{isAMQRAP ? "★" : i + 1}</div>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
-                    <p style={{ color: T.white, fontWeight: 500, fontSize: 13, fontFamily: "'Syne', sans-serif", letterSpacing: 0.1 }}>{ex.name}</p>
+                    <p style={{ color: T.white, fontWeight: 500, fontSize: 13, fontFamily: "'EB Garamond', serif", letterSpacing: 0.1 }}>{ex.name}</p>
                     {isAMQRAP && <span style={{ color: T.orange, fontSize: 9, fontWeight: 800, background: T.orange + "22", borderRadius: 50, padding: "2px 8px", letterSpacing: 0.8 }}>AMQRAP</span>}
                   </div>
                   <p style={{ color: T.muted, fontSize: 12, marginBottom: ex.desc ? 4 : 0 }}>
@@ -970,7 +970,7 @@ function WorkoutDetail({ workout, onBack, onStart }: { workout: any, onBack: () 
           width: "100%", padding: "16px",
           background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
           border: "none", borderRadius: 50, color: accentText(),
-          fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 16, cursor: "pointer",
+          fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 16, cursor: "pointer",
           boxShadow: `0 8px 32px rgba(255,31,49,0.4)`
         }}>🔥 Start Workout</button>
       </div>
@@ -1077,7 +1077,7 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
   if (isDone) return (
     <div className="fadeUp" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 28px", textAlign: "center" }}>
       <div style={{ fontSize: 72, marginBottom: 20, animation: "pulse 1.5s infinite" }}>🏆</div>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 38, color: T.lime, marginBottom: 12 }}>Workout Complete!</h2>
+      <h2 style={{ fontFamily: "'EB Garamond', serif", fontSize: 38, color: T.lime, marginBottom: 12 }}>Workout Complete!</h2>
       <p style={{ color: T.muted, fontSize: 15, marginBottom: 8 }}>{workout.name}</p>
       <div style={{ display: "flex", gap: 16, margin: "24px 0 32px" }}>
         {[["🔥", workout.cal, "kcal"], ["⏱", workout.duration, "min"], ["💪", workout.exercises.length, "exercises"]].map(([e, v, u], i) => (
@@ -1099,7 +1099,7 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
         width: "100%", padding: "16px",
         background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
         border: "none", borderRadius: 50, color: accentText(),
-        fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
+        fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
       }}>Back to Training →</button>
     </div>
   );
@@ -1116,7 +1116,7 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
         <p style={{ color: T.muted, fontSize: 11, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6 }}>
           {isRest ? "REST" : `Exercise ${exIdx + 1} of ${totalEx}`}
         </p>
-        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 30, color: isRest ? T.orange : T.white, fontWeight: 300, lineHeight: 1.1 }}>
+        <h2 style={{ fontFamily: "'EB Garamond', serif", fontSize: 30, color: isRest ? T.orange : T.white, fontWeight: 300, lineHeight: 1.1 }}>
           {isRest ? "Rest & Recover" : ex.name}
         </h2>
         {!isRest && <p style={{ color: T.muted, fontSize: 13, marginTop: 8 }}>{ex.desc}</p>}
@@ -1133,7 +1133,7 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
             boxShadow: `0 0 40px ${isRest ? T.orange : T.lime}44`,
             animation: running && seconds <= 5 ? "timerPulse 1s infinite" : "none"
           }}>
-            <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 64, color: isRest ? T.orange : T.lime, lineHeight: 1 }}>{seconds}</span>
+            <span style={{ fontFamily: "'EB Garamond', serif", fontSize: 64, color: isRest ? T.orange : T.lime, lineHeight: 1 }}>{seconds}</span>
             <span style={{ color: T.muted, fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>seconds</span>
           </div>
         ) : (
@@ -1144,7 +1144,7 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
               display: "flex", alignItems: "center", justifyContent: "center",
               flexDirection: "column", margin: "0 auto 16px"
             }}>
-              <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 56, color: T.lime, lineHeight: 1 }}>{ex.reps}</span>
+              <span style={{ fontFamily: "'EB Garamond', serif", fontSize: 56, color: T.lime, lineHeight: 1 }}>{ex.reps}</span>
               <span style={{ color: T.muted, fontSize: 12, letterSpacing: 2 }}>REPS</span>
             </div>
           </div>
@@ -1173,20 +1173,20 @@ function WorkoutTimer({ workout, onDone, onComplete }: {
           <button className="btn-press" onClick={startRest} style={{
             padding: "16px", background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
             border: "none", borderRadius: 50, color: accentText(),
-            fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
+            fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 15, cursor: "pointer"
           }}>✓ Set Complete — Start Rest</button>
         )}
         {isRest && (
           <button className="btn-press" onClick={() => { clearInterval(intervalRef.current as ReturnType<typeof setInterval>); setRunning(false); nextSet(); }} style={{
             padding: "16px", background: T.surface2,
             border: `2px solid ${T.orange}`, borderRadius: 50, color: T.orange,
-            fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 14, cursor: "pointer"
+            fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 14, cursor: "pointer"
           }}>Skip Rest →</button>
         )}
         <button className="btn-press" onClick={() => { setSkippedSets(count => count + 1); nextSet(); }} style={{
           padding: "14px", background: "none",
           border: `1.5px solid ${T.border}`, borderRadius: 50, color: T.muted,
-          fontFamily: "'Syne', sans-serif", fontWeight: 600, fontSize: 13, cursor: "pointer"
+          fontFamily: "'EB Garamond', serif", fontWeight: 600, fontSize: 13, cursor: "pointer"
         }}>Skip Set</button>
       </div>
     </div>
@@ -1364,7 +1364,7 @@ Keep responses concise (2-4 sentences max unless asked for detail). Be encouragi
           <button key={q} onClick={() => { setInput(q); inputRef.current?.focus(); }} style={{
             background: T.surface, border: `1px solid ${T.border}`,
             borderRadius: 50, padding: "6px 14px", color: T.muted, fontSize: 12,
-            cursor: "pointer", whiteSpace: "nowrap", fontFamily: "'Syne', sans-serif",
+            cursor: "pointer", whiteSpace: "nowrap", fontFamily: "'EB Garamond', serif",
             flexShrink: 0
           }}>{q}</button>
         ))}
@@ -1381,7 +1381,7 @@ Keep responses concise (2-4 sentences max unless asked for detail). Be encouragi
           style={{
             flex: 1, background: T.surface2, border: `1.5px solid ${T.border}`,
             borderRadius: 50, color: T.white, padding: "12px 18px",
-            fontSize: 14, outline: "none", fontFamily: "'Syne', sans-serif",
+            fontSize: 14, outline: "none", fontFamily: "'EB Garamond', serif",
             transition: "border-color 0.2s"
           }}
           onFocus={e => e.target.style.borderColor = T.lime}
@@ -1479,8 +1479,8 @@ function HomeTab({
   return (
     <div>
       <div style={{ marginBottom: 24 }}>
-        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8, fontFamily: "'Syne', sans-serif", fontWeight: 400 }}>{dateStr}</p>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300, lineHeight: 1.15 }}>
+        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8, fontFamily: "'EB Garamond', serif", fontWeight: 400 }}>{dateStr}</p>
+        <h1 style={{ fontFamily: "'EB Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300, lineHeight: 1.15 }}>
           {greeting},{" "}
           <span style={{ color: T.lime, fontStyle: "italic" }}>{profile?.name || "Champion"}</span>
         </h1>
@@ -1491,21 +1491,21 @@ function HomeTab({
         <div style={{ position: "absolute", right: -24, top: -24, width: 120, height: 120, borderRadius: "50%", background: `${T.lime}0c` }} />
         <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 10 }}>
           <div style={{ width: 30, height: 30, borderRadius: "50%", background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>✦</div>
-          <span style={{ color: T.lime, fontSize: 9, fontWeight: 500, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Syne', sans-serif" }}>AI Trainer</span>
+          <span style={{ color: T.lime, fontSize: 9, fontWeight: 500, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'EB Garamond', serif" }}>AI Trainer</span>
         </div>
         <p style={{ color: T.white, fontSize: 14, lineHeight: 1.55, marginBottom: 14 }}>
           {nudgeText}
         </p>
         <button className="btn-press" onClick={() => onOpenWorkout(displayWorkout)} style={{
           background: T.lime, border: "none", borderRadius: 50, padding: "10px 20px",
-          color: accentText(), fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 12, cursor: "pointer"
+          color: accentText(), fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 12, cursor: "pointer"
         }}>Start Recommended →</button>
       </Card>
 
       {/* Streak */}
       <Card style={{ padding: "16px 18px", marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
-          <span style={{ color: T.white, fontWeight: 400, fontSize: 14, fontFamily: "'Cormorant Garamond', serif", letterSpacing: 0.3 }}>Weekly Streak</span>
+          <span style={{ color: T.white, fontWeight: 400, fontSize: 14, fontFamily: "'EB Garamond', serif", letterSpacing: 0.3 }}>Weekly Streak</span>
           <span style={{ color: T.lime, fontWeight: 700, fontSize: 13 }}>🔥 {streakDays} day{streakDays !== 1 ? "s" : ""}</span>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(7, minmax(0, 1fr))", gap: 2, width: "100%", minWidth: 0 }}>
@@ -1529,7 +1529,7 @@ function HomeTab({
       </Card>
 
       {/* Goals */}
-      <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 10, fontFamily: "'Syne', sans-serif", fontWeight: 400 }}>Today's Progress</p>
+      <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 10, fontFamily: "'EB Garamond', serif", fontWeight: 400 }}>Today's Progress</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {goals.map((g, i) => {
           const pct = Math.min(100, Math.round((g.cur / g.max) * 100));
@@ -1539,8 +1539,8 @@ function HomeTab({
                 <span style={{ color: g.color, fontSize: 10, fontWeight: 800 }}>{pct}%</span>
               </Ring>
               <div style={{ flex: 1 }}>
-                <p style={{ color: T.muted, fontSize: 9, letterSpacing: 1, textTransform: "uppercase", marginBottom: 3, fontFamily: "'Syne', sans-serif" }}>{g.label}</p>
-                <p style={{ color: T.white, fontWeight: 800, fontFamily: "'Syne', sans-serif", fontSize: 17 }}>
+                <p style={{ color: T.muted, fontSize: 9, letterSpacing: 1, textTransform: "uppercase", marginBottom: 3, fontFamily: "'EB Garamond', serif" }}>{g.label}</p>
+                <p style={{ color: T.white, fontWeight: 800, fontFamily: "'EB Garamond', serif", fontSize: 17 }}>
                   {g.cur.toLocaleString()}<span style={{ color: T.muted, fontSize: 12, fontWeight: 400 }}> / {g.max.toLocaleString()}{g.suffix ? " " + g.suffix : ""}</span>
                 </p>
               </div>
@@ -1556,8 +1556,8 @@ function TrainTab({ profile, onOpenWorkout, onStart }: { profile: any, onOpenWor
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ marginBottom: 4 }}>
-        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6, fontFamily: "'Syne', sans-serif", fontWeight: 400 }}>AI Powered</p>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300, marginBottom: 16 }}>
+        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6, fontFamily: "'EB Garamond', serif", fontWeight: 400 }}>AI Powered</p>
+        <h1 style={{ fontFamily: "'EB Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300, marginBottom: 16 }}>
           Your <span style={{ color: T.orange, fontStyle: "italic" }}>Trainer</span>
         </h1>
       </div>
@@ -1642,7 +1642,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                   <button onClick={() => onOpenWorkout(workout)} className="btn-press" style={{
                     background: T.lime, border: "none", borderRadius: 50,
                     padding: "6px 12px", color: accentText(),
-                    fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 11, cursor: "pointer"
+                    fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 11, cursor: "pointer"
                   }}>▶</button>
                 )}
                 {entry?.custom && entry?.exercises && entry.exercises.length > 0 && (
@@ -1665,7 +1665,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                   })} className="btn-press" style={{
                     background: T.lime, border: "none", borderRadius: 50,
                     padding: "6px 12px", color: accentText(),
-                    fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 11, cursor: "pointer"
+                    fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 11, cursor: "pointer"
                   }}>▶</button>
                 )}
                 {entry?.custom && (!entry.exercises || entry.exercises.length === 0) && (
@@ -1674,7 +1674,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                 <button onClick={() => { setPickerDay(day); setCustomMode(false); }} className="btn-press" style={{
                   background: T.surface2, border: `1px solid ${T.border}`, borderRadius: 50,
                   padding: "6px 12px", color: T.muted,
-                  fontFamily: "'Syne', sans-serif", fontSize: 11, cursor: "pointer"
+                  fontFamily: "'EB Garamond', serif", fontSize: 11, cursor: "pointer"
                 }}>{entry ? "↺" : "+"}</button>
                 {entry && (
                   <button onClick={() => clearDay(day)} className="btn-press" style={{
@@ -1693,14 +1693,14 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
           marginTop: 20, padding: 20, background: T.surface2, borderRadius: 24,
           border: `2px solid ${T.lime}44`
         }}>
-          <h3 style={{ color: T.white, fontSize: 18, marginBottom: 16, fontFamily: "'Cormorant Garamond', serif" }}>
+          <h3 style={{ color: T.white, fontSize: 18, marginBottom: 16, fontFamily: "'EB Garamond', serif" }}>
             Plan for {pickerDay}
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {customMode ? (
               <div style={{ padding: "10px 0" }}>
                 {/* Icon picker */}
-                <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 8 }}>Icon</p>
+                <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'EB Garamond', serif", marginBottom: 8 }}>Icon</p>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
                   {CUSTOM_EMOJIS.map(e => (
                     <button key={e} onClick={() => setCustomEmoji(e)} style={{
@@ -1713,14 +1713,14 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                 </div>
 
                 {/* Workout name */}
-                <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 6 }}>Workout Name</p>
+                <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'EB Garamond', serif", marginBottom: 6 }}>Workout Name</p>
                 <input
                   autoFocus placeholder="e.g. Morning Run, Yoga, My Push Day..."
                   value={customName} onChange={e => setCustomName(e.target.value)}
                   style={{
                     width: "100%", background: T.surface, border: `2px solid ${T.border}`,
                     borderRadius: 12, padding: "12px 14px", color: T.white, fontSize: 15,
-                    fontFamily: "'Syne', sans-serif", outline: "none", marginBottom: 20,
+                    fontFamily: "'EB Garamond', serif", outline: "none", marginBottom: 20,
                     transition: "border-color 0.2s"
                   }}
                   onFocus={e => e.target.style.borderColor = T.lime}
@@ -1729,7 +1729,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
 
                 {/* Exercise builder */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                  <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif" }}>Exercises</p>
+                  <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'EB Garamond', serif" }}>Exercises</p>
                   <span style={{ color: T.muted, fontSize: 11 }}>{customExercises.length} added</span>
                 </div>
 
@@ -1746,10 +1746,10 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                           width: 28, height: 28, borderRadius: 8, flexShrink: 0,
                           background: `${T.lime}18`, display: "flex", alignItems: "center",
                           justifyContent: "center", color: T.lime,
-                          fontWeight: 800, fontSize: 11, fontFamily: "'Syne', sans-serif"
+                          fontWeight: 800, fontSize: 11, fontFamily: "'EB Garamond', serif"
                         }}>{i + 1}</div>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <p style={{ color: T.white, fontSize: 13, fontWeight: 600, fontFamily: "'Syne', sans-serif", marginBottom: 1 }}>{ex.name}</p>
+                          <p style={{ color: T.white, fontSize: 13, fontWeight: 600, fontFamily: "'EB Garamond', serif", marginBottom: 1 }}>{ex.name}</p>
                           <p style={{ color: T.muted, fontSize: 11 }}>{ex.sets} sets · {ex.reps} reps</p>
                         </div>
                         <button onClick={() => setCustomExercises(prev => prev.filter((_, idx) => idx !== i))} style={{
@@ -1766,7 +1766,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                   background: T.surface, borderRadius: 14, padding: "14px",
                   border: `1px solid ${T.border}`, marginBottom: 20
                 }}>
-                  <p style={{ color: T.lime, fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 10 }}>+ Add Exercise</p>
+                  <p style={{ color: T.lime, fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'EB Garamond', serif", marginBottom: 10 }}>+ Add Exercise</p>
 
                   <input
                     placeholder="Exercise name (e.g. Bench Press, Run 5km...)"
@@ -1775,7 +1775,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                     style={{
                       width: "100%", background: T.surface2, border: `1.5px solid ${T.border}`,
                       borderRadius: 10, padding: "10px 12px", color: T.white, fontSize: 13,
-                      fontFamily: "'Syne', sans-serif", outline: "none", marginBottom: 10,
+                      fontFamily: "'EB Garamond', serif", outline: "none", marginBottom: 10,
                       transition: "border-color 0.2s"
                     }}
                     onFocus={e => e.target.style.borderColor = T.lime}
@@ -1784,13 +1784,13 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
 
                   <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
                     <div style={{ flex: 1 }}>
-                      <p style={{ color: T.muted, fontSize: 10, marginBottom: 4, letterSpacing: 0.8, textTransform: "uppercase", fontFamily: "'Syne', sans-serif" }}>Sets</p>
+                      <p style={{ color: T.muted, fontSize: 10, marginBottom: 4, letterSpacing: 0.8, textTransform: "uppercase", fontFamily: "'EB Garamond', serif" }}>Sets</p>
                       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                         <button onClick={() => setExInput(p => ({ ...p, sets: String(Math.max(1, Number(p.sets) - 1)) }))} style={{
                           width: 30, height: 30, borderRadius: "50%", background: T.surface2,
                           border: `1px solid ${T.border}`, color: T.white, fontSize: 16, cursor: "pointer"
                         }}>−</button>
-                        <span style={{ color: T.white, fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 700, minWidth: 28, textAlign: "center" }}>{exInput.sets}</span>
+                        <span style={{ color: T.white, fontFamily: "'EB Garamond', serif", fontSize: 22, fontWeight: 700, minWidth: 28, textAlign: "center" }}>{exInput.sets}</span>
                         <button onClick={() => setExInput(p => ({ ...p, sets: String(Math.min(20, Number(p.sets) + 1)) }))} style={{
                           width: 30, height: 30, borderRadius: "50%", background: T.surface2,
                           border: `1px solid ${T.border}`, color: T.white, fontSize: 16, cursor: "pointer"
@@ -1799,7 +1799,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                     </div>
 
                     <div style={{ flex: 1 }}>
-                      <p style={{ color: T.muted, fontSize: 10, marginBottom: 4, letterSpacing: 0.8, textTransform: "uppercase", fontFamily: "'Syne', sans-serif" }}>Reps / Duration</p>
+                      <p style={{ color: T.muted, fontSize: 10, marginBottom: 4, letterSpacing: 0.8, textTransform: "uppercase", fontFamily: "'EB Garamond', serif" }}>Reps / Duration</p>
                       <input
                         placeholder="10, 30s, 1km..."
                         value={exInput.reps}
@@ -1807,7 +1807,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                         style={{
                           width: "100%", background: T.surface2, border: `1.5px solid ${T.border}`,
                           borderRadius: 10, padding: "6px 10px", color: T.white, fontSize: 14,
-                          fontFamily: "'Syne', sans-serif", outline: "none",
+                          fontFamily: "'EB Garamond', serif", outline: "none",
                           transition: "border-color 0.2s"
                         }}
                         onFocus={e => e.target.style.borderColor = T.lime}
@@ -1829,7 +1829,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                       background: exInput.name.trim() ? `${T.lime}22` : T.dim,
                       border: `1px solid ${exInput.name.trim() ? T.lime : "transparent"}`,
                       borderRadius: 50, color: exInput.name.trim() ? T.lime : T.muted,
-                      fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 12,
+                      fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 12,
                       cursor: exInput.name.trim() ? "pointer" : "default", transition: "all 0.2s"
                     }}
                   >+ Add to List</button>
@@ -1839,7 +1839,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                   <button onClick={() => { setCustomMode(false); setCustomExercises([]); }} style={{
                     flex: 1, padding: "12px", background: "none",
                     border: `1px solid ${T.border}`, borderRadius: 50, color: T.muted,
-                    fontFamily: "'Syne', sans-serif", fontSize: 12, cursor: "pointer"
+                    fontFamily: "'EB Garamond', serif", fontSize: 12, cursor: "pointer"
                   }}>← Back</button>
                   <button
                     onClick={() => {
@@ -1859,7 +1859,7 @@ function MyProgramTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => vo
                       flex: 2, padding: "12px",
                       background: customName.trim() ? `linear-gradient(135deg, ${T.lime}, ${T.orange})` : T.dim,
                       border: "none", borderRadius: 50, color: accentText(),
-                      fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13,
+                      fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 13,
                       cursor: customName.trim() ? "pointer" : "default"
                     }}
                   >{customExercises.length > 0 ? `Save ${customExercises.length} Exercise${customExercises.length !== 1 ? "s" : ""} →` : `Save Activity →`}</button>
@@ -1903,8 +1903,8 @@ function WorkoutsTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => voi
     return (
       <div>
         <div style={{ marginBottom: 16 }}>
-          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6, fontFamily: "'Syne', sans-serif", fontWeight: 400 }}>Personal</p>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300 }}>
+          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6, fontFamily: "'EB Garamond', serif", fontWeight: 400 }}>Personal</p>
+          <h1 style={{ fontFamily: "'EB Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300 }}>
             My <span style={{ color: T.orange, fontStyle: "italic" }}>Program</span>
           </h1>
         </div>
@@ -1917,7 +1917,7 @@ function WorkoutsTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => voi
               border: `1px solid ${filter === f ? T.lime : T.border}`,
               borderRadius: 50, padding: "7px 16px", cursor: "pointer",
               color: filter === f ? accentText() : T.muted,
-              fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 12,
+              fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 12,
               letterSpacing: 0.5, whiteSpace: "nowrap", flexShrink: 0
             }}>{f}</button>
           ))}
@@ -1931,8 +1931,8 @@ function WorkoutsTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => voi
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
-        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6, fontFamily: "'Syne', sans-serif", fontWeight: 400 }}>Library</p>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300 }}>
+        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6, fontFamily: "'EB Garamond', serif", fontWeight: 400 }}>Library</p>
+        <h1 style={{ fontFamily: "'EB Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300 }}>
           Work<span style={{ color: T.orange, fontStyle: "italic" }}>outs</span>
         </h1>
       </div>
@@ -1945,7 +1945,7 @@ function WorkoutsTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => voi
             border: `1px solid ${filter === f ? T.lime : T.border}`,
             borderRadius: 50, padding: "7px 16px", cursor: "pointer",
             color: filter === f ? accentText() : T.muted,
-            fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 12,
+            fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 12,
             letterSpacing: 0.5, whiteSpace: "nowrap", flexShrink: 0
           }}>{f}</button>
         ))}
@@ -1963,7 +1963,7 @@ function WorkoutsTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => voi
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
                 <span style={{ fontSize: 20 }}>🏆</span>
                 <div>
-                  <p style={{ color: T.lime, fontWeight: 600, fontSize: 11, fontFamily: "'Syne', sans-serif", letterSpacing: 1.5, textTransform: "uppercase" }}>6-Day Powerbuilding Split</p>
+                  <p style={{ color: T.lime, fontWeight: 600, fontSize: 11, fontFamily: "'EB Garamond', serif", letterSpacing: 1.5, textTransform: "uppercase" }}>6-Day Powerbuilding Split</p>
                   <p style={{ color: T.muted, fontSize: 11 }}>Nick Ludlow · 12 Weeks · Rest-Pause Protocol</p>
                 </div>
               </div>
@@ -1988,7 +1988,7 @@ function WorkoutsTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => voi
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
                 <span style={{ fontSize: 20 }}>🌱</span>
                 <div>
-                  <p style={{ color: T.orange, fontWeight: 600, fontSize: 11, fontFamily: "'Syne', sans-serif", letterSpacing: 1.5, textTransform: "uppercase" }}>3-Day Push / Pull / Legs</p>
+                  <p style={{ color: T.orange, fontWeight: 600, fontSize: 11, fontFamily: "'EB Garamond', serif", letterSpacing: 1.5, textTransform: "uppercase" }}>3-Day Push / Pull / Legs</p>
                   <p style={{ color: T.muted, fontSize: 11 }}>Roger Lockridge · 10 Weeks · Beginner Friendly</p>
                 </div>
               </div>
@@ -2006,7 +2006,7 @@ function WorkoutsTab({ onOpenWorkout, userId }: { onOpenWorkout: (w: any) => voi
         {otherWorkouts.length > 0 && (
           <div>
             {(pbWorkouts.length > 0 || pplWorkouts.length > 0) && (
-              <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12, fontFamily: "'Syne', sans-serif", fontWeight: 400 }}>Quick Sessions</p>
+              <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12, fontFamily: "'EB Garamond', serif", fontWeight: 400 }}>Quick Sessions</p>
             )}
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {otherWorkouts.map((w, i) => <WorkoutCard key={w.id} w={w} i={i + pbWorkouts.length + pplWorkouts.length} onOpenWorkout={onOpenWorkout} />)}
@@ -2050,7 +2050,7 @@ function WorkoutCard({ w, i, onOpenWorkout }: { w: any, i: number, onOpenWorkout
         }}>{w.emoji}</div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2, flexWrap: "wrap" }}>
-            <p style={{ color: T.white, fontWeight: 600, fontFamily: "'Syne', sans-serif", fontSize: 14, letterSpacing: 0.2, minWidth: 0 }}>{w.name}</p>
+            <p style={{ color: T.white, fontWeight: 600, fontFamily: "'EB Garamond', serif", fontSize: 14, letterSpacing: 0.2, minWidth: 0 }}>{w.name}</p>
             {w.split && <span style={{ color: programColor, fontSize: 10, fontWeight: 700, background: programColor + "18", borderRadius: 50, padding: "2px 8px", letterSpacing: 0.5, flexShrink: 0 }}>{w.split}</span>}
           </div>
           {w.subtitle && <p style={{ color: T.muted, fontSize: 12, marginBottom: 6 }}>{w.subtitle}</p>}
@@ -2142,7 +2142,7 @@ function ProgressPhotosSection({ userId }: { userId?: string }) {
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
         <div>
-          <p style={{ color: T.white, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", fontSize: 16 }}>Progress Photos</p>
+          <p style={{ color: T.white, fontWeight: 400, fontFamily: "'EB Garamond', serif", fontSize: 16 }}>Progress Photos</p>
           <p style={{ color: T.muted, fontSize: 11, marginTop: 2 }}>Private · Never shared · Just yours</p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
@@ -2154,21 +2154,21 @@ function ProgressPhotosSection({ userId }: { userId?: string }) {
           <button onClick={() => setShowAdd(s => !s)} className="btn-press" style={{
             background: T.lime, border: "none", borderRadius: 50,
             padding: "6px 14px", color: accentText(),
-            fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 11, cursor: "pointer"
+            fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 11, cursor: "pointer"
           }}>+ Add</button>
         </div>
       </div>
 
       {showAdd && (
         <div className="fadeUp" style={{ marginBottom: 14, background: T.surface2, borderRadius: 14, padding: "14px" }}>
-          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8, fontFamily: "'Syne', sans-serif" }}>Label this photo</p>
+          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8, fontFamily: "'EB Garamond', serif" }}>Label this photo</p>
           <div style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
             {["Front", "Side", "Back", "Flex"].map(l => (
               <button key={l} onClick={() => setLabel(l)} style={{
                 background: label === l ? T.lime : T.surface,
                 border: `1px solid ${label === l ? T.lime : T.border}`,
                 borderRadius: 50, padding: "6px 14px", color: label === l ? accentText() : T.muted,
-                fontFamily: "'Syne', sans-serif", fontSize: 12, fontWeight: 700, cursor: "pointer"
+                fontFamily: "'EB Garamond', serif", fontSize: 12, fontWeight: 700, cursor: "pointer"
               }}>{l}</button>
             ))}
           </div>
@@ -2176,7 +2176,7 @@ function ProgressPhotosSection({ userId }: { userId?: string }) {
             width: "100%", padding: "12px",
             background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
             border: "none", borderRadius: 50, color: accentText(),
-            fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13, cursor: "pointer"
+            fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 13, cursor: "pointer"
           }}>🖼️ Choose Photo</button>
         </div>
       )}
@@ -2211,7 +2211,7 @@ function ProgressPhotosSection({ userId }: { userId?: string }) {
                 background: "linear-gradient(transparent, rgba(0,0,0,0.75))",
                 padding: "16px 8px 6px"
               }}>
-                <p style={{ color: "#fff", fontSize: 9, fontWeight: 700, fontFamily: "'Syne', sans-serif" }}>{p.label}</p>
+                <p style={{ color: "#fff", fontSize: 9, fontWeight: 700, fontFamily: "'EB Garamond', serif" }}>{p.label}</p>
                 <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 9 }}>{p.date}</p>
               </div>
               <button onClick={() => remove(i)} style={{
@@ -2263,8 +2263,8 @@ function LetterToFutureSelf({ userId }: { userId?: string }) {
     <Card style={{ padding: "20px 18px", marginBottom: 16, border: `1px solid ${T.lime}22` }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
         <div>
-          <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 4 }}>Time Capsule</p>
-          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, color: T.white, fontWeight: 400 }}>Letter to Future Self</h3>
+          <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'EB Garamond', serif", marginBottom: 4 }}>Time Capsule</p>
+          <h3 style={{ fontFamily: "'EB Garamond', serif", fontSize: 20, color: T.white, fontWeight: 400 }}>Letter to Future Self</h3>
         </div>
         {data && <button onClick={clear} style={{ background: "none", border: "none", color: T.muted, fontSize: 11, cursor: "pointer" }}>✕</button>}
       </div>
@@ -2278,7 +2278,7 @@ function LetterToFutureSelf({ userId }: { userId?: string }) {
             width: "100%", padding: "13px",
             background: `linear-gradient(135deg, ${T.lime}22, ${T.orange}11)`,
             border: `1px solid ${T.lime}44`, borderRadius: 50,
-            color: T.lime, fontFamily: "'Syne', sans-serif",
+            color: T.lime, fontFamily: "'EB Garamond', serif",
             fontWeight: 700, fontSize: 13, cursor: "pointer"
           }}>Write Your Letter ✉️</button>
         </div>
@@ -2299,7 +2299,7 @@ function LetterToFutureSelf({ userId }: { userId?: string }) {
               width: "100%", background: T.surface2,
               border: `2px solid ${T.lime}55`, borderRadius: 14,
               padding: "14px 16px", color: T.white, fontSize: 14,
-              fontFamily: "'Cormorant Garamond', serif", lineHeight: 1.7,
+              fontFamily: "'EB Garamond', serif", lineHeight: 1.7,
               outline: "none", resize: "none", marginBottom: 12
             }}
           />
@@ -2307,13 +2307,13 @@ function LetterToFutureSelf({ userId }: { userId?: string }) {
             <button onClick={() => setWriting(false)} style={{
               flex: 1, padding: "12px", background: "none",
               border: `1px solid ${T.border}`, borderRadius: 50,
-              color: T.muted, fontFamily: "'Syne', sans-serif", fontSize: 13, cursor: "pointer"
+              color: T.muted, fontFamily: "'EB Garamond', serif", fontSize: 13, cursor: "pointer"
             }}>Cancel</button>
             <button onClick={send} disabled={!draft.trim()} className="btn-press" style={{
               flex: 2, padding: "12px",
               background: draft.trim() ? `linear-gradient(135deg, ${T.lime}, ${T.orange})` : T.dim,
               border: "none", borderRadius: 50, color: accentText(),
-              fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13,
+              fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 13,
               cursor: draft.trim() ? "pointer" : "default"
             }}>Seal & Send ✉️</button>
           </div>
@@ -2327,7 +2327,7 @@ function LetterToFutureSelf({ userId }: { userId?: string }) {
             background: `${T.lime}18`, border: `2px solid ${T.lime}44`,
             display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28
           }}>✉️</div>
-          <p style={{ color: T.white, fontFamily: "'Cormorant Garamond', serif", fontSize: 17, marginBottom: 6 }}>Your letter is sealed.</p>
+          <p style={{ color: T.white, fontFamily: "'EB Garamond', serif", fontSize: 17, marginBottom: 6 }}>Your letter is sealed.</p>
           <p style={{ color: T.muted, fontSize: 13 }}>Opens in <span style={{ color: T.lime, fontWeight: 700 }}>{daysLeft} days</span></p>
           <div style={{ marginTop: 14, height: 4, background: T.dim, borderRadius: 2 }}>
             <div style={{
@@ -2350,11 +2350,11 @@ function LetterToFutureSelf({ userId }: { userId?: string }) {
             border: `1px solid ${T.lime}33`, borderRadius: 16,
             padding: "18px", marginBottom: 12
           }}>
-            <p style={{ color: T.lime, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 10 }}>
+            <p style={{ color: T.lime, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", fontFamily: "'EB Garamond', serif", marginBottom: 10 }}>
               ✦ Your letter from 90 days ago
             </p>
             <p style={{
-              fontFamily: "'Cormorant Garamond', serif", color: T.white,
+              fontFamily: "'EB Garamond', serif", color: T.white,
               fontSize: 15, lineHeight: 1.8, fontStyle: "italic"
             }}>"{data.text}"</p>
           </div>
@@ -2365,7 +2365,7 @@ function LetterToFutureSelf({ userId }: { userId?: string }) {
             marginTop: 12, width: "100%", padding: "12px",
             background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
             border: "none", borderRadius: 50, color: accentText(),
-            fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13, cursor: "pointer"
+            fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 13, cursor: "pointer"
           }}>Write Another Letter →</button>
         </div>
       )}
@@ -2483,7 +2483,7 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
     border: `1.5px solid ${_focused ? T.lime : T.border}`,
     borderRadius: 10, padding: "10px 12px",
     color: T.white, fontSize: 14,
-    fontFamily: "'Syne', sans-serif", outline: "none",
+    fontFamily: "'EB Garamond', serif", outline: "none",
     transition: "border-color 0.2s",
   });
 
@@ -2503,8 +2503,8 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
       {/* Header */}
       <div style={{ paddingTop: 20, marginBottom: 20, display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
         <div>
-          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6, fontFamily: "'Syne', sans-serif", fontWeight: 400 }}>Your Journey</p>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300 }}>
+          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6, fontFamily: "'EB Garamond', serif", fontWeight: 400 }}>Your Journey</p>
+          <h1 style={{ fontFamily: "'EB Garamond', serif", fontSize: 32, color: T.white, fontWeight: 300 }}>
             Pro<span style={{ color: T.orange }}>gress</span>
           </h1>
         </div>
@@ -2516,7 +2516,7 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
             border: `1.5px solid ${T.lime}`,
             borderRadius: 50, padding: "8px 16px",
             color: showStatsForm ? accentText() : T.lime,
-            fontFamily: "'Syne', sans-serif", fontWeight: 700,
+            fontFamily: "'EB Garamond', serif", fontWeight: 700,
             fontSize: 12, cursor: "pointer", letterSpacing: 0.5,
             transition: "all 0.2s"
           }}>
@@ -2527,7 +2527,7 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
       {/* ── Stats Input Form ─────────────────────────────────────────────── */}
       {showStatsForm && (
         <div className="fadeUp" style={{ padding: "18px", marginBottom: 16, border: `1px solid ${T.lime}33`, background: T.surface, borderRadius: 20 }}>
-          <p style={{ color: T.white, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", fontSize: 17, marginBottom: 4 }}>Log Your Stats</p>
+          <p style={{ color: T.white, fontWeight: 400, fontFamily: "'EB Garamond', serif", fontSize: 17, marginBottom: 4 }}>Log Your Stats</p>
           <p style={{ color: T.muted, fontSize: 11, marginBottom: 16 }}>Weight updates will be added to your trend chart.</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
             {STAT_FIELDS.map(({ key, label, unit, placeholder }) => (
@@ -2551,7 +2551,7 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
             width: "100%", padding: "13px",
             background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
             border: "none", borderRadius: 50,
-            color: accentText(), fontFamily: "'Syne', sans-serif",
+            color: accentText(), fontFamily: "'EB Garamond', serif",
             fontWeight: 800, fontSize: 14, cursor: "pointer",
           }}>{savingStats ? "Saving…" : "Save & Update Chart"}</button>
         </div>
@@ -2561,10 +2561,10 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
       {!showStatsForm && (stats.weight || stats.bodyFat || stats.chest) && (
         <Card style={{ padding: "16px", marginBottom: 16 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-            <p style={{ color: T.white, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", fontSize: 16 }}>Current Stats</p>
+            <p style={{ color: T.white, fontWeight: 400, fontFamily: "'EB Garamond', serif", fontSize: 16 }}>Current Stats</p>
             <button onClick={() => { setDraftStats({ ...stats }); setShowStatsForm(true); }} style={{
               background: "none", border: "none", color: T.lime, fontSize: 12,
-              fontFamily: "'Syne', sans-serif", fontWeight: 700, cursor: "pointer"
+              fontFamily: "'EB Garamond', serif", fontWeight: 700, cursor: "pointer"
             }}>Edit</button>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8 }}>
@@ -2573,7 +2573,7 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
               if (!val) return null;
               return (
                 <div key={key} style={{ textAlign: "center", background: T.surface2, borderRadius: 10, padding: "10px 6px" }}>
-                  <p style={{ color: T.lime, fontWeight: 800, fontSize: 15, fontFamily: "'Cormorant Garamond', serif" }}>{val}</p>
+                  <p style={{ color: T.lime, fontWeight: 800, fontSize: 15, fontFamily: "'EB Garamond', serif" }}>{val}</p>
                   <p style={{ color: T.muted, fontSize: 9, textTransform: "uppercase", letterSpacing: 0.8, marginTop: 2 }}>{label}</p>
                   <p style={{ color: T.muted, fontSize: 9, opacity: 0.6 }}>{unit}</p>
                 </div>
@@ -2591,7 +2591,7 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
           [history.length > 0 ? (history.length / Math.max(1, Math.ceil((Date.now() - new Date(history[history.length - 1]?.completed_at || Date.now()).getTime()) / (7 * 86400000)))).toFixed(1) : "0", "Avg/wk"],
         ].map(([v, l]) => (
           <Card key={l} style={{ padding: "14px 12px", textAlign: "center" }}>
-            <p style={{ fontFamily: "'Cormorant Garamond', serif", color: T.lime, fontSize: 26, fontWeight: 700 }}>{v}</p>
+            <p style={{ fontFamily: "'EB Garamond', serif", color: T.lime, fontSize: 26, fontWeight: 700 }}>{v}</p>
             <p style={{ color: T.muted, fontSize: 10, textTransform: "uppercase", letterSpacing: 1, marginTop: 4 }}>{l}</p>
           </Card>
         ))}
@@ -2599,7 +2599,7 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
 
       <Card style={{ padding: "18px 16px", marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <p style={{ color: T.white, fontFamily: "'Cormorant Garamond', serif", fontSize: 16 }}>Recent Workouts</p>
+          <p style={{ color: T.white, fontFamily: "'EB Garamond', serif", fontSize: 16 }}>Recent Workouts</p>
           <span style={{ color: T.muted, fontSize: 10 }}>{history.length} total</span>
         </div>
         {history.length === 0 ? (
@@ -2625,7 +2625,7 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
       {/* ── Weight Trend Chart ───────────────────────────────────────────── */}
       <Card style={{ padding: "18px 16px", marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <p style={{ color: T.white, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", fontSize: 16, letterSpacing: 0.3 }}>Weight Trend</p>
+          <p style={{ color: T.white, fontWeight: 400, fontFamily: "'EB Garamond', serif", fontSize: 16, letterSpacing: 0.3 }}>Weight Trend</p>
           {weightLog.length > 1 && (
             <span style={{
               color: weightLog[weightLog.length - 1].value < weightLog[0].value ? T.teal : T.orange,
@@ -2676,13 +2676,13 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
 
       {/* Accountability */}
       <Card style={{ padding: "18px", marginBottom: 16 }}>
-        <p style={{ color: T.white, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", marginBottom: 14, fontSize: 16, letterSpacing: 0.3 }}>Accountability</p>
+        <p style={{ color: T.white, fontWeight: 400, fontFamily: "'EB Garamond', serif", marginBottom: 14, fontSize: 16, letterSpacing: 0.3 }}>Accountability</p>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <Ring pct={accountability} color={T.lime} size={72} stroke={6}>
-            <span style={{ color: T.white, fontWeight: 800, fontSize: 18, fontFamily: "'Syne', sans-serif" }}>{accountability}</span>
+            <span style={{ color: T.white, fontWeight: 800, fontSize: 18, fontFamily: "'EB Garamond', serif" }}>{accountability}</span>
           </Ring>
           <div>
-            <p style={{ color: T.lime, fontWeight: 600, marginBottom: 4, fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontStyle: "italic" }}>{accountabilityLabel}</p>
+            <p style={{ color: T.lime, fontWeight: 600, marginBottom: 4, fontFamily: "'EB Garamond', serif", fontSize: 17, fontStyle: "italic" }}>{accountabilityLabel}</p>
             <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.5 }}>{completedThisWeek} of {weeklyTarget} planned workouts completed this week.</p>
           </div>
         </div>
@@ -2690,10 +2690,10 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
 
       {/* Alexander the Great Latin Quotes */}
       <Card style={{ padding: "20px 18px", marginBottom: 16 }}>
-        <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginBottom: 14, fontFamily: "'Syne', sans-serif" }}>Words of the Conqueror</p>
+        <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginBottom: 14, fontFamily: "'EB Garamond', serif" }}>Words of the Conqueror</p>
         <div style={{ marginBottom: 18 }}>
           <p style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "'EB Garamond', serif",
             color: T.lime, fontSize: 20, fontWeight: 700,
             lineHeight: 1.3, marginBottom: 8, fontStyle: "italic"
           }}>"{quote.latin}"</p>
@@ -2715,7 +2715,7 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
             borderRadius: 50, padding: "5px 14px",
             color: T.muted, fontSize: 11, fontWeight: 700,
             cursor: "pointer", letterSpacing: 0.5,
-            fontFamily: "'Syne', sans-serif"
+            fontFamily: "'EB Garamond', serif"
           }}>Next →</button>
         </div>
       </Card>
@@ -2796,16 +2796,16 @@ function ProfilePicture({ profile, onUpdate, size = 64 }: { profile: any, onUpda
           borderRadius: 18, padding: "16px", width: 232,
           boxShadow: `0 20px 60px rgba(0,0,0,0.4)`
         }}>
-          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12, fontFamily: "'Syne', sans-serif" }}>Choose your look</p>
+          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12, fontFamily: "'EB Garamond', serif" }}>Choose your look</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
             <button onClick={() => { fileRef.current?.click(); }} className="btn-press" style={{
               background: T.surface2, border: `1px solid ${T.border}`, borderRadius: 12,
               padding: "10px 14px", color: T.white, cursor: "pointer",
-              fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 600,
+              fontFamily: "'EB Garamond', serif", fontSize: 13, fontWeight: 600,
               display: "flex", alignItems: "center", gap: 8, textAlign: "left"
             }}>🖼️ Choose Photo</button>
           </div>
-          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8, fontFamily: "'Syne', sans-serif" }}>Or pick an avatar</p>
+          <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8, fontFamily: "'EB Garamond', serif" }}>Or pick an avatar</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
             {AVATARS.map(emoji => (
               <button key={emoji} onClick={() => handleAvatar(emoji)} style={{
@@ -2817,7 +2817,7 @@ function ProfilePicture({ profile, onUpdate, size = 64 }: { profile: any, onUpda
           </div>
           <button onClick={() => setShowMenu(false)} style={{
             marginTop: 12, width: "100%", background: "none", border: "none",
-            color: T.muted, fontSize: 11, cursor: "pointer", fontFamily: "'Syne', sans-serif"
+            color: T.muted, fontSize: 11, cursor: "pointer", fontFamily: "'EB Garamond', serif"
           }}>Close</button>
         </div>
       )}
@@ -2874,16 +2874,16 @@ function TrainingPartnerCard({ userId }: { userId?: string }) {
   return (
     <Card style={{ padding: "18px", marginBottom: 20 }}>
       <div style={{ marginBottom: 14 }}>
-        <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 2 }}>Accountability</p>
-        <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, color: T.white, fontWeight: 400 }}>Training Partner</h3>
+        <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'EB Garamond', serif", marginBottom: 2 }}>Accountability</p>
+        <h3 style={{ fontFamily: "'EB Garamond', serif", fontSize: 20, color: T.white, fontWeight: 400 }}>Training Partner</h3>
       </div>
 
       {/* My code */}
       <div style={{ background: T.surface2, borderRadius: 14, padding: "14px", marginBottom: 12 }}>
-        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 8 }}>Your code</p>
+        <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'EB Garamond', serif", marginBottom: 8 }}>Your code</p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <span style={{
-            fontFamily: "'Cormorant Garamond', serif", fontSize: 32,
+            fontFamily: "'EB Garamond', serif", fontSize: 32,
             color: T.lime, fontWeight: 700, letterSpacing: 6
           }}>{myCode}</span>
           <button onClick={copy} className="btn-press" style={{
@@ -2891,7 +2891,7 @@ function TrainingPartnerCard({ userId }: { userId?: string }) {
             border: `1px solid ${T.lime}`,
             borderRadius: 50, padding: "7px 16px",
             color: copied ? accentText() : T.lime,
-            fontFamily: "'Syne', sans-serif", fontWeight: 700,
+            fontFamily: "'EB Garamond', serif", fontWeight: 700,
             fontSize: 11, cursor: "pointer", transition: "all 0.2s"
           }}>{copied ? "✓ Copied!" : "Copy"}</button>
         </div>
@@ -2903,8 +2903,8 @@ function TrainingPartnerCard({ userId }: { userId?: string }) {
         <div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
             <div>
-              <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 2 }}>Partner · {partnerCode}</p>
-              <p style={{ color: T.white, fontSize: 13, fontFamily: "'Cormorant Garamond', serif" }}>This week's activity</p>
+              <p style={{ color: T.muted, fontSize: 10, letterSpacing: 1, textTransform: "uppercase", fontFamily: "'EB Garamond', serif", marginBottom: 2 }}>Partner · {partnerCode}</p>
+              <p style={{ color: T.white, fontSize: 13, fontFamily: "'EB Garamond', serif" }}>This week's activity</p>
             </div>
             <button onClick={unlink} style={{ background: "none", border: "none", color: T.muted, fontSize: 11, cursor: "pointer" }}>Unlink</button>
           </div>
@@ -2943,7 +2943,7 @@ function TrainingPartnerCard({ userId }: { userId?: string }) {
               width: "100%", background: T.surface2,
               border: `2px solid ${T.lime}`, borderRadius: 12,
               padding: "12px 16px", color: T.lime, fontSize: 22,
-              fontFamily: "'Cormorant Garamond', serif", letterSpacing: 6,
+              fontFamily: "'EB Garamond', serif", letterSpacing: 6,
               outline: "none", marginBottom: 10, textAlign: "center"
             }}
           />
@@ -2951,13 +2951,13 @@ function TrainingPartnerCard({ userId }: { userId?: string }) {
             <button onClick={() => setEntering(false)} style={{
               flex: 1, padding: "11px", background: "none",
               border: `1px solid ${T.border}`, borderRadius: 50,
-              color: T.muted, fontFamily: "'Syne', sans-serif", fontSize: 12, cursor: "pointer"
+              color: T.muted, fontFamily: "'EB Garamond', serif", fontSize: 12, cursor: "pointer"
             }}>Cancel</button>
             <button onClick={link} disabled={inputCode.length < 4} className="btn-press" style={{
               flex: 2, padding: "11px",
               background: inputCode.length >= 4 ? `linear-gradient(135deg, ${T.lime}, ${T.orange})` : T.dim,
               border: "none", borderRadius: 50, color: accentText(),
-              fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13,
+              fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 13,
               cursor: inputCode.length >= 4 ? "pointer" : "default"
             }}>Link Partner →</button>
           </div>
@@ -2967,7 +2967,7 @@ function TrainingPartnerCard({ userId }: { userId?: string }) {
           width: "100%", padding: "12px",
           background: `${T.orange}15`, border: `1px solid ${T.orange}33`,
           borderRadius: 50, color: T.orange,
-          fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 13, cursor: "pointer"
+          fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 13, cursor: "pointer"
         }}>+ Link a Training Partner</button>
       )}
     </Card>
@@ -2991,13 +2991,13 @@ function WhyIStarted({ profileId }: { profileId?: string }) {
           <div style={{ marginBottom: 28 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
               <div>
-                <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Syne', sans-serif", marginBottom: 2 }}>Soul</p>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, color: T.white, fontWeight: 400 }}>Why I Started</h3>
+                <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'EB Garamond', serif", marginBottom: 2 }}>Soul</p>
+                <h3 style={{ fontFamily: "'EB Garamond', serif", fontSize: 20, color: T.white, fontWeight: 400 }}>Why I Started</h3>
               </div>
               <button onClick={() => { setDraft(why); setEditing(e => !e); }} style={{
                 background: "none", border: `1px solid ${T.border}`, borderRadius: 50,
                 padding: "6px 14px", color: T.muted, fontSize: 11,
-                fontFamily: "'Syne', sans-serif", fontWeight: 600, cursor: "pointer"
+                fontFamily: "'EB Garamond', serif", fontWeight: 600, cursor: "pointer"
               }}>{editing ? "✕" : why ? "Edit" : "+ Add"}</button>
             </div>
 
@@ -3012,7 +3012,7 @@ function WhyIStarted({ profileId }: { profileId?: string }) {
                   style={{
                     width: "100%", background: T.surface2, border: `2px solid ${T.lime}`,
                     borderRadius: 14, padding: "14px 16px", color: T.white,
-                    fontSize: 14, fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: 14, fontFamily: "'EB Garamond', serif",
                     fontWeight: 400, lineHeight: 1.7, outline: "none", resize: "none"
                   }}
                 />
@@ -3020,7 +3020,7 @@ function WhyIStarted({ profileId }: { profileId?: string }) {
                   marginTop: 10, width: "100%", padding: "13px",
                   background: `linear-gradient(135deg, ${T.lime}, ${T.orange})`,
                   border: "none", borderRadius: 50, color: accentText(),
-                  fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 13, cursor: "pointer"
+                  fontFamily: "'EB Garamond', serif", fontWeight: 800, fontSize: 13, cursor: "pointer"
                 }}>Save →</button>
               </div>
             ) : why ? (
@@ -3030,7 +3030,7 @@ function WhyIStarted({ profileId }: { profileId?: string }) {
                 borderLeft: `3px solid ${T.lime}`
               }}>
                 <p style={{
-                  fontFamily: "'Cormorant Garamond', serif", color: T.white,
+                  fontFamily: "'EB Garamond', serif", color: T.white,
                   fontSize: 15, lineHeight: 1.7, fontStyle: "italic"
                 }}>"{why}"</p>
               </div>
@@ -3060,7 +3060,7 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <ProfilePicture profile={profile} size={64} />
           <div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: T.white, fontWeight: 400, letterSpacing: 0.3, marginBottom: 2 }}>
+            <h2 style={{ fontFamily: "'EB Garamond', serif", fontSize: 24, color: T.white, fontWeight: 400, letterSpacing: 0.3, marginBottom: 2 }}>
               {profile?.name || "Athlete"}
             </h2>
             <p style={{ color: T.muted, fontSize: 12 }}>Member since Jan 2025 · Pro Plan</p>
@@ -3080,7 +3080,7 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
             padding: "13px 0", borderBottom: `1px solid ${T.border}`
           }}>
             <span style={{ color: T.muted, fontSize: 13 }}>{row.k}</span>
-            <span style={{ color: T.white, fontSize: 13, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", textTransform: "capitalize" }}>{row.v}</span>
+            <span style={{ color: T.white, fontSize: 13, fontWeight: 400, fontFamily: "'EB Garamond', serif", textTransform: "capitalize" }}>{row.v}</span>
           </div>
         ))}
       </div>
@@ -3091,8 +3091,8 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
       {/* ── THEME SWITCHER ─────────────────────────────────────────────── */}
       <div>
         <div style={{ marginBottom: 14 }}>
-          <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginBottom: 2, fontFamily: "'Syne', sans-serif" }}>Appearance</p>
-          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: T.white, fontWeight: 400 }}>Color Themes</h3>
+          <p style={{ color: T.muted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginBottom: 2, fontFamily: "'EB Garamond', serif" }}>Appearance</p>
+          <h3 style={{ fontFamily: "'EB Garamond', serif", fontSize: 22, color: T.white, fontWeight: 400 }}>Color Themes</h3>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
@@ -3129,7 +3129,7 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
                 {/* Name row */}
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <div>
-                    <p style={{ color: theme.white, fontWeight: 600, fontSize: 12, fontFamily: "'Syne', sans-serif", letterSpacing: 0.3, marginBottom: 1 }}>
+                    <p style={{ color: theme.white, fontWeight: 600, fontSize: 12, fontFamily: "'EB Garamond', serif", letterSpacing: 0.3, marginBottom: 1 }}>
                       {theme.name}
                     </p>
                     <p style={{ color: theme.muted, fontSize: 10 }}>{theme.description}</p>
@@ -3156,13 +3156,13 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
             <div style={{ width: 8, height: 8, borderRadius: "50%", background: T.lime, boxShadow: `0 0 8px ${T.lime}`, flexShrink: 0 }} />
             <span style={{ color: T.muted, fontSize: 12 }}>
-              Active: <span style={{ color: T.white, fontWeight: 600, fontFamily: "'Cormorant Garamond', serif", fontSize: 14 }}>{(THEMES as Record<string, any>)[currentThemeId]?.name}</span>
+              Active: <span style={{ color: T.white, fontWeight: 600, fontFamily: "'EB Garamond', serif", fontSize: 14 }}>{(THEMES as Record<string, any>)[currentThemeId]?.name}</span>
               <span style={{ color: T.muted }}>{" — "}{(THEMES as Record<string, any>)[currentThemeId]?.description}</span>
             </span>
           </div>
           <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 10, display: "flex", justifyContent: "flex-end" }}>
             <span style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "'EB Garamond', serif",
               fontWeight: 300,
               fontSize: 13,
               color: T.muted,
@@ -3184,7 +3184,7 @@ function ProfileTab({ profile, currentThemeId, onThemeChange, onSignOut }: { pro
             marginTop: 20, width: "100%", padding: "13px",
             background: "none", border: `1.5px solid ${T.border}`,
             borderRadius: 50, color: T.muted,
-            fontFamily: "'Syne', sans-serif", fontWeight: 700,
+            fontFamily: "'EB Garamond', serif", fontWeight: 700,
             fontSize: 13, cursor: "pointer", letterSpacing: 0.3,
             transition: "border-color 0.2s, color 0.2s",
           }}
@@ -3460,7 +3460,7 @@ export default function App() {
           fontSize: 24, animation: "pulse 2s infinite"
         }}>✦</div>
         <p style={{
-          color: T.muted, fontFamily: "'Cormorant Garamond', serif",
+          color: T.muted, fontFamily: "'EB Garamond', serif",
           fontSize: 16, letterSpacing: 3, textTransform: "uppercase"
         }}>Loading</p>
       </div>
@@ -3473,7 +3473,7 @@ export default function App() {
       <div style={{
         minHeight: "100dvh", background: T.bg,
         display: "flex", alignItems: "center", justifyContent: "center",
-        padding: "20px 16px", fontFamily: "'Syne', sans-serif"
+        padding: "20px 16px", fontFamily: "'EB Garamond', serif"
       }}>
         <style>{css}</style>
         <div style={{ width: "100%", maxWidth: 460 }}>
@@ -3487,7 +3487,7 @@ export default function App() {
   return (
     <div style={{
       minHeight: "100dvh", background: T.bg,
-      fontFamily: "'Syne', sans-serif",
+      fontFamily: "'EB Garamond', serif",
       display: "flex", flexDirection: "column",
       transition: "background 0.4s ease"
     }}>
@@ -3512,8 +3512,8 @@ export default function App() {
               <circle cx="7" cy="7" r="6" stroke={T.lime} strokeWidth="1.5" />
               <path d="M7 3v4l2.5 2.5" stroke={T.lime} strokeWidth="1.5" strokeLinecap="round" />
             </svg>
-            <span style={{ color: T.white, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 20, letterSpacing: 4, textTransform: "uppercase" as const }}>Soma</span>
-            <span className="soma-subtitle" style={{ color: T.muted, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 11, letterSpacing: 1.5, textTransform: "uppercase" as const, paddingBottom: 1 }}>: Your Intelligent Trainer</span>
+            <span style={{ color: T.white, fontFamily: "'EB Garamond', serif", fontWeight: 300, fontSize: 20, letterSpacing: 4, textTransform: "uppercase" as const }}>Soma</span>
+            <span className="soma-subtitle" style={{ color: T.muted, fontFamily: "'EB Garamond', serif", fontWeight: 300, fontSize: 11, letterSpacing: 1.5, textTransform: "uppercase" as const, paddingBottom: 1 }}>: Your Intelligent Trainer</span>
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -3524,7 +3524,7 @@ export default function App() {
                 border: "none", borderRadius: 50,
                 padding: "8px 18px", cursor: "pointer",
                 color: tab === n.id ? T.lime : T.muted,
-                fontFamily: "'Syne', sans-serif", fontWeight: 600,
+                fontFamily: "'EB Garamond', serif", fontWeight: 600,
                 fontSize: 12, letterSpacing: 0.5, textTransform: "uppercase" as const,
                 transition: "all 0.2s"
               }}>
@@ -3626,7 +3626,7 @@ export default function App() {
                 fontSize: 9, fontWeight: tab === n.id ? 700 : 500,
                 letterSpacing: 0.6, textTransform: "uppercase" as const,
                 color: tab === n.id ? T.lime : T.muted,
-                fontFamily: "'Syne', sans-serif",
+                fontFamily: "'EB Garamond', serif",
                 transition: "color 0.25s"
               }}>{n.label}</span>
               {tab === n.id && <div style={{ width: 16, height: 2, borderRadius: 1, background: T.lime }} />}
