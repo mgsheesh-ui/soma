@@ -191,7 +191,19 @@ function bgText() {
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--app-bg, #130205); }
+  html, body, #root { width: 100%; min-width: 0; min-height: 100%; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { background: var(--app-bg, #130205); overflow-x: hidden; }
+  #root { overflow-x: clip; }
+  img, video, canvas { max-width: 100%; }
+  .soma-content { min-width: 0; max-width: 100%; }
+  .soma-content > * { min-width: 0; max-width: 100%; }
+  .soma-content p, .soma-content h1, .soma-content h2, .soma-content h3, .soma-content span { overflow-wrap: break-word; }
+  input, textarea, select { max-width: 100%; }
+  @media (max-width: 768px) {
+    .soma-content { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)) !important; }
+    .soma-bottomnav { padding-bottom: max(16px, env(safe-area-inset-bottom, 0px)) !important; }
+  }
   ::-webkit-scrollbar { width: 0; }
   input, textarea { font-family: inherit; }
   @keyframes fadeUp {
