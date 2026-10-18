@@ -231,6 +231,25 @@ const css = `
   .fadeUp { animation: fadeUp 0.5s ease both; }
   .fadeIn { animation: fadeIn 0.4s ease both; }
   .btn-press:active { transform: scale(0.96); }
+  /* Lightweight navigation and tactile feedback. */
+  .soma-tab-enter { animation: somaTabEnter 180ms ease-out both; }
+  @keyframes somaTabEnter {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  button, [role="button"] { -webkit-tap-highlight-color: transparent; }
+  button:not(:disabled) { transition: transform 140ms ease-out, opacity 140ms ease-out; }
+  button:not(:disabled):active { transform: scale(0.975); }
+  .soma-bottomnav button { min-height: 44px; }
+  .soma-bottomnav button:active { transform: scale(0.94); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 
   /* ── Responsive layout ── */
   .soma-topnav { display: flex; }
@@ -3642,7 +3661,7 @@ export default function App() {
 
         {/* App tabs */}
         {screen === "app" && !activeWorkout && !workoutDetail && (
-          <div className="soma-content">
+          <div key={tab} className="soma-content soma-tab-enter">
             {tab === "home" && (
               <HomeTab
                 profile={profile}
