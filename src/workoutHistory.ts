@@ -124,5 +124,5 @@ export function createWorkoutHistoryStore(getStorage: () => Storage, remote: His
     return promise;
   }
 
-  return { record, sync, load: (userId: string) => read(userId).history };
+  return { record, sync, load: (userId: string) => read(userId).history, pendingCount: (userId: string) => read(userId).pending.length };
 }
