@@ -2385,10 +2385,39 @@ function LetterToFutureSelf({ userId }: { userId?: string }) {
   );
 }
 
-function ProgressTab({ userId, history, profile }: { userId?: string; history: WorkoutLog[]; profile?: any }) {
+function ProgressTab({ userId, history, profile, syncStatus }: { userId?: string; history: WorkoutLog[]; profile?: any; syncStatus: "syncing" | "synced" | "pending" | "error" | "local" }) {
   const CHART_H = 90;
   const LABEL_H = 18;
   const VALUE_H = 16;
+
+  const [historyFilter, setHistoryFilter] = useState<"all" | "month" | "week">("all");
+  const [expandedWeeks, setExpandedWeeks] = useState<Record<string, boolean>>({});
+  const historyGroups = React.useMemo(() => {
+    const now = new Date();
+    const currentStart = new Date(now);
+    currentStart.setDate(now.getDate() - (now.getDay() + 6) % 7);
+    currentStart.setHours(0, 0, 0, 0);
+    const groups = new Map<string, { key: string; label: string; isCurrent: boolean; items: WorkoutLog[] }>();
+    for (const session of history) {
+      const date = new Date(session.completed_at);
+      if (Number.isNaN(date.getTime())) continue;
+      if (historyFilter === "month" && (date.getMonth() !== now.getMonth() || date.getFullYear() !== now.getFullYear())) continue;
+      if (historyFilter === "week" && (date < currentStart || date.getTime() > now.getTime())) continue;
+      const monday = new Date(date);
+      monday.setDate(date.getDate() - (date.getDay() + 6) % 7);
+      monday.setHours(0, 0, 0, 0);
+      const key = [monday.getFullYear(), String(monday.getMonth() + 1).padStart(2, "0"), String(monday.getDate()).padStart(2, "0")].join("-");
+      if (!groups.has(key)) {
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+        const isCurrent = monday.getTime() === currentStart.getTime();
+        const label = isCurrent ? "This Week" : `${monday.toLocaleDateString(undefined, { month: "short", day: "numeric" })} – ${sunday.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`;
+        groups.set(key, { key, label, isCurrent, items: [] });
+      }
+      groups.get(key)!.items.push(session);
+    }
+    return [...groups.values()].sort((a, b) => b.key.localeCompare(a.key));
+  }, [history, historyFilter]);
 
   const [quoteIdx, setQuoteIdx] = useState(0);
   const quote = ALEXANDER_QUOTES[quoteIdx];
@@ -2610,26 +2639,53 @@ function ProgressTab({ userId, history, profile }: { userId?: string; history: W
       </div>
 
       <Card style={{ padding: "18px 16px", marginBottom: 16 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <p style={{ color: T.white, fontFamily: "'Cormorant Garamond', serif", fontSize: 16 }}>Recent Workouts</p>
-          <span style={{ color: T.muted, fontSize: 10 }}>{history.length} total</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginBottom: 12 }}>
+          <p style={{ color: T.white, fontFamily: "'Cormorant Garamond', serif", fontSize: 19 }}>Workout History</p>
+          <span style={{ color: T.muted, fontSize: 12 }}>{history.length} total</span>
         </div>
-        {history.length === 0 ? (
-          <p style={{ color: T.muted, fontSize: 12, lineHeight: 1.5 }}>Your completed sessions will appear here.</p>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {history.slice(0, 5).map((session, index) => (
-              <div key={session.id || index} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: index < Math.min(4, history.length - 1) ? `1px solid ${T.border}` : "none" }}>
-                <div style={{ width: 32, height: 32, borderRadius: 10, background: `${T.lime}18`, color: T.lime, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>✓</div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ color: T.white, fontSize: 13, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{session.workout_name}</p>
-                  <p style={{ color: T.muted, fontSize: 10 }}>{new Date(session.completed_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })} · {session.duration_mins || 0} min · {session.calories || 0} kcal</p>
+        <p role="status" style={{ color: syncStatus === "error" ? T.orange : T.muted, fontSize: 12, marginBottom: 14 }}>
+          {syncStatus === "syncing" ? "↻ Syncing workout history…" : syncStatus === "error" ? "⚠ Sync failed — workouts on this device are retained; reconnect to retry." : syncStatus === "local" ? "◉ Saved on this device only (guest)" : syncStatus === "pending" ? "◉ Some workouts are saved on this device and awaiting account sync" : "✓ Account history synchronized"}
+        </p>
+        <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+          {(["all", "month", "week"] as const).map(filter => (
+            <button key={filter} onClick={() => setHistoryFilter(filter)} style={{
+              flex: 1, minWidth: 0, padding: "9px 5px", borderRadius: 20, cursor: "pointer",
+              background: historyFilter === filter ? T.lime : T.surface2,
+              color: historyFilter === filter ? accentText() : T.muted,
+              border: `1px solid ${historyFilter === filter ? T.lime : T.border}`,
+              fontSize: 12, fontWeight: 700, fontFamily: "inherit"
+            }}>{filter === "all" ? "All time" : filter === "month" ? "This month" : "This week"}</button>
+          ))}
+        </div>
+        {historyGroups.length === 0 ? (
+          <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.5 }}>No workouts found for this period. Choose All time to see your complete saved history.</p>
+        ) : historyGroups.map(group => (
+          <div key={group.key} style={{ border: `1px solid ${T.border}`, borderRadius: 12, marginBottom: 9, overflow: "hidden" }}>
+            <button onClick={() => setExpandedWeeks(previous => ({ ...previous, [group.key]: !(previous[group.key] ?? group.isCurrent) }))} style={{
+              width: "100%", padding: "13px 12px", border: "none", background: T.surface2,
+              color: T.white, textAlign: "left", cursor: "pointer", display: "flex",
+              alignItems: "center", justifyContent: "space-between", gap: 8, fontFamily: "inherit"
+            }}>
+              <span style={{ fontSize: 14, fontWeight: 700 }}>{group.label} <span style={{ color: T.muted, fontWeight: 400 }}>· {group.items.length} workout{group.items.length === 1 ? "" : "s"}</span></span>
+              <span aria-hidden="true">{(expandedWeeks[group.key] ?? group.isCurrent) ? "−" : "+"}</span>
+            </button>
+            {(expandedWeeks[group.key] ?? group.isCurrent) && group.items.map(session => (
+              <div key={session.id} style={{ padding: "12px", borderTop: `1px solid ${T.border}` }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "flex-start" }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ color: T.white, fontSize: 14, fontWeight: 700, overflowWrap: "anywhere" }}>{session.workout_name}</p>
+                    <p style={{ color: T.muted, fontSize: 12, marginTop: 4 }}>
+                      {new Date(session.completed_at).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}
+                      {" · "}{session.duration_mins || 0} min{" · "}{session.calories || 0} kcal
+                    </p>
+                    {session.total_sets != null && <p style={{ color: T.muted, fontSize: 11, marginTop: 3 }}>{session.completed_sets || 0} of {session.total_sets} sets completed</p>}
+                  </div>
+                  <span style={{ color: session.completion_status === "partial" ? T.orange : T.lime, fontSize: 12, fontWeight: 700, flexShrink: 0 }}>{session.completion_status === "partial" ? "Partial" : "✓"}</span>
                 </div>
-                {session.completion_status === "partial" && <span style={{ color: T.orange, fontSize: 10, fontWeight: 700 }}>Partial</span>}
               </div>
             ))}
           </div>
-        )}
+        ))}
       </Card>
 
       <ProgressPhotosSection userId={userId} />
@@ -3287,6 +3343,7 @@ export default function App() {
 
   // Real data from Supabase
   const [history, setHistory] = useState<WorkoutLog[]>([]);
+  const [syncStatus, setSyncStatus] = useState<"syncing" | "synced" | "pending" | "error" | "local">("syncing");
   const activeUserId = useRef<string | null>(null);
   const weekWorkouts = thisWeekWorkouts(history);
   const recoveryScore = computeRecoveryScore(history);
@@ -3305,12 +3362,14 @@ export default function App() {
   const loadUserData = useCallback(async (userId: string) => {
     activeUserId.current = userId;
     setHistory(workoutHistory.load(userId));
+    setSyncStatus("syncing");
     const [prof, result] = await Promise.all([
       loadProfile(userId),
       workoutHistory.sync(userId),
     ]);
     if (activeUserId.current !== userId) return;
     setHistory(result.history);
+    setSyncStatus(result.error ? "error" : workoutHistory.pendingCount(userId) ? "pending" : "synced");
 
     if (prof) {
       setProfile(prof);
@@ -3408,12 +3467,13 @@ export default function App() {
     // This write happens before any network request or navigation.
     const saved = workoutHistory.record(entry);
     setHistory(saved.history);
+    setSyncStatus(isGuest ? "local" : "pending");
     if (isGuest) {
       if (!saved.savedLocally) throw new Error("Your browser could not save this workout. Free up storage and retry before leaving.");
       return "Workout saved on this device.";
     }
     const result = await workoutHistory.sync(userId);
-    if (activeUserId.current === userId) setHistory(result.history);
+    if (activeUserId.current === userId) { setHistory(result.history); setSyncStatus(result.error ? "error" : workoutHistory.pendingCount(userId) ? "pending" : "synced"); }
     if (result.error) {
       if (!saved.savedLocally) throw new Error("Your workout could not be saved. Check your connection and retry before leaving.");
       return "Workout saved on this device. Account sync will retry when you reconnect.";
@@ -3434,8 +3494,9 @@ export default function App() {
     if (!userId) return;
     const refresh = () => {
       setHistory(workoutHistory.load(userId));
+      setSyncStatus(isGuest ? "local" : "syncing");
       void workoutHistory.sync(userId).then(result => {
-        if (activeUserId.current === userId) setHistory(result.history);
+        if (activeUserId.current === userId) { setHistory(result.history); setSyncStatus(isGuest ? "local" : result.error ? "error" : workoutHistory.pendingCount(userId) ? "pending" : "synced"); }
       });
     };
     const tick = setInterval(() => forceRender(n => n + 1), 60_000);
@@ -3603,6 +3664,7 @@ export default function App() {
                 userId={isGuest ? undefined : authUser?.id}
                 history={history}
                 profile={profile}
+                syncStatus={syncStatus}
               />
             )}
             {tab === "profile" && (
