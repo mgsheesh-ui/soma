@@ -189,7 +189,7 @@ function bgText() {
 }
 
 const css = `
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=EB Garamond:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700;800&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body, #root { width: 100%; min-width: 0; min-height: 100%; }
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
