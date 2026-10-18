@@ -1508,14 +1508,14 @@ function HomeTab({
           <span style={{ color: T.white, fontWeight: 400, fontSize: 14, fontFamily: "'Cormorant Garamond', serif", letterSpacing: 0.3 }}>Weekly Streak</span>
           <span style={{ color: T.lime, fontWeight: 700, fontSize: 13 }}>🔥 {streakDays} day{streakDays !== 1 ? "s" : ""}</span>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, minmax(0, 1fr))", gap: 2, width: "100%", minWidth: 0 }}>
           {DAY_LABELS.map((d, i) => {
             const isDone = doneIndices.has(i);
             const isToday = i === todayIdx;
             return (
               <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
                 <div style={{
-                  width: 36, height: 36, borderRadius: "50%",
+                  width: "min(36px, 100%)", aspectRatio: "1 / 1", borderRadius: "50%",
                   background: isDone ? T.lime : T.dim,
                   border: isToday && !isDone ? `2px solid ${T.lime}` : "2px solid transparent",
                   display: "flex", alignItems: "center", justifyContent: "center",
