@@ -1,0 +1,18 @@
+{
+  "name": "SOMA — Your Intelligent Trainer",
+  "short_name": "SOMA",
+  "description": "Your intelligent fitness trainer.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#eff1ed",
+  "theme_color": "#eff1ed",
+  "icons": [
+    {
+      "src": "/soma-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
